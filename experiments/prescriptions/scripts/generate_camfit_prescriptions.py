@@ -73,6 +73,39 @@ def value_at(levels: np.ndarray, values: np.ndarray, level: float) -> float:
     return float(np.interp(level, levels, values))
 
 
+def simplify_curve_indices(
+    x: np.ndarray,
+    y: np.ndarray,
+    tolerance_db: float,
+) -> list[int]:
+    """Return compact graph knots within a vertical-error tolerance.
+
+    SigmaStudio linearly interpolates between control points in its dB-domain
+    compressor graph. The CAMFIT curves are already piecewise linear in that
+    same domain, so retaining the points with the largest vertical error gives
+    a compact, directly enterable representation.
+    """
+    if x.ndim != 1 or y.ndim != 1 or x.size != y.size or x.size < 2:
+        raise ValueError("Curve simplification requires equal 1-D arrays")
+
+    retained = {0, x.size - 1}
+    pending = [(0, x.size - 1)]
+    while pending:
+        start, end = pending.pop()
+        if end <= start + 1:
+            continue
+        interpolated = np.interp(x[start + 1 : end], x[[start, end]], y[[start, end]])
+        errors = np.abs(y[start + 1 : end] - interpolated)
+        relative_index = int(np.argmax(errors))
+        maximum_error = float(errors[relative_index])
+        if maximum_error > tolerance_db:
+            split = start + 1 + relative_index
+            retained.add(split)
+            pending.extend([(start, split), (split, end)])
+
+    return sorted(retained)
+
+
 def derive_compression_ratio(
     levels: np.ndarray,
     uncorrected_gain: np.ndarray,
@@ -148,7 +181,13 @@ def write_manifest(root: Path) -> None:
             relative.parts[0] in {"inputs", "outputs"}
             or path.name.startswith("openmha_smoke_")
         )
-        if path.is_file() and path.name != "SHA256SUMS.txt" and not is_smoke_artifact:
+        is_tool_sidecar = path.name.endswith(".inspect.ndjson")
+        if (
+            path.is_file()
+            and path.name != "SHA256SUMS.txt"
+            and not is_smoke_artifact
+            and not is_tool_sidecar
+        ):
             rows.append(
                 f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {relative}"
             )
@@ -177,6 +216,8 @@ def main() -> None:
 
     long_rows: list[dict[str, Any]] = []
     sigma_rows: list[dict[str, Any]] = []
+    sigma_full_rows: list[dict[str, Any]] = []
+    sigma_ui_rows: list[dict[str, Any]] = []
     listeners: dict[str, Any] = {}
     summary: dict[str, Any] = {
         "source": {
@@ -315,6 +356,96 @@ def main() -> None:
                         }
                     )
 
+                input_peaklevel = float(settings["equivalent_0_dbfs_db_spl"])
+                output_peaklevel = input_peaklevel + float(
+                    settings["amplification_headroom_db"]
+                )
+                sigma_input = input_levels - input_peaklevel
+                # Keep prescription gain inside each band compressor. Apply the
+                # calibration/headroom difference once, after band recombination.
+                sigma_graph_output = sigma_input + gain_curve
+                sigma_final_output = output_curve - output_peaklevel
+                graph_minimum = float(settings["sigma_graph_minimum_input_dbfs"])
+                graph_maximum = float(settings["sigma_graph_maximum_input_dbfs"])
+                in_graph_range = (sigma_input >= graph_minimum) & (
+                    sigma_input <= graph_maximum
+                )
+
+                for level_index in range(input_levels.size):
+                    sigma_full_rows.append(
+                        {
+                            "profile": profile,
+                            "ear": ear,
+                            "band": band_index + 1,
+                            "active_prescription": active,
+                            "centre_hz": f"{centre_hz:.4f}",
+                            "edge_low_hz": f"{filter_edges[band_index]:.4f}",
+                            "edge_high_hz": f"{filter_edges[band_index + 1]:.4f}",
+                            "input_level_db_spl": f"{input_levels[level_index]:.1f}",
+                            "camfit_gain_db": f"{gain_curve[level_index]:.6f}",
+                            "output_level_db_spl": f"{output_curve[level_index]:.6f}",
+                            "sigma_graph_input_dbfs": f"{sigma_input[level_index]:.6f}",
+                            "sigma_graph_output_dbfs": f"{sigma_graph_output[level_index]:.6f}",
+                            "sigma_output_after_global_headroom_dbfs": (
+                                f"{sigma_final_output[level_index]:.6f}"
+                            ),
+                            "global_headroom_gain_db": f"{input_peaklevel - output_peaklevel:.6f}",
+                            "within_configured_sigma_graph_range": bool(
+                                in_graph_range[level_index]
+                            ),
+                        }
+                    )
+
+                graph_indices = np.flatnonzero(in_graph_range)
+                compact_local_indices = simplify_curve_indices(
+                    sigma_input[graph_indices],
+                    sigma_graph_output[graph_indices],
+                    float(settings["sigma_curve_tolerance_db"]),
+                )
+                compact_indices = graph_indices[compact_local_indices]
+                reconstructed = np.interp(
+                    sigma_input[graph_indices],
+                    sigma_input[compact_indices],
+                    sigma_graph_output[compact_indices],
+                )
+                compact_error = float(
+                    np.max(
+                        np.abs(
+                            sigma_graph_output[graph_indices] - reconstructed
+                        )
+                    )
+                )
+                if compact_error > float(settings["sigma_curve_tolerance_db"]) + 1e-9:
+                    raise RuntimeError(
+                        f"Sigma curve simplification exceeded tolerance for "
+                        f"{profile} {ear} band {band_index + 1}: {compact_error} dB"
+                    )
+
+                for point_index, level_index in enumerate(compact_indices, start=1):
+                    sigma_ui_rows.append(
+                        {
+                            "profile": profile,
+                            "ear": ear,
+                            "band": band_index + 1,
+                            "active_prescription": active,
+                            "point": point_index,
+                            "centre_hz": f"{centre_hz:.4f}",
+                            "input_level_db_spl": f"{input_levels[level_index]:.1f}",
+                            "sigma_graph_input_dbfs": f"{sigma_input[level_index]:.6f}",
+                            "sigma_graph_output_dbfs": f"{sigma_graph_output[level_index]:.6f}",
+                            "camfit_gain_db": f"{gain_curve[level_index]:.6f}",
+                            "sigma_output_after_global_headroom_dbfs": (
+                                f"{sigma_final_output[level_index]:.6f}"
+                            ),
+                            "maximum_interpolation_error_db": f"{compact_error:.9f}",
+                            "implementation_note": (
+                                "enter x/y in compressor graph"
+                                if active
+                                else "bypass compressor; global headroom still applies"
+                            ),
+                        }
+                    )
+
         summary["profiles"][profile] = {
             "category": profile_data["category"],
             "maximum_gain_db": round(float(np.max(corrected)), 6),
@@ -323,6 +454,8 @@ def main() -> None:
 
     write_csv(output_dir / "gain_table_long.csv", long_rows)
     write_csv(output_dir / "sigma_compact_targets.csv", sigma_rows)
+    write_csv(output_dir / "sigma_compressor_curve_full.csv", sigma_full_rows)
+    write_csv(output_dir / "sigma_compressor_curve_ui.csv", sigma_ui_rows)
     (output_dir / "listeners_bisgaard_symmetric.json").write_text(
         json.dumps(listeners, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
@@ -333,6 +466,8 @@ def main() -> None:
     print(f"Generated {len(PROFILE_ORDER)} prescriptions in {output_dir}")
     print(f"Full table rows: {len(long_rows)}")
     print(f"Compact Sigma rows: {len(sigma_rows)}")
+    print(f"Full Sigma curve rows: {len(sigma_full_rows)}")
+    print(f"SigmaStudio UI points: {len(sigma_ui_rows)}")
 
 
 if __name__ == "__main__":

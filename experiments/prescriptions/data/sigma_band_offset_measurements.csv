@@ -1,0 +1,2 @@
+run_id,ear,band,edge_low_hz,edge_high_hz,stimulus_shape,seed,duration_s,input_rms_dbfs,reference_band_rms_dbfs,sigma_lr4_band_rms_dbfs,offset_reference_minus_sigma_db,notes
+,,,,,,,,,,,,

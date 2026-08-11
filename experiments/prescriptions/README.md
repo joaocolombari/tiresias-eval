@@ -196,6 +196,32 @@ ADC, analogue-gain, and digital-headroom offsets.
 
 ## Mapping to SigmaStudio
 
+The generator now emits two direct SigmaStudio mappings:
+
+- `generated/sigma_compressor_curve_full.csv`: all 121 CAMFIT points, including
+  the graph input, graph output, and level after global headroom;
+- `generated/sigma_compressor_curve_ui.csv`: a compact set of graph control
+  points with no more than 0.01 dB interpolation error over the configured
+  Sigma input range.
+
+The graph curves contain only the per-band prescription gain:
+
+```text
+x_graph = input_level_dB_SPL - 100
+y_graph = x_graph + CAMFIT_gain
+```
+
+Apply the CEC1 calibration difference of `-20 dB` once after recombining all
+bands. Keeping headroom outside the compressors ensures that the ninth unity
+boundary band receives the same output calibration.
+
+Because an LR4 branch and an openMHA rectangular FFT band integrate different
+amounts of noise, the nominal `x_graph` values are only the starting point.
+Follow [`BAND_LEVEL_OFFSET_PROTOCOL.md`](BAND_LEVEL_OFFSET_PROTOCOL.md) to
+measure `delta_b = reference_level - LR4_level`; then shift both graph
+coordinates horizontally with `x_graph = input_level - 100 - delta_b` while
+preserving `y_graph - x_graph = CAMFIT_gain`.
+
 ### Preferred implementation
 
 Use one calibrated RMS level detector and a gain-curve lookup per active band,

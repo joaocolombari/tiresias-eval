@@ -36,6 +36,8 @@ Comece por:
 - [metodologia, entradas, saídas e mapeamento para o SigmaStudio](experiments/prescriptions/README.md);
 - [tabela completa de prescrições](experiments/prescriptions/generated/gain_table_long.csv);
 - [alvos compactos para o SigmaStudio](experiments/prescriptions/generated/sigma_compact_targets.csv);
+- [pontos x/y para o gráfico do compressor](experiments/prescriptions/generated/sigma_compressor_curve_ui.csv);
+- [protocolo de deslocamento de nível por banda](experiments/prescriptions/BAND_LEVEL_OFFSET_PROTOCOL.md);
 - [instalação reproduzível do pyClarity](tools/clarity/README.md).
 
 ## Estrutura
