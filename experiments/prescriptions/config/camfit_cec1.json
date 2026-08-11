@@ -1,0 +1,23 @@
+{
+  "prescription": "CAMFIT compressive",
+  "clarity_recipe": "CEC1 GHA baseline",
+  "sample_rate_hz": 44100,
+  "equivalent_0_dbfs_db_spl": 100,
+  "amplification_headroom_db": 20,
+  "maximum_output_db_spl": 100,
+  "noise_gate_levels_db_spl": [38, 38, 36, 37, 32, 26, 23, 22, 8],
+  "noise_gate_slope": 0,
+  "compression_ratio_reference_level_db_spl": 0,
+  "gain_table_minimum_input_db_spl": -10,
+  "gain_table_maximum_input_db_spl": 110,
+  "gain_table_step_db": 1,
+  "gain_table_log_interpolation": true,
+  "attack_time_ms": 20,
+  "release_time_ms": 100,
+  "rms_level_time_constant_ms": 100,
+  "filterbank_centres_hz": [177, 297, 500, 841, 1414, 2378, 4000, 6727, 11314],
+  "filterbank_edges_hz": [0, 229.2793, 385.3570, 648.4597, 1090.5, 1833.7, 3084.2, 5187.3, 8724.1, 22050],
+  "openmha_template": "clarity/enhancer/gha/cfg_files/prerelease_combination4_smooth_template.cfg",
+  "openmha_adm_bypass_for_one_mic_tests": 1,
+  "audiogram_endpoint_policy": "Clarity constant extension below 250 Hz and above 6000 Hz"
+}

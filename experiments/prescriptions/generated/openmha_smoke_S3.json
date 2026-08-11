@@ -1,0 +1,19 @@
+{
+  "profile": "S3",
+  "stimulus": "1 kHz sine",
+  "sample_rate_hz": 44100,
+  "input_channels": 4,
+  "output_channels": 2,
+  "input_rms_dbfs": -30.0,
+  "output_rms_dbfs_left": -31.0635,
+  "output_rms_dbfs_right": -31.0635,
+  "digital_level_change_db_left": -1.0635,
+  "digital_level_change_db_right": -1.0635,
+  "input_level_db_spl": 70.0,
+  "output_level_db_spl_left": 88.9365,
+  "output_level_db_spl_right": 88.9365,
+  "calibrated_gain_db_left": 18.9365,
+  "calibrated_gain_db_right": 18.9365,
+  "calibration_note": "CEC1 uses 0 dBFS = 100 dB SPL at input and 120 dB SPL at output",
+  "config": "openmha_cfg/one_mic_reference/S3.cfg"
+}

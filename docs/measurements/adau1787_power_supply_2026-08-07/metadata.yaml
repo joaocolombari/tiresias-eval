@@ -1,0 +1,58 @@
+experiment_id: adau1787_power_supply_2026-08-07
+date: 2026-08-07
+operator: Joao Colombari
+purpose: Compare the ADAU1787 spectrum under three supply-source conditions.
+
+device_under_test:
+  platform: ADAU1787 evaluation board
+  exact_board_part_number: to_be_confirmed
+  hardware_configuration: to_be_confirmed
+
+supply_conditions:
+  eval_onboard:
+    label: Regulators on the ADAU1787 evaluation board
+  tiresias_vdd:
+    label: VDD rail from Tiresias
+    tiresias_input: battery
+    vbus_connected: false
+    eval_injection_point: to_be_confirmed
+  tiresias_avdd:
+    label: AVDD rail from Tiresias
+    upstream_source: Tiresias VSYS
+    tiresias_input: battery
+    vbus_connected: false
+    eval_injection_point: to_be_confirmed
+
+input_conditions:
+  no_input:
+    label: No input stimulus
+  minus10_dbv:
+    label: -10 dBV, 1 kHz
+  minus6_dbv:
+    label: -6 dBV, 1 kHz
+
+background_firmware_activity:
+  flash_reads_and_writes: true
+  ble_advertising: continuous
+  leds_blinking: true
+  firmware_commit: to_be_recorded
+
+acquisition:
+  software: REW 5.31.3
+  fft_points: 131072
+  window: Hann
+  averages: 32
+  smoothing_in_rew_export: none
+  frequency_step_hz: 0.36621094
+  displayed_unit: dBV
+  audio_interface: to_be_confirmed
+  sample_rate_hz: 48000
+  calibration_file: to_be_confirmed
+  candidate_calibration_file_in_repository: docs/measurements/scarlett_18i8_in1_out1_48k_nogain.cal
+
+analysis:
+  display_frequency_range_hz: [20, 22000]
+  display_smoothing: energy_mean_1_24_octave
+  raw_exports_preserved: true
+
+setup_photo: setup/setup.HEIC

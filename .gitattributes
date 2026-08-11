@@ -1,0 +1,19 @@
+# Preserve immutable acquisition files byte-for-byte.
+docs/measurements/**/raw/** binary
+*.mdat binary
+*.cal binary
+
+# Binary documentation and figures.
+*.pdf binary
+*.png binary
+*.HEIC binary
+*.gz binary
+
+# Keep generated source-like artifacts consistent across platforms.
+*.md text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.csv text eol=lf
+*.cfg text eol=lf
+*.svg text eol=lf

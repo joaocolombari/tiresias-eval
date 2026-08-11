@@ -1,0 +1,19 @@
+{
+  "profile": "S2",
+  "stimulus": "1 kHz sine",
+  "sample_rate_hz": 44100,
+  "input_channels": 4,
+  "output_channels": 2,
+  "input_rms_dbfs": -30.0,
+  "output_rms_dbfs_left": -45.444343,
+  "output_rms_dbfs_right": -45.444343,
+  "digital_level_change_db_left": -15.444343,
+  "digital_level_change_db_right": -15.444343,
+  "input_level_db_spl": 70.0,
+  "output_level_db_spl_left": 74.555657,
+  "output_level_db_spl_right": 74.555657,
+  "calibrated_gain_db_left": 4.555657,
+  "calibrated_gain_db_right": 4.555657,
+  "calibration_note": "CEC1 uses 0 dBFS = 100 dB SPL at input and 120 dB SPL at output",
+  "config": "openmha_cfg/one_mic_reference/S2.cfg"
+}

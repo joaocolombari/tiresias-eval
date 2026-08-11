@@ -1,0 +1,10 @@
+supply,input_condition,rew_measurement,rew_version,dated,format,smoothing,frequency_step_hz,input_rms_dbfs,input_rms_22_22k_unweighted_dbfs,peak_near_1khz_frequency_hz,peak_near_1khz_level_dbv,median_bin_level_20_22k_dbv,p95_bin_level_20_22k_dbv,source_file
+eval_onboard,no_input,EVAL - noise,V5.31.3,"Aug 7, 2026 5:41:38 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-83.8,-83.5,1001.220703,-106.404,-111.983,-108.678,EVAL - noise.txt
+tiresias_vdd,no_input,VDD - noise,V5.31.3,"Aug 7, 2026 5:35:11 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-84.07,-83.8,1000.12207,-108.534,-112.517,-109.12395,VDD - noise.txt
+tiresias_avdd,no_input,AVDD - noise,V5.31.3,"Aug 7, 2026 5:38:32 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-82.36,-82.0,1008.911133,-104.371,-109.942,-106.56295,AVDD - noise.txt
+eval_onboard,minus10_dbv,EVAL -10dB,V5.31.3,"Aug 7, 2026 5:42:10 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-30.23,-30.2,1000.12207,-11.055,-111.018,-107.04295,EVAL -10dB.txt
+tiresias_vdd,minus10_dbv,VDD -10dB,V5.31.3,"Aug 7, 2026 5:35:31 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-30.22,-30.2,1000.12207,-11.053,-112.032,-107.86395,VDD -10dB.txt
+tiresias_avdd,minus10_dbv,AVDD -10dB,V5.31.3,"Aug 7, 2026 5:39:03 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-30.23,-30.2,1000.12207,-11.058,-111.797,-107.723,AVDD -10dB.txt
+eval_onboard,minus6_dbv,EVAL -6dB,V5.31.3,"Aug 7, 2026 5:42:36 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-26.23,-26.2,1000.12207,-7.055,-110.409,-105.70694999999999,EVAL -6dB.txt
+tiresias_vdd,minus6_dbv,VDD -6dB,V5.31.3,"Aug 7, 2026 5:35:59 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-26.22,-26.2,1000.12207,-7.054,-111.221,-105.60695,VDD -6dB.txt
+tiresias_avdd,minus6_dbv,AVDD -6dB,V5.31.3,"Aug 7, 2026 5:39:30 PM",131072-point spectrum using Hann window and 32 averages,None,0.36621094,-26.23,-26.2,1000.12207,-7.06,-110.422,-105.838,AVDD -6dB.txt

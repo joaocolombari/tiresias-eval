@@ -1,0 +1,25 @@
+# Hardware and production firmware live in independent repositories.
+/HW/
+/FW/
+
+# Local third-party checkout and Python environment.
+/tools/clarity/source/
+/tools/clarity/.venv/
+.venv/
+
+# Reproducible smoke-test audio and logs (generated locally).
+/experiments/prescriptions/generated/inputs/
+/experiments/prescriptions/generated/outputs/
+/experiments/prescriptions/generated/openmha_smoke_*.log
+
+# The organized copy is under docs/measurements/.
+/rew/
+
+# Temporary and editor/runtime files.
+/tmp/
+**/__pycache__/
+*.py[cod]
+.DS_Store
+**/.DS_Store
+*.swp
+*.swo
