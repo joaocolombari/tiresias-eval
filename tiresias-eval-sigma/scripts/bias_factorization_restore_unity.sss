@@ -1,0 +1,129 @@
+// #LANGUAGE# C#
+// Restauracao segura do teste de fatoracao.
+// Primeiro remove os biases; depois restaura as LUTs B1..B8 para unity.
+
+string icName = "IC 1";
+string stage = "inicializacao";
+int tableWords = 34;
+
+int[] tableAddresses = new int[] {
+    0x212C, 0x2220, 0x2314, 0x241C,
+    0x2510, 0x2618, 0x26B8, 0x276C
+};
+int[] biasAddresses = new int[] { 0x2850, 0x2854, 0x2858 };
+
+byte[] unityWord = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[] attenWord = new byte[] { 0x00, 0x20, 0x26, 0xF3 };
+byte[] biasWord  = new byte[] { 0x00, 0xCA, 0xDD, 0xC8 };
+
+try
+{
+    // Aceita unity, estado completo de teste ou uma aplicacao parcial conhecida.
+    for (int gainIndex = 0; gainIndex < biasAddresses.Length; gainIndex++)
+    {
+        byte[] actual = new byte[4];
+        stage = System.String.Format("pre-flight Bias {0}", gainIndex + 1);
+        ss.ICRegisterRead(icName, biasAddresses[gainIndex], 4, ref actual);
+
+        bool isUnity = true;
+        bool isTest = true;
+        for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+        {
+            if (actual[byteIndex] != unityWord[byteIndex]) isUnity = false;
+            if (actual[byteIndex] != biasWord[byteIndex]) isTest = false;
+        }
+        if (!isUnity && !isTest)
+        {
+            System.Windows.Forms.MessageBox.Show(
+                System.String.Format(
+                    "ABORT: Bias {0} esta em um estado desconhecido.\nEndereco inicial: 0x{1:X4}.\n\n" +
+                    "Execute Link Compile Download; nenhum dado foi escrito.",
+                    gainIndex + 1, biasAddresses[gainIndex]));
+            throw new System.OperationCanceledException("Pre-flight dos biases reprovado.");
+        }
+    }
+
+    for (int band = 0; band < tableAddresses.Length; band++)
+    {
+        for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+        {
+            int address = tableAddresses[band] + 4 * wordIndex;
+            byte[] actual = new byte[4];
+            stage = System.String.Format("pre-flight B{0}, palavra {1}", band + 1, wordIndex);
+            ss.ICRegisterRead(icName, address, 4, ref actual);
+
+            bool isUnity = true;
+            bool isTest = true;
+            for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+            {
+                if (actual[byteIndex] != unityWord[byteIndex]) isUnity = false;
+                if (actual[byteIndex] != attenWord[byteIndex]) isTest = false;
+            }
+            if (!isUnity && !isTest)
+            {
+                System.Windows.Forms.MessageBox.Show(
+                    System.String.Format(
+                        "ABORT: B{0}, palavra {1}, esta em estado desconhecido.\nEndereco inicial: 0x{2:X4}.\n\n" +
+                        "Execute Link Compile Download; nenhum dado foi escrito.",
+                        band + 1, wordIndex, address));
+                throw new System.OperationCanceledException("Pre-flight das LUTs reprovado.");
+            }
+        }
+    }
+
+    // Ordem segura: remove primeiro o ganho positivo.
+    for (int gainIndex = 0; gainIndex < biasAddresses.Length; gainIndex++)
+    {
+        int address = biasAddresses[gainIndex];
+        stage = System.String.Format("restauracao Bias {0}", gainIndex + 1);
+        ss.ICRegisterWrite(icName, address, 4, unityWord);
+
+        byte[] actual = new byte[4];
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+        {
+            if (actual[byteIndex] != unityWord[byteIndex])
+            {
+                throw new System.Exception(
+                    System.String.Format("Falha ao restaurar Bias {0} em 0x{1:X4}.", gainIndex + 1, address));
+            }
+        }
+    }
+
+    for (int band = 0; band < tableAddresses.Length; band++)
+    {
+        for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+        {
+            int address = tableAddresses[band] + 4 * wordIndex;
+            stage = System.String.Format("restauracao B{0}, palavra {1}", band + 1, wordIndex);
+            ss.ICRegisterWrite(icName, address, 4, unityWord);
+
+            byte[] actual = new byte[4];
+            ss.ICRegisterRead(icName, address, 4, ref actual);
+            for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+            {
+                if (actual[byteIndex] != unityWord[byteIndex])
+                {
+                    throw new System.Exception(
+                        System.String.Format("Falha ao restaurar B{0} em 0x{1:X4}.", band + 1, address));
+                }
+            }
+        }
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: estado unity restaurado e verificado.\n\n" +
+        "B1..B8: LUTs em 0 dB\n" +
+        "Bias A/B/C: 0 dB\n\n" +
+        "Faca agora a terceira medicao no REW.");
+}
+catch (System.OperationCanceledException)
+{
+    // A mensagem de diagnostico ja foi apresentada.
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR durante: " + stage + "\n\n" + ex.ToString() +
+        "\n\nExecute Link Compile Download para restaurar o projeto antes de repetir.");
+}

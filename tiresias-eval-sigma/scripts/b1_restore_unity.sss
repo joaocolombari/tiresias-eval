@@ -1,0 +1,115 @@
+// #LANGUAGE# C#
+// Restaura ganho unitário na LUT inteira de B1.
+// Alvo: compbank.Compressor-B1, endereços externos 0x212C..0x21B3.
+
+// A API de registradores usa o nome do componente fisico no Hardware Configuration.
+string icName = "IC 1";
+string stage = "inicializacao";
+int tableAddress = 0x212C;
+int tableWords = 34;
+int tableBytes = tableWords * 4;
+
+// 1,0 em 5.23: 0x00800000.
+byte[] word = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[] expected = new byte[tableBytes];
+byte[] testWord = new byte[] { 0x00, 0x40, 0x26, 0xE7 };
+byte[] testState = new byte[tableBytes];
+
+for (int i = 0; i < tableWords; i++)
+{
+    expected[4 * i + 0] = word[0];
+    expected[4 * i + 1] = word[1];
+    expected[4 * i + 2] = word[2];
+    expected[4 * i + 3] = word[3];
+
+    testState[4 * i + 0] = testWord[0];
+    testState[4 * i + 1] = testWord[1];
+    testState[4 * i + 2] = testWord[2];
+    testState[4 * i + 3] = testWord[3];
+}
+
+try
+{
+    // Trava contra mapa desatualizado: aceitar apenas os dois estados conhecidos.
+    stage = "leitura de pre-flight em IC 1";
+    byte[] before = new byte[tableBytes];
+    ss.ICRegisterRead(icName, tableAddress, tableBytes, ref before);
+
+    bool isUnity = true;
+    bool isTestState = true;
+    int firstDifferenceFromUnity = -1;
+    for (int i = 0; i < tableBytes; i++)
+    {
+        if (before[i] != expected[i])
+        {
+            isUnity = false;
+        }
+        if (before[i] != testState[i])
+        {
+            isTestState = false;
+        }
+        if (before[i] != expected[i] && firstDifferenceFromUnity < 0)
+        {
+            firstDifferenceFromUnity = i;
+        }
+    }
+
+    if (!isUnity && !isTestState)
+    {
+        System.Windows.Forms.MessageBox.Show(
+            System.String.Format(
+                "ABORT: a LUT em 0x212C nao corresponde nem ao estado -6 dB nem ao estado unitario.\n" +
+                "Primeira diferenca em relacao ao estado unitario no endereco 0x{0:X4}: 0x{1:X2}.\n\n" +
+                "Execute Link Compile Download. Nenhum byte foi escrito.",
+                tableAddress + firstDifferenceFromUnity,
+                before[firstDifferenceFromUnity]));
+        throw new System.OperationCanceledException("Pre-flight reprovado; escrita cancelada.");
+    }
+
+    stage = "escrita da LUT unitaria em IC 1";
+    ss.ICRegisterWrite(icName, tableAddress, tableBytes, expected);
+
+    stage = "leitura de verificacao em IC 1";
+    byte[] actual = new byte[tableBytes];
+    ss.ICRegisterRead(icName, tableAddress, tableBytes, ref actual);
+
+    int firstMismatch = -1;
+    for (int i = 0; i < tableBytes; i++)
+    {
+        if (actual[i] != expected[i])
+        {
+            firstMismatch = i;
+            break;
+        }
+    }
+
+    if (firstMismatch < 0)
+    {
+        System.Windows.Forms.MessageBox.Show(
+            "PASS: B1 voltou a 0 dB e os 136 bytes foram lidos de volta corretamente.\n\n" +
+            "Faixa escrita: 0x212C..0x21B3\n" +
+            "Coeficiente: 0x00800000");
+    }
+    else
+    {
+        System.Windows.Forms.MessageBox.Show(
+            System.String.Format(
+                "FAIL: leitura diferente no byte {0} (endereço 0x{1:X4}).\n" +
+                "Esperado: 0x{2:X2}; lido: 0x{3:X2}.\n\n" +
+                "Execute Link Compile Download para restaurar o projeto e interrompa o ensaio.",
+                firstMismatch,
+                tableAddress + firstMismatch,
+                expected[firstMismatch],
+                actual[firstMismatch]));
+    }
+}
+catch (System.OperationCanceledException)
+{
+    // A mensagem de diagnostico ja foi apresentada; nao escrever nem continuar.
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR durante: " + stage + "\n\n" + ex.ToString() +
+        "\n\nConfirme a conexao USBi e execute Link Compile Download antes de repetir.");
+}

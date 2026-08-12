@@ -1,0 +1,4 @@
+test_id,frequency_hz,equivalent_level_db_spl,rew_dac_output_dbv,unity_50hz_dbv,n1_corrected_50hz_dbv,measured_gain_db,expected_gain_db,gain_error_db,restored_50hz_dbv,restoration_error_db,notes
+N1_B1_CORRECTED_45,50,45,-59.85,-60.18,-58.19,1.99,1.988463,0.001537,,,"Minus sign normalized in unity_50hz_dbv; restoration accepted from previous validation and not remeasured"
+N1_B1_CORRECTED_55,50,55,-49.85,-50.17,-49.66,0.51,0.570642,-0.060642,,,"Restoration accepted from previous validation and not remeasured"
+N1_B1_CORRECTED_65,50,65,-39.85,-40.18,-40.26,-0.08,0.000000,-0.080000,,,"Minus sign normalized in n1_corrected_50hz_dbv; restoration accepted from previous validation and not remeasured"

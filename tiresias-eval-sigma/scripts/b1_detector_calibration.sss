@@ -1,0 +1,124 @@
+// #LANGUAGE# C#
+// Identifica o nivel visto pelo detector RMS de B1.
+//
+// A LUT implementa: gain_dB = -0.5 * detector_dBFS - 27.
+// Logo, apos medir o ganho: detector_dBFS = -2 * (gain_dB + 27).
+// TAB0/TAB1 = -90 dBFS; TAB2 = -87 dBFS; ...; TAB33 = +6 dBFS.
+
+string icName = "IC 1";
+string stage = "inicializacao";
+int tableAddress = 0x212C;
+int tableWords = 34;
+int tableBytes = tableWords * 4;
+byte[] expected = new byte[tableBytes];
+byte[] unity = new byte[tableBytes];
+
+for (int i = 0; i < tableWords; i++)
+{
+    double detectorDbfs = (i == 0) ? -90.0 : -90.0 + 3.0 * (i - 1);
+    double gainDb = -0.5 * detectorDbfs - 27.0;
+    double gainLinear = System.Math.Pow(10.0, gainDb / 20.0);
+    long fixed523 = (long)System.Math.Round(gainLinear * 8388608.0);
+
+    if (fixed523 < 0 || fixed523 > 0x07FFFFFF)
+    {
+        throw new System.Exception("Coeficiente fora da faixa 5.23 no indice " + i.ToString());
+    }
+
+    expected[4 * i + 0] = (byte)((fixed523 >> 24) & 0xFF);
+    expected[4 * i + 1] = (byte)((fixed523 >> 16) & 0xFF);
+    expected[4 * i + 2] = (byte)((fixed523 >> 8) & 0xFF);
+    expected[4 * i + 3] = (byte)(fixed523 & 0xFF);
+
+    unity[4 * i + 0] = 0x00;
+    unity[4 * i + 1] = 0x80;
+    unity[4 * i + 2] = 0x00;
+    unity[4 * i + 3] = 0x00;
+}
+
+try
+{
+    stage = "leitura de pre-flight em IC 1";
+    byte[] before = new byte[tableBytes];
+    int preflightMismatch = -1;
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        byte[] wordRead = new byte[4];
+        ss.ICRegisterRead(icName, tableAddress + 4 * wordIndex, 4, ref wordRead);
+        for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+        {
+            int i = 4 * wordIndex + byteIndex;
+            before[i] = wordRead[byteIndex];
+            if (preflightMismatch < 0 && before[i] != unity[i])
+            {
+                preflightMismatch = i;
+            }
+        }
+    }
+
+    if (preflightMismatch >= 0)
+    {
+        System.Windows.Forms.MessageBox.Show(
+            System.String.Format(
+                "ABORT: B1 nao esta em ganho unitario.\n" +
+                "Primeira diferenca em 0x{0:X4}: esperado 0x{1:X2}; lido 0x{2:X2}.\n\n" +
+                "Execute Link Compile Download. Nenhum byte foi escrito.",
+                tableAddress + preflightMismatch,
+                unity[preflightMismatch],
+                before[preflightMismatch]));
+        throw new System.OperationCanceledException("Pre-flight reprovado.");
+    }
+
+    int firstMismatch = -1;
+    byte mismatchActual = 0;
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        byte[] wordWrite = new byte[4];
+        for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+        {
+            wordWrite[byteIndex] = expected[4 * wordIndex + byteIndex];
+        }
+
+        stage = "escrita da palavra " + wordIndex.ToString() + " da LUT";
+        ss.ICRegisterWrite(icName, tableAddress + 4 * wordIndex, 4, wordWrite);
+
+        stage = "verificacao da palavra " + wordIndex.ToString() + " da LUT";
+        byte[] wordRead = new byte[4];
+        ss.ICRegisterRead(icName, tableAddress + 4 * wordIndex, 4, ref wordRead);
+        for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+        {
+            int i = 4 * wordIndex + byteIndex;
+            if (firstMismatch < 0 && wordRead[byteIndex] != expected[i])
+            {
+                firstMismatch = i;
+                mismatchActual = wordRead[byteIndex];
+            }
+        }
+        if (firstMismatch >= 0) break;
+    }
+
+    if (firstMismatch >= 0)
+    {
+        throw new System.Exception(
+            System.String.Format(
+                "Readback diferente em 0x{0:X4}: esperado 0x{1:X2}; lido 0x{2:X2}.",
+                tableAddress + firstMismatch,
+                expected[firstMismatch],
+                mismatchActual));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: LUT de identificacao carregada e verificada palavra por palavra em B1.\n\n" +
+        "Equacao: ganho = -0.5 * nivel_detector - 27 dB.\n" +
+        "Restaure B1 com b1_detector_restore_unity.sss ao terminar.");
+}
+catch (System.OperationCanceledException)
+{
+    // O diagnostico ja foi apresentado.
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR durante: " + stage + "\n\n" + ex.ToString() +
+        "\n\nExecute Link Compile Download antes de repetir.");
+}

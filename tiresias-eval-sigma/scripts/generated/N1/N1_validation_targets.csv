@@ -1,0 +1,49 @@
+profile,band,centre_hz,input_level_db_spl,nominal_detector_dbfs,nominal_electrical_input_dbv,expected_camfit_gain_db,electrical_mapping_status
+N1,1,177.0,45.0,-55.00,-59.85,1.988463,measured B1/50 Hz
+N1,1,177.0,55.0,-45.00,-49.85,0.570642,measured B1/50 Hz
+N1,1,177.0,65.0,-35.00,-39.85,0.000000,measured B1/50 Hz
+N1,1,177.0,75.0,-25.00,-29.85,0.000000,measured B1/50 Hz
+N1,1,177.0,85.0,-15.00,-19.85,0.000000,measured B1/50 Hz
+N1,1,177.0,95.0,-5.00,-9.85,0.000000,measured B1/50 Hz
+N1,2,297.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
+N1,2,297.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
+N1,2,297.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
+N1,2,297.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
+N1,2,297.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
+N1,2,297.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
+N1,3,500.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
+N1,3,500.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
+N1,3,500.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
+N1,3,500.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
+N1,3,500.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
+N1,3,500.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
+N1,4,841.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
+N1,4,841.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
+N1,4,841.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
+N1,4,841.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
+N1,4,841.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
+N1,4,841.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
+N1,5,1414.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
+N1,5,1414.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
+N1,5,1414.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
+N1,5,1414.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
+N1,5,1414.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
+N1,5,1414.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
+N1,6,2378.0,45.0,-55.00,-59.85,4.905859,nominal; per-band calibration pending
+N1,6,2378.0,55.0,-45.00,-49.85,4.905859,nominal; per-band calibration pending
+N1,6,2378.0,65.0,-35.00,-39.85,4.905859,nominal; per-band calibration pending
+N1,6,2378.0,75.0,-25.00,-29.85,4.905859,nominal; per-band calibration pending
+N1,6,2378.0,85.0,-15.00,-19.85,4.905859,nominal; per-band calibration pending
+N1,6,2378.0,95.0,-5.00,-9.85,4.905859,nominal; per-band calibration pending
+N1,7,4000.0,45.0,-55.00,-59.85,14.320828,nominal; per-band calibration pending
+N1,7,4000.0,55.0,-45.00,-49.85,13.278781,nominal; per-band calibration pending
+N1,7,4000.0,65.0,-35.00,-39.85,12.236734,nominal; per-band calibration pending
+N1,7,4000.0,75.0,-25.00,-29.85,11.194687,nominal; per-band calibration pending
+N1,7,4000.0,85.0,-15.00,-19.85,10.152641,nominal; per-band calibration pending
+N1,7,4000.0,95.0,-5.00,-9.85,5.000000,nominal; per-band calibration pending
+N1,8,6727.0,45.0,-55.00,-59.85,18.782510,nominal; per-band calibration pending
+N1,8,6727.0,55.0,-45.00,-49.85,12.777681,nominal; per-band calibration pending
+N1,8,6727.0,65.0,-35.00,-39.85,6.772852,nominal; per-band calibration pending
+N1,8,6727.0,75.0,-25.00,-29.85,0.768024,nominal; per-band calibration pending
+N1,8,6727.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
+N1,8,6727.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending

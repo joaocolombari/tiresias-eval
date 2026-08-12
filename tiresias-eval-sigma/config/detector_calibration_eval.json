@@ -1,0 +1,37 @@
+{
+  "calibration_id": "ADAU1787_EVAL_Tiresias_2026",
+  "scope": "Shared detector calibration for the current ADAU1787 EVAL SigmaStudio topology; reusable by N1-N10.",
+  "status": "campaign_pending",
+  "sigma_export_xml": "../tiresias-eval-export/tiresias-eval.xml",
+  "output_directory": "../scripts/generated/detector-identification",
+  "compressor_cells": [
+    "compbank.Compressor-B1",
+    "compbank.Compressor-B2",
+    "compbank.Compressor-B3",
+    "compbank.Compressor-B4",
+    "compbank.Compressor-B5",
+    "compbank.Compressor-B6",
+    "compbank.Compressor-B7",
+    "compbank.Compressor-B8"
+  ],
+  "bias_cells": [
+    "phasecomp.Gain1",
+    "phasecomp.Gain1_2",
+    "phasecomp.Gain1_3"
+  ],
+  "sample_rate_hz": 48000.0,
+  "equivalent_0_dbfs_db_spl": 100.0,
+  "rew_dac_offset_from_equivalent_spl_db": -104.85,
+  "validation_levels_db_spl": [45.0, 65.0, 85.0, 95.0],
+  "band_test_frequencies_hz": [177.0, 297.0, 500.0, 841.0, 1414.0, 2378.0, 4000.0, 6727.0],
+  "settling_time_seconds": 2.0,
+  "measurement_method": "stationary sine; record only the spectral component at the test frequency",
+  "legacy_b1_low_level_detector_calibration": {
+    "status": "measured at 50 Hz; retained only to reproduce the validated N1 script until the common campaign is completed",
+    "detector_dbfs": [-40.04, -38.20, -32.68],
+    "equivalent_input_level_db_spl": [45.0, 55.0, 65.0],
+    "below_lowest_detector_policy": "hold gain at 45 dB SPL",
+    "above_highest_detector_policy": "use nominal detector + 100 dB SPL mapping"
+  },
+  "measured_band_calibration": {}
+}

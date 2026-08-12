@@ -1,0 +1,72 @@
+// #LANGUAGE# C#
+// Restores B1 after b1_detector_spectral_calibration.sss.
+
+string icName = "IC 1";
+string stage = "initialization";
+int tableAddress = 0x212C;
+int tableWords = 34;
+byte[] unityWord = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[][] calibrationWords = new byte[tableWords][];
+
+for (int i = 0; i < tableWords; i++)
+{
+    double detectorDbfs = (i == 0) ? -90.0 : -90.0 + 3.0 * (i - 1);
+    double gainDb = -0.25 * detectorDbfs - 10.0;
+    double gainLinear = System.Math.Pow(10.0, gainDb / 20.0);
+    long fixed523 = (long)System.Math.Round(gainLinear * 8388608.0);
+    calibrationWords[i] = new byte[] {
+        (byte)((fixed523 >> 24) & 0xFF),
+        (byte)((fixed523 >> 16) & 0xFF),
+        (byte)((fixed523 >> 8) & 0xFF),
+        (byte)(fixed523 & 0xFF)
+    };
+}
+
+try
+{
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddress + 4 * wordIndex;
+        byte[] actual = new byte[4];
+        stage = "inspect word " + wordIndex.ToString();
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        bool isUnity = true;
+        bool isCalibration = true;
+        for (int k = 0; k < 4; k++)
+        {
+            if (actual[k] != unityWord[k]) isUnity = false;
+            if (actual[k] != calibrationWords[wordIndex][k]) isCalibration = false;
+        }
+        if (!isUnity && !isCalibration)
+            throw new System.OperationCanceledException(
+                System.String.Format("Unknown B1 value at 0x{0:X4}", address));
+    }
+
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddress + 4 * wordIndex;
+        stage = "restore word " + wordIndex.ToString();
+        ss.ICRegisterWrite(icName, address, 4, unityWord);
+        byte[] actual = new byte[4];
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != unityWord[k])
+                throw new System.Exception(
+                    System.String.Format("Unity readback mismatch at 0x{0:X4}", address + k));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: B1 spectral calibration removed and unity verified.");
+}
+catch (System.OperationCanceledException ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ABORT during: " + stage + "\n\n" + ex.Message +
+        "\n\nRun Link Compile Download to guarantee restoration.");
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR during: " + stage + "\n\n" + ex.ToString() +
+        "\n\nRun Link Compile Download before continuing.");
+}

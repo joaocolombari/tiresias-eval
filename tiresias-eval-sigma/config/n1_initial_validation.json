@@ -1,0 +1,37 @@
+{
+  "profile": "N1",
+  "ear": "left",
+  "prescription_json": "../../experiments/prescriptions/generated/prescriptions/N1.json",
+  "sigma_export_xml": "../tiresias-eval-export/tiresias-eval.xml",
+  "output_directory": "../scripts/generated/N1",
+  "compressor_cells": [
+    "compbank.Compressor-B1",
+    "compbank.Compressor-B2",
+    "compbank.Compressor-B3",
+    "compbank.Compressor-B4",
+    "compbank.Compressor-B5",
+    "compbank.Compressor-B6",
+    "compbank.Compressor-B7",
+    "compbank.Compressor-B8"
+  ],
+  "bias_cells": [
+    "phasecomp.Gain1",
+    "phasecomp.Gain1_2",
+    "phasecomp.Gain1_3"
+  ],
+  "detector_table": {
+    "minimum_dbfs": -90,
+    "maximum_dbfs": 6,
+    "step_db": 3,
+    "duplicate_minimum_for_underflow": true
+  },
+  "cec1_equivalent_0_dbfs_db_spl": 100.0,
+  "maximum_lut_gain_db": 21.0,
+  "temporary_guard_gain_db": -24.0,
+  "b1_detector_minus_electrical_input_db": 4.85,
+  "detector_calibration_file": "detector_calibration_eval.json",
+  "global_output_headroom_db": 0.0,
+  "global_output_headroom_status": "not implemented in the current SigmaStudio project",
+  "sample_rate_hz": 48000.0,
+  "calibration_scope": "The shared EVAL detector calibration is stored separately in detector_calibration_eval.json and is reusable by N1-N10. The current N1 script retains the validated legacy B1/50 Hz fit until the common B1-B8 campaign is completed."
+}

@@ -1,0 +1,72 @@
+// #LANGUAGE# C#
+// Calibracao espectral do detector B1 nos niveis baixos.
+// LUT: gain_dB = -0.25 * detector_dBFS - 10.
+// Inversa: detector_dBFS = -4 * (measured_gain_dB + 10).
+
+string icName = "IC 1";
+string stage = "initialization";
+int tableAddress = 0x212C;
+int tableWords = 34;
+byte[] unityWord = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[][] calibrationWords = new byte[tableWords][];
+
+for (int i = 0; i < tableWords; i++)
+{
+    double detectorDbfs = (i == 0) ? -90.0 : -90.0 + 3.0 * (i - 1);
+    double gainDb = -0.25 * detectorDbfs - 10.0;
+    double gainLinear = System.Math.Pow(10.0, gainDb / 20.0);
+    long fixed523 = (long)System.Math.Round(gainLinear * 8388608.0);
+    if (fixed523 < 0 || fixed523 > 0x07FFFFFF)
+        throw new System.Exception("5.23 coefficient out of range at index " + i.ToString());
+    calibrationWords[i] = new byte[] {
+        (byte)((fixed523 >> 24) & 0xFF),
+        (byte)((fixed523 >> 16) & 0xFF),
+        (byte)((fixed523 >> 8) & 0xFF),
+        (byte)(fixed523 & 0xFF)
+    };
+}
+
+try
+{
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddress + 4 * wordIndex;
+        byte[] actual = new byte[4];
+        stage = "pre-flight word " + wordIndex.ToString();
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != unityWord[k])
+                throw new System.OperationCanceledException(
+                    System.String.Format("B1 is not unity at 0x{0:X4}", address + k));
+    }
+
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddress + 4 * wordIndex;
+        stage = "write word " + wordIndex.ToString();
+        ss.ICRegisterWrite(icName, address, 4, calibrationWords[wordIndex]);
+        byte[] actual = new byte[4];
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != calibrationWords[wordIndex][k])
+                throw new System.Exception(
+                    System.String.Format("Readback mismatch at 0x{0:X4}", address + k));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: B1 spectral detector calibration loaded.\n\n" +
+        "Equation: gain = -0.25 * detector - 10 dB.\n" +
+        "Measure only the 50 Hz spectral component, then restore unity.");
+}
+catch (System.OperationCanceledException ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ABORT during: " + stage + "\n\n" + ex.Message +
+        "\n\nRun Link Compile Download before repeating.");
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR during: " + stage + "\n\n" + ex.ToString() +
+        "\n\nRun b1_detector_restore_unity.sss or Link Compile Download.");
+}

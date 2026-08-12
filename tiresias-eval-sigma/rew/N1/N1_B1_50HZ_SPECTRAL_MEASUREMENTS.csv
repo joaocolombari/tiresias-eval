@@ -1,0 +1,4 @@
+test_id,frequency_hz,equivalent_level_db_spl,rew_dac_output_dbv,unity_50hz_dbv,n1_50hz_dbv,measured_gain_db,expected_gain_db,gain_error_db,restored_50hz_dbv,restoration_error_db,result_status,notes
+N1_B1_50HZ_45,50,45,-59.85,-60.19,-60.14,0.050000,1.988463,-1.938463,-60.17,0.020000,FAIL_DETECTOR_MAPPING,"Prescription loaded but low-level detector mapping does not select the expected CAMFIT gain."
+N1_B1_50HZ_55,50,55,-49.85,-50.18,-50.17,0.010000,0.570642,-0.560642,-50.18,0.000000,FAIL_DETECTOR_MAPPING,"Prescription loaded but low-level detector mapping does not select the expected CAMFIT gain."
+N1_B1_50HZ_65,50,65,-39.85,-40.17,-40.17,0.000000,0.000000,0.000000,-40.18,-0.010000,PASS,"Expected unity region and restoration confirmed."

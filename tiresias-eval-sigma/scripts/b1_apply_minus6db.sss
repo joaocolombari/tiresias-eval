@@ -1,0 +1,108 @@
+// #LANGUAGE# C#
+// Smoke test reversível: aplica ganho constante de -6 dB à LUT inteira de B1.
+// Alvo: compbank.Compressor-B1, endereços externos 0x212C..0x21B3.
+
+// A API de registradores usa o nome do componente fisico no Hardware Configuration.
+// "IC 1-Sigma" identifica o nucleo/compilador exportado, nao o IC conectado ao USBi.
+string icName = "IC 1";
+string stage = "inicializacao";
+int tableAddress = 0x212C;
+int tableWords = 34;
+int tableBytes = tableWords * 4;
+
+// 10^(-6/20) em 5.23, arredondado: 0x004026E7.
+byte[] word = new byte[] { 0x00, 0x40, 0x26, 0xE7 };
+byte[] expected = new byte[tableBytes];
+byte[] unityWord = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[] unity = new byte[tableBytes];
+
+for (int i = 0; i < tableWords; i++)
+{
+    expected[4 * i + 0] = word[0];
+    expected[4 * i + 1] = word[1];
+    expected[4 * i + 2] = word[2];
+    expected[4 * i + 3] = word[3];
+
+    unity[4 * i + 0] = unityWord[0];
+    unity[4 * i + 1] = unityWord[1];
+    unity[4 * i + 2] = unityWord[2];
+    unity[4 * i + 3] = unityWord[3];
+}
+
+try
+{
+    // Trava contra mapa desatualizado: B1 deve estar linear antes do teste.
+    stage = "leitura de pre-flight em IC 1";
+    byte[] before = new byte[tableBytes];
+    ss.ICRegisterRead(icName, tableAddress, tableBytes, ref before);
+
+    int preflightMismatch = -1;
+    for (int i = 0; i < tableBytes; i++)
+    {
+        if (before[i] != unity[i])
+        {
+            preflightMismatch = i;
+            break;
+        }
+    }
+
+    if (preflightMismatch >= 0)
+    {
+        System.Windows.Forms.MessageBox.Show(
+            System.String.Format(
+                "ABORT: a LUT em 0x212C nao esta inteiramente em ganho unitario.\n" +
+                "Primeira diferenca no endereco 0x{0:X4}: esperado 0x{1:X2}; lido 0x{2:X2}.\n\n" +
+                "Execute Link Compile Download e confirme que o projeto/export nao mudou. Nenhum byte foi escrito.",
+                tableAddress + preflightMismatch,
+                unity[preflightMismatch],
+                before[preflightMismatch]));
+        throw new System.OperationCanceledException("Pre-flight reprovado; escrita cancelada.");
+    }
+
+    stage = "escrita da LUT de B1 em IC 1";
+    ss.ICRegisterWrite(icName, tableAddress, tableBytes, expected);
+
+    stage = "leitura de verificacao em IC 1";
+    byte[] actual = new byte[tableBytes];
+    ss.ICRegisterRead(icName, tableAddress, tableBytes, ref actual);
+
+    int firstMismatch = -1;
+    for (int i = 0; i < tableBytes; i++)
+    {
+        if (actual[i] != expected[i])
+        {
+            firstMismatch = i;
+            break;
+        }
+    }
+
+    if (firstMismatch < 0)
+    {
+        System.Windows.Forms.MessageBox.Show(
+            "PASS: B1 recebeu -6 dB e os 136 bytes foram lidos de volta corretamente.\n\n" +
+            "Faixa escrita: 0x212C..0x21B3\n" +
+            "Coeficiente: 0x004026E7");
+    }
+    else
+    {
+        System.Windows.Forms.MessageBox.Show(
+            System.String.Format(
+                "FAIL: leitura diferente no byte {0} (endereço 0x{1:X4}).\n" +
+                "Esperado: 0x{2:X2}; lido: 0x{3:X2}.\n\n" +
+                "Execute Link Compile Download para restaurar o projeto e interrompa o ensaio.",
+                firstMismatch,
+                tableAddress + firstMismatch,
+                expected[firstMismatch],
+                actual[firstMismatch]));
+    }
+}
+catch (System.OperationCanceledException)
+{
+    // A mensagem de diagnostico ja foi apresentada; nao escrever nem continuar.
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR durante: " + stage + "\n\n" + ex.ToString() +
+        "\n\nConfirme a conexao USBi e execute Link Compile Download antes de repetir.");
+}

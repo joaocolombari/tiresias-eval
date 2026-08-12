@@ -1,0 +1,105 @@
+// #LANGUAGE# C#
+// Detector identification for B5. Run only after Link Compile Download.
+// LUT equation: gain_dB = -0.25 * detector_dBFS - 10.
+
+string icName = "IC 1";
+string stage = "initialization";
+int targetBand = 4;
+int tableWords = 34;
+int[] tableAddresses = new int[] { 0x212C, 0x2220, 0x2314, 0x241C, 0x2510, 0x2618, 0x26B8, 0x276C };
+int[] biasAddresses = new int[] { 0x2850, 0x2854, 0x2858 };
+byte[] unityWord = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[][] calibrationWords = new byte[][] {
+    new byte[] { 0x02, 0x1B, 0xC5, 0x83 },
+    new byte[] { 0x02, 0x1B, 0xC5, 0x83 },
+    new byte[] { 0x01, 0xEF, 0x1E, 0x93 },
+    new byte[] { 0x01, 0xC6, 0x29, 0x40 },
+    new byte[] { 0x01, 0xA0, 0x97, 0x51 },
+    new byte[] { 0x01, 0x7E, 0x21, 0x05 },
+    new byte[] { 0x01, 0x5E, 0x84, 0x89 },
+    new byte[] { 0x01, 0x41, 0x85, 0x7F },
+    new byte[] { 0x01, 0x26, 0xEC, 0x85 },
+    new byte[] { 0x01, 0x0E, 0x86, 0xCF },
+    new byte[] { 0x00, 0xF8, 0x25, 0xC5 },
+    new byte[] { 0x00, 0xE3, 0x9E, 0xA9 },
+    new byte[] { 0x00, 0xD0, 0xCA, 0x46 },
+    new byte[] { 0x00, 0xBF, 0x84, 0xA6 },
+    new byte[] { 0x00, 0xAF, 0xAC, 0xCD },
+    new byte[] { 0x00, 0xA1, 0x24, 0x78 },
+    new byte[] { 0x00, 0x93, 0xCF, 0xE5 },
+    new byte[] { 0x00, 0x87, 0x95, 0xA0 },
+    new byte[] { 0x00, 0x7C, 0x5E, 0x4E },
+    new byte[] { 0x00, 0x72, 0x14, 0x83 },
+    new byte[] { 0x00, 0x68, 0xA4, 0x98 },
+    new byte[] { 0x00, 0x5F, 0xFC, 0x89 },
+    new byte[] { 0x00, 0x58, 0x0B, 0xCB },
+    new byte[] { 0x00, 0x50, 0xC3, 0x36 },
+    new byte[] { 0x00, 0x4A, 0x14, 0xDF },
+    new byte[] { 0x00, 0x43, 0xF4, 0x05 },
+    new byte[] { 0x00, 0x3E, 0x54, 0xF4 },
+    new byte[] { 0x00, 0x39, 0x2C, 0xEE },
+    new byte[] { 0x00, 0x34, 0x72, 0x1A },
+    new byte[] { 0x00, 0x30, 0x1B, 0x71 },
+    new byte[] { 0x00, 0x2C, 0x20, 0xA8 },
+    new byte[] { 0x00, 0x28, 0x7A, 0x27 },
+    new byte[] { 0x00, 0x25, 0x20, 0xF4 },
+    new byte[] { 0x00, 0x22, 0x0E, 0xAA }
+};
+
+try
+{
+    for (int bandIndex = 0; bandIndex < tableAddresses.Length; bandIndex++)
+    {
+        for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+        {
+            int address = tableAddresses[bandIndex] + 4 * wordIndex;
+            byte[] actual = new byte[4];
+            stage = System.String.Format("pre-flight B{0} word {1}", bandIndex + 1, wordIndex);
+            ss.ICRegisterRead(icName, address, 4, ref actual);
+            for (int k = 0; k < 4; k++)
+                if (actual[k] != unityWord[k])
+                    throw new System.OperationCanceledException(
+                        System.String.Format("B{0} is not unity at 0x{1:X4}", bandIndex + 1, address + k));
+        }
+    }
+    for (int gainIndex = 0; gainIndex < biasAddresses.Length; gainIndex++)
+    {
+        byte[] actual = new byte[4];
+        stage = System.String.Format("pre-flight bias {0}", gainIndex + 1);
+        ss.ICRegisterRead(icName, biasAddresses[gainIndex], 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != unityWord[k])
+                throw new System.OperationCanceledException(
+                    System.String.Format("Bias {0} is not unity at 0x{1:X4}", gainIndex + 1, biasAddresses[gainIndex] + k));
+    }
+
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddresses[targetBand] + 4 * wordIndex;
+        stage = System.String.Format("write B5 word {0}", wordIndex);
+        ss.ICRegisterWrite(icName, address, 4, calibrationWords[wordIndex]);
+        byte[] actual = new byte[4];
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != calibrationWords[wordIndex][k])
+                throw new System.Exception(
+                    System.String.Format("Readback mismatch at 0x{0:X4}", address + k));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: detector-identification LUT loaded in B5.\n\n" +
+        "Keep B1-B8 biases at unity. Measure the stationary spectral component, " +
+        "then run detector_identification_restore_all_unity.sss or Link Compile Download.");
+}
+catch (System.OperationCanceledException ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ABORT during: " + stage + "\n\n" + ex.Message +
+        "\n\nRun Link Compile Download before repeating. No parameter was intentionally changed after the failed pre-flight.");
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR during: " + stage + "\n\n" + ex.ToString() +
+        "\n\nRun detector_identification_restore_all_unity.sss or Link Compile Download.");
+}

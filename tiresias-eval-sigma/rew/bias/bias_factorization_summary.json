@@ -1,0 +1,51 @@
+{
+  "test_id": "sigma_bias_factorization_12db",
+  "measurement_date": "2026-08-12T18:10:30-03:00",
+  "frequency_range_hz": [20.0, 20000.0],
+  "frequency_bins": 54559,
+  "configuration": {
+    "compressor_luts_b1_b8_db": -12.0,
+    "bias_stage_count": 3,
+    "bias_per_stage_db": 4.0,
+    "b9_bias_db": 0.0,
+    "theoretical_net_gain_b1_b8_db": 0.0
+  },
+  "rew": {
+    "version": "5.31.3",
+    "format": "512k Log Swept Sine",
+    "sweeps": 1,
+    "stimulus_dbfs": -17.4,
+    "timing_reference": false,
+    "smoothing": "None"
+  },
+  "comparisons": {
+    "compensated_minus_before": {
+      "magnitude_mean_db": 0.000334372,
+      "magnitude_rms_db": 0.008428749,
+      "magnitude_abs_p95_db": 0.017,
+      "magnitude_abs_max_db": 0.070,
+      "fitted_delay_us": -0.055207964,
+      "phase_residual_std_deg": 0.055442697,
+      "phase_residual_abs_p95_deg": 0.112915500,
+      "phase_residual_abs_max_deg": 0.421886378
+    },
+    "after_minus_before": {
+      "magnitude_mean_db": 0.000817482,
+      "magnitude_rms_db": 0.008256364,
+      "magnitude_abs_p95_db": 0.017,
+      "magnitude_abs_max_db": 0.062,
+      "fitted_delay_us": -0.013445290,
+      "phase_residual_std_deg": 0.053985070,
+      "phase_residual_abs_p95_deg": 0.110686913,
+      "phase_residual_abs_max_deg": 0.463523123
+    },
+    "compensated_minus_after": {
+      "magnitude_mean_db": -0.000483110,
+      "magnitude_rms_db": 0.008546414,
+      "magnitude_abs_p95_db": 0.018,
+      "magnitude_abs_max_db": 0.052
+    }
+  },
+  "decision": "PASS",
+  "interpretation": "The compensated response is indistinguishable from unity within measurement repeatability."
+}

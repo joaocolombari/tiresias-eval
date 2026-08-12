@@ -1,0 +1,145 @@
+// #LANGUAGE# C#
+// Teste reversivel da fatoracao de ganho:
+//   LUTs B1..B8 = -12 dB;
+//   phasecomp.Gain1, Gain1_2 e Gain1_3 = +4 dB cada.
+// Resultado teorico: ganho total 0 dB em B1..B8; B9 permanece em 0 dB.
+
+string icName = "IC 1";
+string stage = "inicializacao";
+int tableWords = 34;
+
+// Enderecos externos das LUTs, obtidos do export de 12/08/2026.
+int[] tableAddresses = new int[] {
+    0x212C, // B1
+    0x2220, // B2
+    0x2314, // B3
+    0x241C, // B4
+    0x2510, // B5
+    0x2618, // B6
+    0x26B8, // B7
+    0x276C  // B8
+};
+
+// phasecomp.Gain1, phasecomp.Gain1_2 e phasecomp.Gain1_3.
+int[] biasAddresses = new int[] { 0x2850, 0x2854, 0x2858 };
+
+// 5.23, big-endian.
+byte[] unityWord = new byte[] { 0x00, 0x80, 0x00, 0x00 }; // 1.0 = 0 dB
+byte[] attenWord = new byte[] { 0x00, 0x20, 0x26, 0xF3 }; // -12 dB
+byte[] biasWord  = new byte[] { 0x00, 0xCA, 0xDD, 0xC8 }; // +4 dB
+
+try
+{
+    // Pre-flight: o teste so parte do projeto completamente em unity.
+    for (int band = 0; band < tableAddresses.Length; band++)
+    {
+        for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+        {
+            int address = tableAddresses[band] + 4 * wordIndex;
+            byte[] actual = new byte[4];
+            stage = System.String.Format("pre-flight B{0}, palavra {1}", band + 1, wordIndex);
+            ss.ICRegisterRead(icName, address, 4, ref actual);
+
+            for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+            {
+                if (actual[byteIndex] != unityWord[byteIndex])
+                {
+                    System.Windows.Forms.MessageBox.Show(
+                        System.String.Format(
+                            "ABORT: B{0} nao esta em unity.\nEndereco 0x{1:X4}: esperado 0x{2:X2}; lido 0x{3:X2}.\n\n" +
+                            "Execute Link Compile Download. Nenhum ganho de bias foi aplicado.",
+                            band + 1, address + byteIndex,
+                            unityWord[byteIndex], actual[byteIndex]));
+                    throw new System.OperationCanceledException("Pre-flight das LUTs reprovado.");
+                }
+            }
+        }
+    }
+
+    for (int gainIndex = 0; gainIndex < biasAddresses.Length; gainIndex++)
+    {
+        byte[] actual = new byte[4];
+        stage = System.String.Format("pre-flight Bias {0}", gainIndex + 1);
+        ss.ICRegisterRead(icName, biasAddresses[gainIndex], 4, ref actual);
+
+        for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+        {
+            if (actual[byteIndex] != unityWord[byteIndex])
+            {
+                System.Windows.Forms.MessageBox.Show(
+                    System.String.Format(
+                        "ABORT: Bias {0} nao esta em 0 dB.\nEndereco 0x{1:X4}: esperado 0x{2:X2}; lido 0x{3:X2}.\n\n" +
+                        "Execute Link Compile Download. Nenhum dado foi escrito.",
+                        gainIndex + 1, biasAddresses[gainIndex] + byteIndex,
+                        unityWord[byteIndex], actual[byteIndex]));
+                throw new System.OperationCanceledException("Pre-flight dos biases reprovado.");
+            }
+        }
+    }
+
+    // Ordem segura: primeiro atenua todas as LUTs; depois aplica os biases.
+    for (int band = 0; band < tableAddresses.Length; band++)
+    {
+        for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+        {
+            int address = tableAddresses[band] + 4 * wordIndex;
+            stage = System.String.Format("escrita B{0}, palavra {1}", band + 1, wordIndex);
+            ss.ICRegisterWrite(icName, address, 4, attenWord);
+
+            byte[] actual = new byte[4];
+            stage = System.String.Format("verificacao B{0}, palavra {1}", band + 1, wordIndex);
+            ss.ICRegisterRead(icName, address, 4, ref actual);
+            for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+            {
+                if (actual[byteIndex] != attenWord[byteIndex])
+                {
+                    throw new System.Exception(
+                        System.String.Format(
+                            "Readback diferente em B{0}, endereco 0x{1:X4}: esperado 0x{2:X2}; lido 0x{3:X2}.",
+                            band + 1, address + byteIndex,
+                            attenWord[byteIndex], actual[byteIndex]));
+                }
+            }
+        }
+    }
+
+    for (int gainIndex = 0; gainIndex < biasAddresses.Length; gainIndex++)
+    {
+        int address = biasAddresses[gainIndex];
+        stage = System.String.Format("escrita Bias {0}", gainIndex + 1);
+        ss.ICRegisterWrite(icName, address, 4, biasWord);
+
+        byte[] actual = new byte[4];
+        stage = System.String.Format("verificacao Bias {0}", gainIndex + 1);
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int byteIndex = 0; byteIndex < 4; byteIndex++)
+        {
+            if (actual[byteIndex] != biasWord[byteIndex])
+            {
+                throw new System.Exception(
+                    System.String.Format(
+                        "Readback diferente no Bias {0}, endereco 0x{1:X4}: esperado 0x{2:X2}; lido 0x{3:X2}.",
+                        gainIndex + 1, address + byteIndex,
+                        biasWord[byteIndex], actual[byteIndex]));
+            }
+        }
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: fatoracao aplicada e verificada.\n\n" +
+        "B1..B8: -12 dB nas LUTs\n" +
+        "Bias A/B/C: +4 dB por estagio\n" +
+        "Ganho liquido teorico B1..B8: 0 dB\n" +
+        "B9: inalterada\n\n" +
+        "Faca agora a segunda medicao no REW.");
+}
+catch (System.OperationCanceledException)
+{
+    // A mensagem de diagnostico ja foi apresentada.
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR durante: " + stage + "\n\n" + ex.ToString() +
+        "\n\nExecute bias_factorization_restore_unity.sss ou Link Compile Download antes de repetir.");
+}

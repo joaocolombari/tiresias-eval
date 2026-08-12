@@ -1,0 +1,37 @@
+{
+  "test": "ADAU1787 SigmaDSP B1 RMS detector electrical calibration",
+  "stimulus": {
+    "type": "sine",
+    "frequency_hz": 50,
+    "level_unit": "dBV RMS"
+  },
+  "measurement_interface": {
+    "input_full_scale_v_rms": 1.0,
+    "rew_display_unit": "dBV",
+    "gain_fixed_between_unity_and_calibration_runs": true
+  },
+  "calibration_lut": {
+    "equation": "gain_db = -0.5 * detector_dbfs - 27",
+    "table_address": "0x212C",
+    "table_words": 34,
+    "transfer_mode": "34 independent aligned 4-byte writes with immediate readback"
+  },
+  "unity_path_fit": {
+    "included_input_range_dbv": [-46.2, -10.2],
+    "slope_db_per_db": 0.9990994,
+    "intercept_db": -0.4363,
+    "maximum_fit_residual_db": 0.0163
+  },
+  "detector_offset_estimate": {
+    "definition": "detector_dbfs - electrical_input_dbv",
+    "included_input_levels_dbv": [-16.2, -10.2],
+    "mean_db": 4.85,
+    "sample_standard_deviation_db": 0.098995,
+    "status": "accepted_for_initial_lut_generation",
+    "limitation": "Lower-level rows are retained as evidence but excluded because output-capture noise biases the inferred detector level upward."
+  },
+  "conversion_for_initial_tests": {
+    "detector_dbfs_from_input_dbv": "input_dbv + 4.85",
+    "input_dbv_from_detector_dbfs": "detector_dbfs - 4.85"
+  }
+}
