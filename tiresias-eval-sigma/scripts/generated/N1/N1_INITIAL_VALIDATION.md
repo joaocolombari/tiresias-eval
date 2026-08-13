@@ -1,91 +1,86 @@
-# N1: validacao eletrica inicial no EVAL-ADAU1787
+# N1: validação elétrica no ADAU1787 EVAL
 
-## Escopo
+## Escopo atual
 
-Este ensaio valida a escrita da primeira prescricao CAMFIT completa nas oito
-LUTs e nos tres estagios de bias. Ele ainda nao e a comparacao CEC1 completa:
+Este ensaio valida a prescrição CAMFIT N1 nas oito LUTs ativas e nos três
+estágios comuns de bias. Os scripts já usam a calibração compartilhada dos
+detectores B1–B8 medida com seno estacionário.
 
-- o ganho global de saida de -20 dB ainda nao existe no projeto Sigma;
-- o offset eletrico do detector foi medido apenas para B1, com seno de 50 Hz;
-- os offsets B2 a B8 para ruido limitado em banda ainda estao pendentes;
-- a equivalencia temporal com o detector openMHA sera ensaiada separadamente.
+A entrada da **Focusrite Scarlett 18i8** foi ajustada e calibrada para
+**1 Vrms = 0 dBFS (full scale)**. O REW apresenta a entrada em dBV. Não mude o
+ganho da Scarlett durante a campanha; uma mudança invalida o mapa elétrico.
 
-Para a curva de ganho em regime permanente, o projeto permanece com
-`RMS TC = 20 ms`, `Hold = 0 ms` e `Decay = 100 ms`.
+O projeto permanece com `RMS TC = 20 ms`, `Hold = 0 ms` e
+`Decay = 100 ms`. O ganho global CEC1 de −20 dB ainda não está implementado no
+projeto SigmaStudio e não deve ser confundido com o ganho WDRC por banda.
 
-## Mapeamento eletrico nominal
+## Arquivos autoritativos
 
-A calibracao medida foi:
-
-```text
-detector_B1_dBFS = entrada_eletrica_dBV + 4,85 dB
-nivel_CEC1_dB_SPL = detector_B1_dBFS + 100 dB
-```
-
-Portanto, os niveis eletricos de ensaio continuam sendo:
-
-```text
-entrada_eletrica_dBV = nivel_CEC1_dB_SPL - 104,85 dB
-```
-
-O primeiro ensaio mostrou que essa equacao nao descreve a abscissa interna do
-detector nos niveis baixos. A calibracao espectral posterior mediu:
-
-| Entrada no EVAL | Detector B1 inferido |
-|---:|---:|
-| -59,85 dBV | -40,04 dBFS |
-| -49,85 dBV | -38,20 dBFS |
-| -39,85 dBV | -32,68 dBFS |
-
-O `N1_apply_prescription.sss` atual foi regenerado para atingir os tres ganhos
-CAMFIT nesses niveis reais do detector. Este ajuste e uma validacao inicial de
-tres pontos, nao uma caracterizacao completa abaixo de 45 dB SPL.
-
-## Pontos iniciais em 50 Hz
-
-| Nivel CEC1 equivalente | Entrada no EVAL | Ganho N1/B1 esperado |
-|---:|---:|---:|
-| 45 dB SPL | -59,85 dBV | +1,988463 dB |
-| 55 dB SPL | -49,85 dBV | +0,570642 dB |
-| 65 dB SPL | -39,85 dBV | 0,000000 dB |
-| 75 dB SPL | -29,85 dBV | 0,000000 dB |
-| 85 dB SPL | -19,85 dBV | 0,000000 dB |
-
-Use diretamente o nivel indicado no DAC calibrado do REW. Este ensaio e uma
-comparacao relativa entre unity, N1 e restauracao; nao e necessario medir de
-novo a entrada do EVAL. Aguarde pelo menos 1 s em cada nivel antes de registrar
-a saida.
+- `N1_apply_prescription.sss`: carrega as oito LUTs e os três biases;
+- `N1_restore_unity.sss`: restauração segura;
+- `N1_validation_targets.csv`: detector medido, entrada elétrica e ganho CAMFIT
+  para cada banda e nível;
+- `N1_manifest.json`: curvas completas, endereços, palavras 5.23, condições de
+  medição e hashes;
+- `../../PRESCRIPTION_GENERATION_SUMMARY.csv`: resumo das dez prescrições.
 
 ## Procedimento
 
-Registre os resultados em
-[`../../../rew/N1/N1_B1_50HZ_CORRECTED_VALIDATION.csv`](../../../rew/N1/N1_B1_50HZ_CORRECTED_VALIDATION.csv).
-As colunas calculadas podem permanecer vazias.
+1. Desconecte fones e reduza a monitoração.
+2. Execute **Link Compile Download** e confirme a resposta unity.
+3. Selecione a frequência e o nível elétrico indicados em
+   `N1_validation_targets.csv`.
+4. Registre a componente espectral unity.
+5. Execute `N1_apply_prescription.sss` e prossiga somente após `PASS`.
+6. Repita exatamente os mesmos pontos sem alterar ganhos ou roteamento.
+7. Execute `N1_restore_unity.sss`, exija `PASS` e confirme a restauração em pelo
+   menos um nível baixo e um alto.
 
-1. Desconecte fones e reduza a monitoracao.
-2. Execute **Link Compile Download**.
-3. Com seno de 50 Hz, mande o DAC gerar os niveis da tabela e meca a saida
-   unity logo depois de **Link Compile Download**.
-4. Execute `N1_apply_prescription.sss` e prossiga apenas se aparecer `PASS`.
-5. Repita exatamente os mesmos niveis, sem mudar os ganhos da interface.
-6. Calcule `ganho_N1 = saida_N1_dBV - saida_unity_dBV` para cada ponto.
-7. Execute `N1_restore_unity.sss` e exija `PASS`.
-8. Repita pelo menos os pontos de 45 e 65 dB SPL para confirmar a restauracao.
+## Primeiro ponto de fumaça
 
-## Aceitacao inicial
+Antes da varredura completa, valide um único ponto em **4 kHz**:
 
-- erro absoluto do ganho B1 em cada ponto: no maximo 0,25 dB;
-- diferenca apos restauracao: no maximo 0,10 dB;
-- nenhum erro de readback;
-- nenhum clipping, instabilidade ou ruido inesperado.
+| Parâmetro | Valor |
+|---|---:|
+| Nível equivalente | 65 dB SPL |
+| Saída do DAC no REW | −39,85 dBV |
+| Detector previsto em B7 | −40,00 dBFS |
+| Ganho CAMFIT isolado de B7 | +12,2367 dB |
+| Ganho previsto na saída recombinada | **+10,7159 dB** |
 
-Se o ponto de -59,85 dBV estiver limitado pelo piso de ruido, preserve o
-resultado, aumente o numero de medias e nao altere o ganho da interface entre
-unity, N1 e restauracao.
+Meça a componente de 4 kHz imediatamente depois de **Link Compile Download**,
+carregue `N1_apply_prescription.sss` e meça novamente sem mudar nenhum controle.
+O resultado observado no REW é `nível N1 − nível unity` e deve ser comparado a
+**+10,7159 dB**. O valor de +12,2367 dB pertence apenas a B7 e não é diretamente
+observável na saída, pois o REW mede a soma complexa das nove bandas.
 
-## Arquivos
+Por fim, carregue `N1_restore_unity.sss` e repita a medida. Neste primeiro teste,
+considere **GO provisório** se o script e o readback passarem, o ganho ficar a
+até 0,50 dB da previsão recombinada e a restauração ficar a até 0,10 dB da
+referência unity.
 
-- `N1_apply_prescription.sss`: carrega e verifica as oito LUTs e os tres biases;
-- `N1_restore_unity.sss`: restauracao segura;
-- `N1_validation_targets.csv`: alvos para todas as bandas;
-- `N1_manifest.json`: mapeamento, enderecos, coeficientes e hashes das fontes.
+## Interpretação de B1
+
+Em 177 Hz, B1 apresentou detector inferido de aproximadamente −40,16, −35,14,
+−17,14 e −7,18 dBFS para 45, 65, 85 e 95 dB SPL equivalentes. Os dois primeiros
+pontos revelam um piso/contaminação de baixa frequência. A LUT conserva o ganho
+de 45 dB SPL abaixo do primeiro ponto, porque níveis menores não são
+distinguíveis pelo detector nessa condição.
+
+Isso permite validar a prescrição de forma conservadora, mas a origem do piso
+de B1 deve ser caracterizada separadamente com uma medida sem seno, observando
+50/60 Hz e harmônicos.
+
+## Aceitação
+
+- nenhum erro de escrita ou readback;
+- restauração dentro de 0,10 dB da referência unity;
+- ausência de clipping, instabilidade ou ruído inesperado;
+- resultados arquivados com perfil, banda, frequência, nível, arquivo do
+  projeto, commit e condição `Scarlett FS = 1 Vrms`;
+- comparação final feita contra a previsão do sistema recombinado, não apenas
+  contra o ganho isolado da banda-alvo nas regiões de crossover.
+
+Em `N1_validation_targets.csv`, use `predicted_recombined_gain_db` como alvo da
+medida no REW. As colunas `expected_camfit_gain_db` e
+`predicted_target_band_gain_db` descrevem somente a banda indicada na linha.

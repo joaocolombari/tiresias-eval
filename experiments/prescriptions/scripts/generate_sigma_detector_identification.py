@@ -465,6 +465,8 @@ def main() -> None:
     )
     readme = "# Calibração comum dos detectores B1–B8\n\n"
     readme += "Esta calibração pertence ao EVAL, ao banco de filtros e aos blocos RMS — não a uma prescrição. Execute-a uma vez e reutilize o resultado em N1–N10.\n\n"
+    readme += "## Condição da interface\n\n"
+    readme += "A entrada da Focusrite Scarlett 18i8 deve permanecer ajustada e calibrada para **1 Vrms = 0 dBFS (full scale)**, com o REW exibindo dBV. Mudar o ganho da Scarlett invalida esta calibração.\n\n"
     readme += "## Procedimento por banda\n\n"
     readme += "1. Execute **Link Compile Download**. Todas as LUTs e os três biases devem estar em unity.\n"
     readme += "2. Gere o seno estacionário na frequência indicada na planilha e meça a componente espectral unity nos quatro níveis.\n"

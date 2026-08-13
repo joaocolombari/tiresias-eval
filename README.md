@@ -33,6 +33,7 @@ para as comparações elétrica e eletroacústica.
 
 Comece por:
 
+- [roteiro da campanha elétrica das dez prescrições](tiresias-eval-sigma/rew/prescription-campaign-2026-08-14/README.md);
 - [metodologia, entradas, saídas e mapeamento para o SigmaStudio](experiments/prescriptions/README.md);
 - [tabela completa de prescrições](experiments/prescriptions/generated/gain_table_long.csv);
 - [alvos compactos para o SigmaStudio](experiments/prescriptions/generated/sigma_compact_targets.csv);

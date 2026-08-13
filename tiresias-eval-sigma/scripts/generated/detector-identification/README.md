@@ -2,6 +2,10 @@
 
 Esta calibração pertence ao EVAL, ao banco de filtros e aos blocos RMS — não a uma prescrição. Execute-a uma vez e reutilize o resultado em N1–N10.
 
+## Condição da interface
+
+A entrada da Focusrite Scarlett 18i8 deve permanecer ajustada e calibrada para **1 Vrms = 0 dBFS (full scale)**, com o REW exibindo dBV. Mudar o ganho da Scarlett invalida esta calibração.
+
 ## Procedimento por banda
 
 1. Execute **Link Compile Download**. Todas as LUTs e os três biases devem estar em unity.

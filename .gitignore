@@ -12,6 +12,16 @@
 /experiments/prescriptions/generated/outputs/
 /experiments/prescriptions/generated/openmha_smoke_*.log
 
+# Local document/render output unrelated to the evaluation repository.
+/output/
+
+# High-volume REW acquisitions. Keep protocols, manifests, processed results,
+# figures and reports in Git; archive raw .mdat/.txt files separately.
+/tiresias-eval-sigma/rew/N1/curves/*.mdat
+/tiresias-eval-sigma/rew/N1/curves/*.txt
+/tiresias-eval-sigma/rew/prescription-campaign-*/raw/**/*.mdat
+/tiresias-eval-sigma/rew/prescription-campaign-*/raw/**/*.txt
+
 # The organized copy is under docs/measurements/.
 /rew/
 

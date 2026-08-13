@@ -1,49 +1,49 @@
-profile,band,centre_hz,input_level_db_spl,nominal_detector_dbfs,nominal_electrical_input_dbv,expected_camfit_gain_db,electrical_mapping_status
-N1,1,177.0,45.0,-55.00,-59.85,1.988463,measured B1/50 Hz
-N1,1,177.0,55.0,-45.00,-49.85,0.570642,measured B1/50 Hz
-N1,1,177.0,65.0,-35.00,-39.85,0.000000,measured B1/50 Hz
-N1,1,177.0,75.0,-25.00,-29.85,0.000000,measured B1/50 Hz
-N1,1,177.0,85.0,-15.00,-19.85,0.000000,measured B1/50 Hz
-N1,1,177.0,95.0,-5.00,-9.85,0.000000,measured B1/50 Hz
-N1,2,297.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
-N1,2,297.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
-N1,2,297.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
-N1,2,297.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
-N1,2,297.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
-N1,2,297.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
-N1,3,500.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
-N1,3,500.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
-N1,3,500.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
-N1,3,500.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
-N1,3,500.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
-N1,3,500.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
-N1,4,841.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
-N1,4,841.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
-N1,4,841.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
-N1,4,841.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
-N1,4,841.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
-N1,4,841.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
-N1,5,1414.0,45.0,-55.00,-59.85,0.000000,nominal; per-band calibration pending
-N1,5,1414.0,55.0,-45.00,-49.85,0.000000,nominal; per-band calibration pending
-N1,5,1414.0,65.0,-35.00,-39.85,0.000000,nominal; per-band calibration pending
-N1,5,1414.0,75.0,-25.00,-29.85,0.000000,nominal; per-band calibration pending
-N1,5,1414.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
-N1,5,1414.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
-N1,6,2378.0,45.0,-55.00,-59.85,4.905859,nominal; per-band calibration pending
-N1,6,2378.0,55.0,-45.00,-49.85,4.905859,nominal; per-band calibration pending
-N1,6,2378.0,65.0,-35.00,-39.85,4.905859,nominal; per-band calibration pending
-N1,6,2378.0,75.0,-25.00,-29.85,4.905859,nominal; per-band calibration pending
-N1,6,2378.0,85.0,-15.00,-19.85,4.905859,nominal; per-band calibration pending
-N1,6,2378.0,95.0,-5.00,-9.85,4.905859,nominal; per-band calibration pending
-N1,7,4000.0,45.0,-55.00,-59.85,14.320828,nominal; per-band calibration pending
-N1,7,4000.0,55.0,-45.00,-49.85,13.278781,nominal; per-band calibration pending
-N1,7,4000.0,65.0,-35.00,-39.85,12.236734,nominal; per-band calibration pending
-N1,7,4000.0,75.0,-25.00,-29.85,11.194687,nominal; per-band calibration pending
-N1,7,4000.0,85.0,-15.00,-19.85,10.152641,nominal; per-band calibration pending
-N1,7,4000.0,95.0,-5.00,-9.85,5.000000,nominal; per-band calibration pending
-N1,8,6727.0,45.0,-55.00,-59.85,18.782510,nominal; per-band calibration pending
-N1,8,6727.0,55.0,-45.00,-49.85,12.777681,nominal; per-band calibration pending
-N1,8,6727.0,65.0,-35.00,-39.85,6.772852,nominal; per-band calibration pending
-N1,8,6727.0,75.0,-25.00,-29.85,0.768024,nominal; per-band calibration pending
-N1,8,6727.0,85.0,-15.00,-19.85,0.000000,nominal; per-band calibration pending
-N1,8,6727.0,95.0,-5.00,-9.85,0.000000,nominal; per-band calibration pending
+profile,band,centre_hz,input_level_db_spl,mapped_detector_dbfs,electrical_input_dbv,expected_camfit_gain_db,predicted_target_band_gain_db,target_band_model_error_db,predicted_recombined_gain_db,electrical_mapping_status
+N1,1,177.0,45.0,-40.16,-59.85,1.988463,1.988462,-0.000001,1.509880,measured EVAL transfer; B1 low-level floor policy
+N1,1,177.0,55.0,-37.65,-49.85,0.570642,0.570641,-0.000001,0.424722,measured EVAL transfer; B1 low-level floor policy
+N1,1,177.0,65.0,-35.14,-39.85,0.000000,-0.000002,-0.000002,-0.000002,measured EVAL transfer; B1 low-level floor policy
+N1,1,177.0,75.0,-26.14,-29.85,0.000000,-0.000001,-0.000001,-0.000001,measured EVAL transfer; B1 low-level floor policy
+N1,1,177.0,85.0,-17.14,-19.85,0.000000,-0.000001,-0.000001,-0.000001,measured EVAL transfer; B1 low-level floor policy
+N1,1,177.0,95.0,-7.18,-9.85,0.000000,-0.000001,-0.000001,-0.000001,measured EVAL transfer; B1 low-level floor policy
+N1,2,297.0,45.0,-59.57,-59.85,0.000000,-0.000001,-0.000001,0.566773,measured EVAL transfer
+N1,2,297.0,55.0,-49.60,-49.85,0.000000,-0.000001,-0.000001,0.566773,measured EVAL transfer
+N1,2,297.0,65.0,-39.63,-39.85,0.000000,-0.000001,-0.000001,0.566773,measured EVAL transfer
+N1,2,297.0,75.0,-29.77,-29.85,0.000000,-0.000001,-0.000001,0.000888,measured EVAL transfer
+N1,2,297.0,85.0,-19.90,-19.85,0.000000,-0.000001,-0.000001,-0.000001,measured EVAL transfer
+N1,2,297.0,95.0,-9.79,-9.85,0.000000,-0.000001,-0.000001,-0.000001,measured EVAL transfer
+N1,3,500.0,45.0,-59.90,-59.85,0.000000,-0.000001,-0.000001,0.094312,measured EVAL transfer
+N1,3,500.0,55.0,-49.99,-49.85,0.000000,-0.000001,-0.000001,0.094312,measured EVAL transfer
+N1,3,500.0,65.0,-40.08,-39.85,0.000000,-0.000001,-0.000001,0.094312,measured EVAL transfer
+N1,3,500.0,75.0,-30.14,-29.85,0.000000,-0.000001,-0.000001,0.094312,measured EVAL transfer
+N1,3,500.0,85.0,-20.20,-19.85,0.000000,-0.000001,-0.000001,0.094312,measured EVAL transfer
+N1,3,500.0,95.0,-10.25,-9.85,0.000000,-0.000001,-0.000001,0.020032,measured EVAL transfer
+N1,4,841.0,45.0,-59.91,-59.85,0.000000,-0.000001,-0.000001,0.064294,measured EVAL transfer
+N1,4,841.0,55.0,-50.03,-49.85,0.000000,-0.000001,-0.000001,0.064294,measured EVAL transfer
+N1,4,841.0,65.0,-40.15,-39.85,0.000000,-0.000001,-0.000001,0.064294,measured EVAL transfer
+N1,4,841.0,75.0,-30.21,-29.85,0.000000,-0.000001,-0.000001,0.064294,measured EVAL transfer
+N1,4,841.0,85.0,-20.27,-19.85,0.000000,-0.000001,-0.000001,0.064294,measured EVAL transfer
+N1,4,841.0,95.0,-10.26,-9.85,0.000000,-0.000001,-0.000001,0.064294,measured EVAL transfer
+N1,5,1414.0,45.0,-59.89,-59.85,0.000000,-0.000001,-0.000001,1.418923,measured EVAL transfer
+N1,5,1414.0,55.0,-50.02,-49.85,0.000000,-0.000001,-0.000001,1.418923,measured EVAL transfer
+N1,5,1414.0,65.0,-40.15,-39.85,0.000000,-0.000001,-0.000001,1.399944,measured EVAL transfer
+N1,5,1414.0,75.0,-30.18,-29.85,0.000000,-0.000001,-0.000001,1.359977,measured EVAL transfer
+N1,5,1414.0,85.0,-20.20,-19.85,0.000000,-0.000001,-0.000001,1.324359,measured EVAL transfer
+N1,5,1414.0,95.0,-10.33,-9.85,0.000000,-0.000001,-0.000001,1.292580,measured EVAL transfer
+N1,6,2378.0,45.0,-59.79,-59.85,4.905859,4.905858,-0.000001,8.055240,measured EVAL transfer
+N1,6,2378.0,55.0,-49.97,-49.85,4.905859,4.905858,-0.000001,7.648729,measured EVAL transfer
+N1,6,2378.0,65.0,-40.15,-39.85,4.905859,4.905858,-0.000001,6.973271,measured EVAL transfer
+N1,6,2378.0,75.0,-30.17,-29.85,4.905859,4.905858,-0.000001,6.177893,measured EVAL transfer
+N1,6,2378.0,85.0,-20.18,-19.85,4.905859,4.905858,-0.000001,5.588853,measured EVAL transfer
+N1,6,2378.0,95.0,-10.16,-9.85,4.905859,4.905858,-0.000001,5.124057,measured EVAL transfer
+N1,7,4000.0,45.0,-59.79,-59.85,14.320828,14.320827,-0.000001,16.027886,measured EVAL transfer
+N1,7,4000.0,55.0,-49.90,-49.85,13.278781,13.278780,-0.000001,13.015090,measured EVAL transfer
+N1,7,4000.0,65.0,-40.00,-39.85,12.236734,12.236733,-0.000001,10.715920,measured EVAL transfer
+N1,7,4000.0,75.0,-30.04,-29.85,11.194687,11.194686,-0.000001,8.968224,measured EVAL transfer
+N1,7,4000.0,85.0,-20.09,-19.85,10.152641,10.152640,-0.000001,7.570593,measured EVAL transfer
+N1,7,4000.0,95.0,-10.09,-9.85,5.000000,4.999999,-0.000001,4.085922,measured EVAL transfer
+N1,8,6727.0,45.0,-59.30,-59.85,18.782510,18.782509,-0.000001,16.208551,measured EVAL transfer
+N1,8,6727.0,55.0,-49.29,-49.85,12.777681,12.777680,-0.000001,11.726068,measured EVAL transfer
+N1,8,6727.0,65.0,-39.29,-39.85,6.772852,6.772851,-0.000001,7.942353,measured EVAL transfer
+N1,8,6727.0,75.0,-29.43,-29.85,0.768024,0.768022,-0.000002,4.918736,measured EVAL transfer
+N1,8,6727.0,85.0,-19.57,-19.85,0.000000,-0.000001,-0.000001,4.115137,measured EVAL transfer
+N1,8,6727.0,95.0,-9.40,-9.85,0.000000,-0.000001,-0.000001,3.598900,measured EVAL transfer

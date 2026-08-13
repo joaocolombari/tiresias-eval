@@ -1,0 +1,43 @@
+{
+  "profiles": [
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5",
+    "N6",
+    "N7",
+    "S1",
+    "S2",
+    "S3"
+  ],
+  "levels_db_spl": [
+    45,
+    65,
+    85
+  ],
+  "frequency_start_hz": 100.0,
+  "frequency_end_hz": 10000.0,
+  "frequency_points": 161,
+  "points_per_octave": 24,
+  "settling_seconds": 0.5,
+  "analysis_seconds": 0.15,
+  "sample_rate_hz": 44100,
+  "input_calibration": "0 dBFS = 100 dB SPL",
+  "output_calibration": "0 dBFS = 120 dB SPL",
+  "calibrated_gain_equation": "output_dBFS - input_dBFS + 20 dB",
+  "clarity_commit": "9df6486fb0bddc7619b3b99f1b3a5c72c109a3ec",
+  "openmha": "4.17.0 (444d2cba8866)",
+  "config_sha256": {
+    "N1": "6c34ff3bec648600d895f7723197eaa12b6fcfae28d440ce2cc401df028672bc",
+    "N2": "b4d7a6d7b2a9a553ed358e3eb2de8436bab544d2dbae43b508472f8419e9b467",
+    "N3": "a2382954f9210e16b7895aee742fa0b33bc088551ac7f05262a0a5c0cbd23fa5",
+    "N4": "2eb1e624570fc7a3731bae388ee25407dc7e12c074f22d87d01e5c6c014f0961",
+    "N5": "ee2a4633945c1d122e713fcf990620fa63cc91adc82be21188a80991647e2dd6",
+    "N6": "038e5f3b8015f98a902b06e2a6bc38255089dd6eedfaf46447cc98b9ced673ea",
+    "N7": "002bc14ae5d81a9f7b92b6d316d614bd2a2be21b478ac41add1dd8f175177989",
+    "S1": "5b368be99c20f1a61e3be447f3b2cd7243d56c9b94e2433eee5c2f33f7dc2b33",
+    "S2": "0463de88d24f0cc1662c52fa9f0934229bf0368bebdd83a8dc15cfaf75d5f1d1",
+    "S3": "53305f7ee18fa6e392e006f16f11dc41db110ccc05d116dbfad20c18b9560544"
+  }
+}

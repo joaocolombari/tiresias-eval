@@ -1,0 +1,49 @@
+// #LANGUAGE# C#
+// Restore both ADAU1787 DAC volume registers to 0 dB after the campaign.
+
+string icName = "IC 1";
+int[] addresses = new int[] { 0xC03C, 0xC03D };
+byte unityValue = 0x40;
+byte campaignValue = 0x75;
+string stage = "pre-flight";
+
+try
+{
+    for (int channel = 0; channel < addresses.Length; channel++)
+    {
+        byte[] actual = new byte[1];
+        ss.ICRegisterRead(icName, addresses[channel], 1, ref actual);
+        if (actual[0] != unityValue && actual[0] != campaignValue)
+            throw new System.OperationCanceledException(
+                System.String.Format(
+                    "Unexpected DAC_VOL{0} value 0x{1:X2} at 0x{2:X4}",
+                    channel, actual[0], addresses[channel]));
+    }
+
+    for (int channel = 0; channel < addresses.Length; channel++)
+    {
+        stage = System.String.Format("restore DAC_VOL{0}", channel);
+        ss.ICRegisterWrite(
+            icName, addresses[channel], 1, new byte[] { unityValue });
+        byte[] actual = new byte[1];
+        ss.ICRegisterRead(icName, addresses[channel], 1, ref actual);
+        if (actual[0] != unityValue)
+            throw new System.Exception(
+                System.String.Format(
+                    "Readback mismatch at 0x{0:X4}: expected 0x40, read 0x{1:X2}",
+                    addresses[channel], actual[0]));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: DAC0 and DAC1 restored to 0 dB (0x40).");
+}
+catch (System.OperationCanceledException ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ABORT during: " + stage + "\n\n" + ex.Message);
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR during: " + stage + "\n\n" + ex.ToString());
+}

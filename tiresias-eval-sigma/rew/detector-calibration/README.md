@@ -7,6 +7,14 @@ banco de filtros + blocos RMS** e será reutilizado na geração de N1–N10.
 Use a planilha `ADAU1787_EVAL_detector_calibration.xlsx` e preencha somente as
 colunas amarelas da aba `Measurements`.
 
+## Condição da interface de aquisição
+
+A entrada da **Focusrite Scarlett 18i8** está ajustada e calibrada para
+**1 Vrms = 0 dBFS (full scale)**. O scope do REW foi calibrado para apresentar
+diretamente o valor em dBV nessa condição. Esta configuração faz parte da
+calibração: qualquer alteração no ganho da entrada da Scarlett invalida o mapa
+elétrico obtido aqui e exige uma nova campanha B1–B8.
+
 ## Procedimento
 
 Para cada banda, na ordem B1 até B8:
@@ -46,3 +54,12 @@ Depois de preencher e salvar a planilha, a análise calcula o nível interno dos
 oito detectores. Esses dados serão gravados em
 `config/detector_calibration_eval.json`; em seguida, os geradores produzirão as
 LUTs das dez prescrições usando a mesma calibração.
+
+Execute a análise com:
+
+```bash
+python3 experiments/prescriptions/scripts/analyze_sigma_detector_calibration.py
+```
+
+Os resultados derivados são salvos em `results/`; as medidas originais da aba
+`Measurements` não são alteradas.

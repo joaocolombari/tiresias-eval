@@ -115,24 +115,38 @@ do setup. A restauracao remove primeiro os ganhos positivos e somente depois
 devolve as LUTs a unity, evitando ganho transitorio excessivo. Um novo
 **Link Compile Download** tambem restaura o projeto salvo.
 
-## Primeira prescricao CAMFIT: N1
+## Prescricoes CAMFIT N1–N7 e S1–S3
 
 O gerador reproduzivel
 [`../../experiments/prescriptions/scripts/generate_sigma_adau1787_prescription.py`](../../experiments/prescriptions/scripts/generate_sigma_adau1787_prescription.py)
 le a prescricao CAMFIT, descobre os enderecos diretamente no XML exportado e
-gera os scripts em [`generated/N1`](generated/N1).
+gera scripts separados por perfil em `generated/<perfil>`.
 
-Para regenerar:
+Antes de gerar as prescricoes, a campanha comum B1–B8 deve ter sido processada
+por `analyze_sigma_detector_calibration.py`. A condicao medida e parte do mapa:
+a entrada da **Focusrite Scarlett 18i8 foi ajustada e calibrada para
+1 Vrms = 0 dBFS (full scale)**, e o REW apresenta a entrada em dBV.
+
+Para regenerar os dez perfis:
 
 ```bash
-python3 experiments/prescriptions/scripts/generate_sigma_adau1787_prescription.py
+python3 experiments/prescriptions/scripts/generate_sigma_adau1787_prescription.py \
+  --all-profiles
 ```
 
-O primeiro procedimento de bancada esta em
-[`generated/N1/N1_INITIAL_VALIDATION.md`](generated/N1/N1_INITIAL_VALIDATION.md).
-Ele usa os pontos eletricos B1/50 Hz que ja possuem calibracao de detector.
-O ganho global CEC1 de -20 dB e os offsets B2 a B8 ainda nao fazem parte dessa
-validacao inicial.
+Cada diretorio contem o script de aplicacao, o de restauracao, os alvos de
+validacao, o manifesto e os hashes. O arquivo
+`generated/PRESCRIPTION_GENERATION_SUMMARY.csv` resume os ganhos e a fatoracao
+de bias dos dez perfis.
+
+O mapeamento agora usa os 32 pontos medidos no EVAL. B2–B8 usam interpolacao
+por trechos e extrapolacao pelas extremidades. B1 apresentou um piso do detector
+em nivel baixo; abaixo do primeiro ponto medido, a LUT conserva o ganho de
+45 dB SPL em vez de extrapolar uma relacao inexistente.
+
+O gerador tambem corrige a interpolacao em ganho linear da grade interna de
+3 dB. Nos checkpoints de 45, 55, 65, 75, 85 e 95 dB SPL, o maior erro previsto
+apos quantizacao 5.23 ficou abaixo de 0,00027 dB para os dez perfis.
 
 ## Criterio de go/no-go
 
@@ -147,3 +161,14 @@ sobrepostas em magnitude e fase dentro da repetibilidade do setup.
 da compensacao, resposta que nao retorna apos restauracao, ou ruido/instabilidade
 inesperados. Nesse caso, faca novamente **Link Compile Download**, interrompa o
 ensaio e preserve as capturas do REW e a mensagem apresentada pelo script.
+
+## Campanha completa N1–N7 e S1–S3
+
+O roteiro operacional, os nomes exatos das 33 medições e o checklist estão em
+[`../rew/prescription-campaign-2026-08-14/README.md`](../rew/prescription-campaign-2026-08-14/README.md).
+
+Para essa campanha, depois de **Link Compile Download** é obrigatório executar
+`campaign_apply_output_headroom.sss`. Ele aplica −19,875 dB a `DAC_VOL0/1`,
+mantendo ao menos 7,392 dB de margem prevista até o full scale de 1 Vrms da
+Scarlett no pior caso. Execute `campaign_restore_output_headroom.sss` somente
+depois da última medição.

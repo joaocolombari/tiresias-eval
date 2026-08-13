@@ -2,7 +2,7 @@
   "purpose": "shared stationary spectral detector identification for N1-N10",
   "source": {
     "config": "tiresias-eval-sigma/config/detector_calibration_eval.json",
-    "config_sha256": "db07a073e5512bddc30e97db55129d32ce5ed3b8523fcd67bf1aac228771936f",
+    "config_sha256": "ff7519d9dbd5cbbcb940d6b5e23a648977f5829aea428309824d121924df908c",
     "sigma_export_xml": "tiresias-eval-sigma/tiresias-eval-export/tiresias-eval.xml",
     "sigma_export_xml_sha256": "d907204a90a9b9f7770d3a82249f2f7c4ce6edaf73f3cf7b81ea3204c1cd7f47"
   },
@@ -83,7 +83,7 @@
     ]
   },
   "sample_rate_hz": 48000.0,
-  "unity_model_maximum_error_db": 0.0004830484783607976,
+  "unity_model_maximum_error_db": 0.0004830484799267783,
   "measurements": [
     {
       "band": 1,
@@ -101,18 +101,18 @@
         -9.85
       ],
       "model": {
-        "target_real": 0.6017115385605093,
-        "target_imag": 0.42735645027832736,
+        "target_real": 0.6017115385605092,
+        "target_imag": 0.4273564502783273,
         "remainder_real": 0.21205490911833258,
-        "remainder_imag": 0.15389178778419355,
-        "target_magnitude": 0.738031375506047,
-        "remainder_magnitude": 0.2620113868300375,
+        "remainder_imag": 0.1538917877841936,
+        "target_magnitude": 0.7380313755060469,
+        "remainder_magnitude": 0.26201138683003755,
         "unity_magnitude": 1.0000326722755744,
-        "target_squared": 0.5446903112313478,
+        "target_squared": 0.5446903112313476,
         "cross_term": 0.38672506755867897,
-        "remainder_squared": 0.06864996682859954,
+        "remainder_squared": 0.06864996682859957,
         "unity_squared": 1.0000653456186264,
-        "phase_difference_degrees": -0.5853250335342448
+        "phase_difference_degrees": -0.5853250335342516
       }
     },
     {
@@ -131,18 +131,18 @@
         -9.85
       ],
       "model": {
-        "target_real": -0.5455668837429178,
-        "target_imag": 0.00586685851988578,
+        "target_real": -0.5455668837429176,
+        "target_imag": 0.0058668585198858245,
         "remainder_real": -0.45443341358474687,
-        "remainder_imag": 0.0046471440223519135,
-        "target_magnitude": 0.5455984280272907,
+        "remainder_imag": 0.004647144022351968,
+        "target_magnitude": 0.5455984280272905,
         "remainder_magnitude": 0.45445717436283267,
-        "unity_magnitude": 1.0000555679085419,
-        "target_squared": 0.2976776446658508,
-        "cross_term": 0.49590217090917516,
+        "unity_magnitude": 1.0000555679085417,
+        "target_squared": 0.2976776446658505,
+        "cross_term": 0.49590217090917493,
         "remainder_squared": 0.2065313233298501,
-        "unity_squared": 1.0001111389048762,
-        "phase_difference_degrees": -0.0302176201231123
+        "unity_squared": 1.0001111389048758,
+        "phase_difference_degrees": -0.030217620123110335
       }
     },
     {
@@ -161,18 +161,18 @@
         -9.85
       ],
       "model": {
-        "target_real": -0.05361156807075702,
-        "target_imag": -0.5204818907020102,
-        "remainder_real": -0.04860186903627255,
+        "target_real": -0.05361156807075704,
+        "target_imag": -0.5204818907020103,
+        "remainder_real": -0.048601869036272546,
         "remainder_imag": -0.4743045128410577,
-        "target_magnitude": 0.5232357009797256,
+        "target_magnitude": 0.5232357009797257,
         "remainder_magnitude": 0.4767881212605994,
-        "unity_magnitude": 1.0000237874167714,
-        "target_squared": 0.27377559877974483,
-        "cross_term": 0.49894506404442746,
+        "unity_magnitude": 1.0000237874167717,
+        "target_squared": 0.27377559877974494,
+        "cross_term": 0.49894506404442757,
         "remainder_squared": 0.227326912575212,
-        "unity_squared": 1.000047575399384,
-        "phase_difference_degrees": -0.03027387049880892
+        "unity_squared": 1.0000475753993845,
+        "phase_difference_degrees": -0.030273870498810727
       }
     },
     {
@@ -191,18 +191,18 @@
         -9.85
       ],
       "model": {
-        "target_real": 0.3985658201767558,
-        "target_imag": -0.33476043251965865,
-        "remainder_real": 0.36735483071609343,
-        "remainder_imag": -0.30816935088905323,
-        "target_magnitude": 0.5204990491767674,
-        "remainder_magnitude": 0.47949757087792433,
-        "unity_magnitude": 0.999996574923184,
-        "target_squared": 0.2709192601939189,
-        "cross_term": 0.49915596918634997,
-        "remainder_squared": 0.22991792047783005,
-        "unity_squared": 0.9999931498580991,
-        "phase_difference_degrees": -0.03445669699687307
+        "target_real": 0.39856582017675585,
+        "target_imag": -0.3347604325196587,
+        "remainder_real": 0.3673548307160935,
+        "remainder_imag": -0.3081693508890533,
+        "target_magnitude": 0.5204990491767675,
+        "remainder_magnitude": 0.47949757087792444,
+        "unity_magnitude": 0.9999965749231841,
+        "target_squared": 0.270919260193919,
+        "cross_term": 0.4991559691863501,
+        "remainder_squared": 0.22991792047783016,
+        "unity_squared": 0.9999931498580993,
+        "phase_difference_degrees": -0.03445669699687382
       }
     },
     {
@@ -221,18 +221,18 @@
         -9.85
       ],
       "model": {
-        "target_real": 0.5199573830397418,
-        "target_imag": 0.03747089048093235,
-        "remainder_real": 0.4774253623690956,
-        "remainder_imag": 0.034690824554029796,
+        "target_real": 0.5199573830397417,
+        "target_imag": 0.03747089048093222,
+        "remainder_real": 0.4774253623690955,
+        "remainder_imag": 0.03469082455402982,
         "target_magnitude": 0.5213058102601301,
-        "remainder_magnitude": 0.4786840606720687,
-        "unity_magnitude": 0.9999898269262828,
+        "remainder_magnitude": 0.4786840606720686,
+        "unity_magnitude": 0.9999898269262825,
         "target_squared": 0.2717597478109708,
-        "cross_term": 0.49908147620358534,
-        "remainder_squared": 0.22913842994150074,
-        "unity_squared": 0.999979653956057,
-        "phase_difference_degrees": -0.03402672879167839
+        "cross_term": 0.4990814762035851,
+        "remainder_squared": 0.22913842994150063,
+        "unity_squared": 0.9999796539560564,
+        "phase_difference_degrees": -0.034026728791695125
       }
     },
     {
@@ -251,18 +251,18 @@
         -9.85
       ],
       "model": {
-        "target_real": 0.35186794838239965,
-        "target_imag": 0.38957131564135616,
+        "target_real": 0.35186794838239954,
+        "target_imag": 0.38957131564135605,
         "remainder_real": 0.3182249574986955,
-        "remainder_imag": 0.35268491139809643,
-        "target_magnitude": 0.5249541533023395,
-        "remainder_magnitude": 0.4750302835640373,
-        "unity_magnitude": 0.9999844044238959,
-        "target_squared": 0.2755768630693762,
-        "cross_term": 0.4987381757187077,
-        "remainder_squared": 0.2256537703029297,
-        "unity_squared": 0.9999688090910138,
-        "phase_difference_degrees": -0.029226038024349664
+        "remainder_imag": 0.3526849113980963,
+        "target_magnitude": 0.5249541533023394,
+        "remainder_magnitude": 0.4750302835640372,
+        "unity_magnitude": 0.9999844044238956,
+        "target_squared": 0.27557686306937607,
+        "cross_term": 0.4987381757187075,
+        "remainder_squared": 0.2256537703029296,
+        "unity_squared": 0.9999688090910132,
+        "phase_difference_degrees": -0.02922603802434178
       }
     },
     {
@@ -281,18 +281,18 @@
         -9.85
       ],
       "model": {
-        "target_real": -0.10268349614703916,
-        "target_imag": 0.5253184086733296,
-        "remainder_real": -0.08923499533703246,
-        "remainder_imag": 0.45607729206993564,
-        "target_magnitude": 0.5352600591040381,
-        "remainder_magnitude": 0.46472505929274527,
-        "unity_magnitude": 0.999985114294651,
-        "target_squared": 0.2865033308720583,
-        "cross_term": 0.49749751720418234,
-        "remainder_squared": 0.2159693807346456,
-        "unity_squared": 0.9999702288108862,
-        "phase_difference_degrees": -0.010405399648522624
+        "target_real": -0.10268349614703905,
+        "target_imag": 0.5253184086733288,
+        "remainder_real": -0.08923499533703248,
+        "remainder_imag": 0.4560772920699351,
+        "target_magnitude": 0.5352600591040372,
+        "remainder_magnitude": 0.4647250592927447,
+        "unity_magnitude": 0.9999851142946496,
+        "target_squared": 0.28650333087205737,
+        "cross_term": 0.497497517204181,
+        "remainder_squared": 0.21596938073464508,
+        "unity_squared": 0.9999702288108835,
+        "phase_difference_degrees": -0.010405399648535178
       }
     },
     {
@@ -311,18 +311,18 @@
         -9.85
       ],
       "model": {
-        "target_real": -0.562198317818678,
-        "target_imag": 0.06877032559353331,
-        "remainder_real": -0.4301910024608393,
-        "remainder_imag": 0.05432439192156836,
-        "target_magnitude": 0.5663888295512121,
-        "remainder_magnitude": 0.43360747013388734,
-        "unity_magnitude": 0.9999944362270048,
-        "target_squared": 0.32079630624039196,
-        "cross_term": 0.49117712808866315,
-        "remainder_squared": 0.18801543815591001,
-        "unity_squared": 0.9999888724849652,
-        "phase_difference_degrees": 0.22319835880082953
+        "target_real": -0.5621983178186778,
+        "target_imag": 0.06877032559353324,
+        "remainder_real": -0.4301910024608392,
+        "remainder_imag": 0.05432439192156832,
+        "target_magnitude": 0.5663888295512117,
+        "remainder_magnitude": 0.4336074701338873,
+        "unity_magnitude": 0.9999944362270045,
+        "target_squared": 0.32079630624039157,
+        "cross_term": 0.4911771280886629,
+        "remainder_squared": 0.18801543815590996,
+        "unity_squared": 0.9999888724849645,
+        "phase_difference_degrees": 0.2231983588008306
       }
     }
   ]

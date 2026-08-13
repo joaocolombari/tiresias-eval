@@ -1,0 +1,37 @@
+{
+  "profile": "N1",
+  "ear": "left",
+  "prescription_json": "../../experiments/prescriptions/generated/prescriptions/{profile}.json",
+  "sigma_export_xml": "../tiresias-eval-export/tiresias-eval.xml",
+  "output_directory": "../scripts/generated/{profile}",
+  "compressor_cells": [
+    "compbank.Compressor-B1",
+    "compbank.Compressor-B2",
+    "compbank.Compressor-B3",
+    "compbank.Compressor-B4",
+    "compbank.Compressor-B5",
+    "compbank.Compressor-B6",
+    "compbank.Compressor-B7",
+    "compbank.Compressor-B8"
+  ],
+  "bias_cells": [
+    "phasecomp.Gain1",
+    "phasecomp.Gain1_2",
+    "phasecomp.Gain1_3"
+  ],
+  "detector_table": {
+    "minimum_dbfs": -90,
+    "maximum_dbfs": 6,
+    "step_db": 3,
+    "duplicate_minimum_for_underflow": true
+  },
+  "cec1_equivalent_0_dbfs_db_spl": 100.0,
+  "rew_dac_offset_from_equivalent_spl_db": -104.85,
+  "maximum_lut_gain_db": 21.0,
+  "temporary_guard_gain_db": -24.0,
+  "detector_calibration_file": "detector_calibration_eval.json",
+  "global_output_headroom_db": 0.0,
+  "global_output_headroom_status": "not implemented in the current SigmaStudio project",
+  "sample_rate_hz": 48000.0,
+  "calibration_scope": "Shared measured B1-B8 detector transfer on the ADAU1787 EVAL. Scarlett input is calibrated to 1 Vrms full scale."
+}

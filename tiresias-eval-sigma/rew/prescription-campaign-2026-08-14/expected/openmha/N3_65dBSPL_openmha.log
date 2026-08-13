@@ -1,0 +1,7 @@
+2026-08-13 19:55:22 MHA server initialized.
+2026-08-13 19:55:22 Parsing command line argument "?read:openmha_cfg/one_mic_reference/N3.cfg", please wait.
+2026-08-13 19:55:22 Parsing command line argument "cmd=start", please wait.
+2026-08-13 19:55:24 Parsing command line argument "cmd=stop", please wait.
+2026-08-13 19:55:24 Parsing command line argument "cmd=quit", please wait.
+2026-08-13 19:55:24 Command line arguments parsed, accepting network control input.
+2026-08-13 19:55:24 MHA server closed successfully.

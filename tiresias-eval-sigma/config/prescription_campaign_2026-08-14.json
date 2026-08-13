@@ -1,0 +1,57 @@
+{
+  "campaign_id": "ADAU1787_EVAL_BISGAARD_2026-08-14",
+  "date": "2026-08-14",
+  "operator": "Joao Colombari",
+  "dut": "EVAL-ADAU1787Z",
+  "sigma_project": "tiresias-eval-sigma/tiresias-eval.dspproj",
+  "profiles": ["N1", "N2", "N3", "N4", "N5", "N6", "N7", "S1", "S2", "S3"],
+  "levels_db_spl": [45, 65, 85],
+  "rew_dac_levels_dbv": [-59.85, -39.85, -19.85],
+  "rew_sweep": {
+    "start_hz": 100,
+    "end_hz": 10000,
+    "sample_rate_hz": 48000,
+    "length_samples": 1048576,
+    "length_label": "1M",
+    "repetitions": 1,
+    "start_delay_seconds": 2,
+    "timing_reference": "none",
+    "smoothing_on_export": "none"
+  },
+  "capture": {
+    "interface": "Focusrite Scarlett 18i8",
+    "input_full_scale_vrms": 1.0,
+    "input_display_unit": "dBV",
+    "input_gain_lock": "Do not change during campaign"
+  },
+  "sigma_dynamics": {
+    "rms_tc_ms": 20,
+    "hold_ms": 0,
+    "decay_ms": 100
+  },
+  "output_headroom": {
+    "method": "ADAU1787 DAC_VOL0 and DAC_VOL1",
+    "registers_hex": ["0xC03C", "0xC03D"],
+    "register_value_hex": "0x75",
+    "attenuation_db": -19.875,
+    "datasheet_basis": "Digital DAC Volume Control and Filtering (p. 37); DAC Channel 0/1 Volume Registers (pp. 111-112)",
+    "analysis_policy": "attenuation is present in both unity and prescription measurements and cancels in N1/unity gain ratios"
+  },
+  "comparison": {
+    "sigma_sample_rate_hz": 48000,
+    "openmha_sample_rate_hz": 44100,
+    "frequency_range_for_metrics_hz": [150, 9000],
+    "local_median_total_octave_width": 0.020833333333333332,
+    "quantitative_levels_db_spl": [65, 85],
+    "low_level_policy": "45 dB SPL becomes quantitative only if the clean-lab acquisition has adequate SNR"
+  },
+  "notes_to_complete": {
+    "laboratory": "TODO",
+    "computer": "TODO",
+    "rew_version": "TODO",
+    "scarlett_serial": "TODO",
+    "eval_board_serial": "TODO",
+    "cabling": "TODO",
+    "ambient_and_power_conditions": "TODO"
+  }
+}

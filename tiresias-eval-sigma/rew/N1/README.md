@@ -1,5 +1,19 @@
 # Medicao inicial N1/B1 a 50 Hz
 
+> **Resultado mais recente:** a prescrição N1 a 4 kHz foi aprovada em 45, 65 e
+> 85 dB SPL equivalentes. Consulte `N1_4KHZ_SMOKE_RESULT.md`: erro absoluto
+> máximo de ganho 0,2079 dB, erro absoluto médio 0,0809 dB e restauração com
+> erro 0,0000 dB no ponto verificado.
+
+> **Banda alta:** B8 a 6727 Hz também foi aprovada nos mesmos três níveis.
+> Consulte `N1_B8_6727HZ_RESULT.md`: erro absoluto máximo 0,0214 dB e erro
+> absoluto médio 0,0181 dB.
+
+> **Região média:** B6 a 2378 Hz teve erro máximo de 0,5911 dB. Consulte
+> `N1_B6_2378HZ_RESULT.md`. A continuação da campanha passa a usar as curvas
+> automáticas descritas em `N1_REW_CURVE_PROTOCOL.md`, mantendo B6–B8 como
+> âncoras estacionárias para validar o sweep.
+
 > **Histórico:** este diretório preserva a validação inicial específica de B1.
 > A campanha reutilizável B1–B8 para N1–N10 está em
 > `rew/detector-calibration/README.md`. Para os próximos ensaios, siga o README
