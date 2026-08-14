@@ -46,12 +46,12 @@
     "low_level_policy": "45 dB SPL becomes quantitative only if the clean-lab acquisition has adequate SNR"
   },
   "notes_to_complete": {
-    "laboratory": "TODO",
-    "computer": "TODO",
-    "rew_version": "TODO",
-    "scarlett_serial": "TODO",
-    "eval_board_serial": "TODO",
-    "cabling": "TODO",
-    "ambient_and_power_conditions": "TODO"
+    "laboratory": "GMETA - Soldering Iron Lab",
+    "computer": "M1 Macbook Pro",
+    "rew_version": "5.31.3",
+    "scarlett_serial": "USP 200.167805",
+    "eval_board_serial": "The only Eval we have",
+    "cabling": "P2 - eval in / interface out; P10 eval out / interface in",
+    "ambient_and_power_conditions": "Clean, no other use in the lab"
   }
 }
