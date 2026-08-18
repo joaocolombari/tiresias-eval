@@ -174,9 +174,14 @@
             </Algorithm>
             <Algorithm name="Gain1940AlgNS4" friendlyname="Gain (no slew) " cell="output_headroom " location="{X=722, Y=132} " Growth="0 " GrowthB="0">
                 <Link pin="I_C11_A0_P1_in" dir="in" link="Link33" />
-                <Link pin="O_C11_A0_P2_out" dir="out" link="Link43" />
+                <Link pin="O_C11_A0_P2_out" dir="out" link="Link44" />
             </Algorithm>
-            <Algorithm name="ADAU1787SigmaOutAlg1" friendlyname="ADAU1787 SDSP OUT " cell="SDSP OUT1 " location="{X=902, Y=144} " Growth="0 " GrowthB="0">
+            <Algorithm name="MonoPeak_StResHiRange_NoExt_NoPos1" friendlyname="Mono Peak Full Range with Ext. Detect (No Post Gain) " cell="SoftClip " location="{X=874, Y=93} " Growth="0 " GrowthB="0">
+                <Link pin="I_C72_A0_P1_in" dir="in" link="Link44" />
+                <Link pin="I_C72_A0_P2_in" dir="in" link="Link44" />
+                <Link pin="O_C72_A0_P3_out" dir="out" link="Link43" />
+            </Algorithm>
+            <Algorithm name="ADAU1787SigmaOutAlg1" friendlyname="ADAU1787 SDSP OUT " cell="SDSP OUT1 " location="{X=1113, Y=146} " Growth="0 " GrowthB="0">
                 <Link pin="I_C360_A0_P1_in" dir="in" link="Link43" />
             </Algorithm>
         </Schematic>

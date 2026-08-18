@@ -1,7 +1,7 @@
 /*
  * File:           defines.h
  *
- * Created:        Tuesday, August 18, 2026 1:34:42 PM
+ * Created:        Tuesday, August 18, 2026 4:29:52 PM
  * Description:    tiresias-eval IC default download data definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -19,7 +19,7 @@
 #ifndef __DEFINES_H__
 #define __DEFINES_H__
 
-#define BufferSize_IC_1_SIGMA     	5883
+#define BufferSize_IC_1_SIGMA     	6388
 #define NumTransactions_IC_1_SIGMA	209
 
 #define BufferSize_IC_1_FAST     	6
