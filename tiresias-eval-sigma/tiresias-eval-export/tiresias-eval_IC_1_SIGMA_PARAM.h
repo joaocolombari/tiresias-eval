@@ -1,7 +1,7 @@
 /*
- * File:           C:\Users\colombari\Desktop\tiresias-eval-sigma\tiresias-eval-export\tiresias-eval_IC_1_SIGMA_PARAM.h
+ * File:           C:\Users\Telecom\Documents\colombari\developer\tiresias-eval\tiresias-eval-sigma\tiresias-eval-export\tiresias-eval_IC_1_SIGMA_PARAM.h
  *
- * Created:        Wednesday, August 12, 2026 5:59:48 PM
+ * Created:        Tuesday, August 18, 2026 1:34:42 PM
  * Description:    tiresias-eval:IC 1-Sigma parameter RAM definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -2222,5 +2222,13 @@
 #define MOD_PHASECOMP_GAIN1_3_GAIN1940ALGNS3_FIXPT     0x00800000
 #define MOD_PHASECOMP_GAIN1_3_GAIN1940ALGNS3_VALUE     SIGMASTUDIOTYPE_FIXPOINT_CONVERT(1)
 #define MOD_PHASECOMP_GAIN1_3_GAIN1940ALGNS3_TYPE      SIGMASTUDIOTYPE_FIXPOINT
+
+/* Module output_headroom - Gain*/
+#define MOD_OUTPUT_HEADROOM_COUNT                      1
+#define MOD_OUTPUT_HEADROOM_DEVICE                     "IC1_Sigma"
+#define MOD_OUTPUT_HEADROOM_GAIN1940ALGNS4_ADDR        10332
+#define MOD_OUTPUT_HEADROOM_GAIN1940ALGNS4_FIXPT       0x00800000
+#define MOD_OUTPUT_HEADROOM_GAIN1940ALGNS4_VALUE       SIGMASTUDIOTYPE_FIXPOINT_CONVERT(1)
+#define MOD_OUTPUT_HEADROOM_GAIN1940ALGNS4_TYPE        SIGMASTUDIOTYPE_FIXPOINT
 
 #endif
