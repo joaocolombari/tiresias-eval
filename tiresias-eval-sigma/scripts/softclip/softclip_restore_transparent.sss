@@ -1,0 +1,47 @@
+// #LANGUAGE# C#
+// Restore the transparent curve exported by SigmaStudio at commit 5773309.
+// Stop the REW stimulus before running this script.
+
+string icName = "IC 1";
+string stage = "initialization";
+int tableAddress = 0x2860;
+int tableWords = 45;
+byte[] unityWord = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[][] overflowWords = new byte[][] {
+    new byte[] { 0x00, 0x5A, 0x82, 0x7A },
+    new byte[] { 0x00, 0x40, 0x00, 0x00 },
+    new byte[] { 0x00, 0x2D, 0x41, 0x3D },
+    new byte[] { 0x00, 0x20, 0x00, 0x00 },
+    new byte[] { 0x00, 0x16, 0xA0, 0x9E },
+    new byte[] { 0x00, 0x10, 0x00, 0x00 }
+};
+
+try
+{
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddress + 4 * wordIndex;
+        byte[] expected = unityWord;
+        if (wordIndex >= 39) expected = overflowWords[wordIndex - 39];
+
+        stage = System.String.Format("restore SoftClip word {0} at 0x{1:X4}", wordIndex, address);
+        ss.ICRegisterWrite(icName, address, 4, expected);
+
+        byte[] actual = new byte[4];
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != expected[k])
+                throw new System.Exception(
+                    System.String.Format("SoftClip readback mismatch at 0x{0:X4}", address + k));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: SoftClip restored to the exported transparent curve.\n\n" +
+        "Hold, decay, output_headroom and DAC volume were not changed.");
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR during: " + stage + "\n\n" + ex.ToString() +
+        "\n\nRun Link Compile Download before continuing.");
+}
