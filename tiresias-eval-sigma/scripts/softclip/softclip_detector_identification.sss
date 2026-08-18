@@ -1,0 +1,88 @@
+// #LANGUAGE# C#
+// Detector-index identification LUT for the ADAU1787 full-range peak block.
+// Gain at table index i is exactly -0.5*i dB. Stop the stimulus before running.
+
+string icName = "IC 1";
+string stage = "pre-flight";
+int tableAddress = 0x2860;
+int tableWords = 45;
+
+byte[][] identificationWords = new byte[][] {
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  0:   0.0 dB
+    new byte[] { 0x00, 0x78, 0xD6, 0xFD }, //  1:  -0.5 dB
+    new byte[] { 0x00, 0x72, 0x14, 0x83 }, //  2:  -1.0 dB
+    new byte[] { 0x00, 0x6B, 0xB2, 0xD6 }, //  3:  -1.5 dB
+    new byte[] { 0x00, 0x65, 0xAC, 0x8C }, //  4:  -2.0 dB
+    new byte[] { 0x00, 0x5F, 0xFC, 0x89 }, //  5:  -2.5 dB
+    new byte[] { 0x00, 0x5A, 0x9D, 0xF8 }, //  6:  -3.0 dB
+    new byte[] { 0x00, 0x55, 0x8C, 0x4B }, //  7:  -3.5 dB
+    new byte[] { 0x00, 0x50, 0xC3, 0x36 }, //  8:  -4.0 dB
+    new byte[] { 0x00, 0x4C, 0x3E, 0xA8 }, //  9:  -4.5 dB
+    new byte[] { 0x00, 0x47, 0xFA, 0xCD }, // 10:  -5.0 dB
+    new byte[] { 0x00, 0x43, 0xF4, 0x05 }, // 11:  -5.5 dB
+    new byte[] { 0x00, 0x40, 0x26, 0xE7 }, // 12:  -6.0 dB
+    new byte[] { 0x00, 0x3C, 0x90, 0x38 }, // 13:  -6.5 dB
+    new byte[] { 0x00, 0x39, 0x2C, 0xEE }, // 14:  -7.0 dB
+    new byte[] { 0x00, 0x35, 0xFA, 0x27 }, // 15:  -7.5 dB
+    new byte[] { 0x00, 0x32, 0xF5, 0x2D }, // 16:  -8.0 dB
+    new byte[] { 0x00, 0x30, 0x1B, 0x71 }, // 17:  -8.5 dB
+    new byte[] { 0x00, 0x2D, 0x6A, 0x86 }, // 18:  -9.0 dB
+    new byte[] { 0x00, 0x2A, 0xE0, 0x26 }, // 19:  -9.5 dB
+    new byte[] { 0x00, 0x28, 0x7A, 0x27 }, // 20: -10.0 dB
+    new byte[] { 0x00, 0x26, 0x36, 0x80 }, // 21: -10.5 dB
+    new byte[] { 0x00, 0x24, 0x13, 0x47 }, // 22: -11.0 dB
+    new byte[] { 0x00, 0x22, 0x0E, 0xAA }, // 23: -11.5 dB
+    new byte[] { 0x00, 0x20, 0x26, 0xF3 }, // 24: -12.0 dB
+    new byte[] { 0x00, 0x1E, 0x5A, 0x84 }, // 25: -12.5 dB
+    new byte[] { 0x00, 0x1C, 0xA7, 0xD7 }, // 26: -13.0 dB
+    new byte[] { 0x00, 0x1B, 0x0D, 0x7B }, // 27: -13.5 dB
+    new byte[] { 0x00, 0x19, 0x8A, 0x13 }, // 28: -14.0 dB
+    new byte[] { 0x00, 0x18, 0x1C, 0x57 }, // 29: -14.5 dB
+    new byte[] { 0x00, 0x16, 0xC3, 0x11 }, // 30: -15.0 dB
+    new byte[] { 0x00, 0x15, 0x7D, 0x1B }, // 31: -15.5 dB
+    new byte[] { 0x00, 0x14, 0x49, 0x61 }, // 32: -16.0 dB
+    new byte[] { 0x00, 0x13, 0x26, 0xDD }, // 33: -16.5 dB
+    new byte[] { 0x00, 0x12, 0x14, 0x9A }, // 34: -17.0 dB
+    new byte[] { 0x00, 0x11, 0x11, 0xAF }, // 35: -17.5 dB
+    new byte[] { 0x00, 0x10, 0x1D, 0x3F }, // 36: -18.0 dB
+    new byte[] { 0x00, 0x0F, 0x36, 0x7C }, // 37: -18.5 dB
+    new byte[] { 0x00, 0x0E, 0x5C, 0xA1 }, // 38: -19.0 dB
+    new byte[] { 0x00, 0x0D, 0x8E, 0xF6 }, // 39: -19.5 dB
+    new byte[] { 0x00, 0x0C, 0xCC, 0xCD }, // 40: -20.0 dB
+    new byte[] { 0x00, 0x0C, 0x15, 0x80 }, // 41: -20.5 dB
+    new byte[] { 0x00, 0x0B, 0x68, 0x73 }, // 42: -21.0 dB
+    new byte[] { 0x00, 0x0A, 0xC5, 0x15 }, // 43: -21.5 dB
+    new byte[] { 0x00, 0x0A, 0x2A, 0xDB }  // 44: -22.0 dB
+};
+
+try
+{
+    if (identificationWords.Length != tableWords)
+        throw new System.Exception("Internal table length mismatch");
+
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddress + 4 * wordIndex;
+        stage = System.String.Format("write identification word {0}", wordIndex);
+        ss.ICRegisterWrite(icName, address, 4, identificationWords[wordIndex]);
+
+        byte[] actual = new byte[4];
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != identificationWords[wordIndex][k])
+                throw new System.Exception(
+                    System.String.Format("Readback mismatch at 0x{0:X4}", address + k));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: SoftClip detector-identification LUT loaded.\n\n" +
+        "Gain at index i = -0.5*i dB.\n" +
+        "For each stationary tone: index = -2*(identified - transparent).\n\n" +
+        "This is a calibration state; do not use it for prescription measurements.");
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR during: " + stage + "\n\n" + ex.ToString() +
+        "\n\nRun softclip_restore_transparent.sss or Link Compile Download.");
+}

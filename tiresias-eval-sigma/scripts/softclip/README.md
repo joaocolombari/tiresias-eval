@@ -39,6 +39,20 @@ the corresponding linear gain `10^((y - x) / 20)`, quantized to 5.23.
 Both scripts verify every table word by reading it back. The apply script also
 checks the output headroom, hold and decay values before changing the table.
 
+## Detector-coordinate calibration
+
+Do not tune the CEC1 table against openMHA output measurements. If the block's
+detector-index scale must be identified, follow
+`../../rew/prescription-campaign-2026-08-14/SOFTCLIP_VALIDATION_PROTOCOL.md`.
+The procedure uses `softclip_detector_identification.sss`, whose gain is
+`-0.5 * index` dB, and the independent analyzer
+`experiments/prescriptions/scripts/calibrate_sigma_softclip.py`.
+
+The analyzer produces `softclip_apply_cec1_calibrated.sss` only when the
+measured detector mapping is sufficiently linear and spans both CEC1 knees.
+openMHA output values are used only as a subsequent validation gate, never as
+fit targets.
+
 The 3 dB table spacing and gain-table representation follow ADI's
 "Compressor Table Format - Changing compressors at run-time" documentation:
 https://ez.analog.com/dsp/sigmadsp/w/documents/5173/compressor-table-format---changing-compressors-at-run-time
