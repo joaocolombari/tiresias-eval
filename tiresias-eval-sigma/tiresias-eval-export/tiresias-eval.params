@@ -2542,7 +2542,7 @@ Parameter Data :
 
 Cell Name         = output_headroom
 Parameter Name    = Gain1940AlgNS4
-Parameter Address = 10532
+Parameter Address = 10332
 Parameter Value   = 1
 Parameter Data :
 0x00, 0x80, 0x00, 0x00, 
@@ -2551,7 +2551,7 @@ Parameter Data :
 
 Cell Name         = SoftClip
 Parameter Name    = MonoPeak_StResHiRange_NoExt_NoPos1
-Parameter Address = 10332
+Parameter Address = 10336
 Parameter Data :
 0x00, 0x8F, 0x0F, 0xB5, 
 0x00, 0xC2, 0x44, 0x9E, 
@@ -2603,7 +2603,7 @@ Parameter Data :
 
 Cell Name         = SoftClip
 Parameter Name    = MonoPeak_StResHiRange_NoExt_NoPos1hold
-Parameter Address = 10512
+Parameter Address = 10516
 Parameter Value   = 0
 Parameter Data :
 0x00 ,	0x00 ,	0x00 ,	0x00 ,	
@@ -2612,7 +2612,7 @@ Parameter Data :
 
 Cell Name         = SoftClip
 Parameter Name    = MonoPeak_StResHiRange_NoExt_NoPos1decay
-Parameter Address = 10516
+Parameter Address = 10520
 Parameter Value   = 3.77893447875977E-05
 Parameter Data :
 0x00 ,	0x00 ,	0x01 ,	0x3D ,	

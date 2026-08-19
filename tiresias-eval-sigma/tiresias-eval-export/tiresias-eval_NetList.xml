@@ -18,105 +18,105 @@
     <IC name=" IC 1-Sigma " type="ADAU1787SigmaIC">
         <Schematic>
             <Algorithm name="ADAU1787SADCIN1" friendlyname="ADAU1787S ADC IN " cell="ADC IN1 " location="{X=228, Y=120} " Growth="4 " GrowthB="0 " FS="48000">
-                <Link pin="O_C353_A0_P3_out" dir="out" link="Link43" />
+                <Link pin="O_C353_A0_P3_out" dir="out" link="Link42" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP9" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-229 " location="{X=525, Y=161} " Growth="0 " GrowthB="0">
-                <Link pin="I_C4_A0_P1_in" dir="in" link="Link43" />
-                <Link pin="O_C4_A0_P2_out" dir="out" link="Link42" />
+                <Link pin="I_C4_A0_P1_in" dir="in" link="Link42" />
+                <Link pin="O_C4_A0_P2_out" dir="out" link="Link41" />
                 <Link pin="O_C4_A0_P3_out" dir="out" link="Link17" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP1" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-385 " location="{X=639, Y=201} " Growth="0 " GrowthB="0">
                 <Link pin="I_C22_A0_P1_in" dir="in" link="Link17" />
-                <Link pin="O_C22_A0_P2_out" dir="out" link="Link35" />
+                <Link pin="O_C22_A0_P2_out" dir="out" link="Link34" />
                 <Link pin="O_C22_A0_P3_out" dir="out" link="Link18" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP10" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-648 " location="{X=746, Y=236} " Growth="0 " GrowthB="0">
                 <Link pin="I_C30_A0_P1_in" dir="in" link="Link18" />
-                <Link pin="O_C30_A0_P2_out" dir="out" link="Link36" />
+                <Link pin="O_C30_A0_P2_out" dir="out" link="Link35" />
                 <Link pin="O_C30_A0_P3_out" dir="out" link="Link19" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub1" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B1 " location="{X=421, Y=125} " Growth="0 " GrowthB="0">
-                <Link pin="I_C546_A0_P1_in" dir="in" link="Link42" />
-                <Link pin="O_C546_A0_P2_out" dir="out" link="Link25" />
+                <Link pin="I_C546_A0_P1_in" dir="in" link="Link41" />
+                <Link pin="O_C546_A0_P2_out" dir="out" link="Link24" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP11" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-1090 " location="{X=850, Y=269} " Growth="0 " GrowthB="0">
                 <Link pin="I_C34_A0_P1_in" dir="in" link="Link19" />
-                <Link pin="O_C34_A0_P2_out" dir="out" link="Link37" />
+                <Link pin="O_C34_A0_P2_out" dir="out" link="Link36" />
                 <Link pin="O_C34_A0_P3_out" dir="out" link="Link20" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub2" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B2 " location="{X=423, Y=304} " Growth="0 " GrowthB="0">
-                <Link pin="I_C399_A0_P1_in" dir="in" link="Link35" />
-                <Link pin="O_C399_A0_P2_out" dir="out" link="Link26" />
+                <Link pin="I_C399_A0_P1_in" dir="in" link="Link34" />
+                <Link pin="O_C399_A0_P2_out" dir="out" link="Link25" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP2" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-1833 " location="{X=958, Y=303} " Growth="0 " GrowthB="0">
                 <Link pin="I_C52_A0_P1_in" dir="in" link="Link20" />
-                <Link pin="O_C52_A0_P2_out" dir="out" link="Link38" />
+                <Link pin="O_C52_A0_P2_out" dir="out" link="Link37" />
                 <Link pin="O_C52_A0_P3_out" dir="out" link="Link21" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub3" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B3 " location="{X=425, Y=481.027} " Growth="0 " GrowthB="0">
-                <Link pin="I_C137_A0_P1_in" dir="in" link="Link36" />
-                <Link pin="O_C137_A0_P2_out" dir="out" link="Link27" />
+                <Link pin="I_C137_A0_P1_in" dir="in" link="Link35" />
+                <Link pin="O_C137_A0_P2_out" dir="out" link="Link26" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP3" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-3084 " location="{X=1063, Y=340} " Growth="0 " GrowthB="0">
                 <Link pin="I_C58_A0_P1_in" dir="in" link="Link21" />
-                <Link pin="O_C58_A0_P2_out" dir="out" link="Link39" />
+                <Link pin="O_C58_A0_P2_out" dir="out" link="Link38" />
                 <Link pin="O_C58_A0_P3_out" dir="out" link="Link22" />
             </Algorithm>
             <Algorithm name="EQ1940Single10" friendlyname="1 Channel - Double Precision " cell="phasecomp.AllPass-385 " location="{X=754, Y=198} " Growth="1 " GrowthB="0">
-                <Link pin="I_C465_A0_P1_in" dir="in" link="Link25" />
+                <Link pin="I_C465_A0_P1_in" dir="in" link="Link24" />
                 <Link pin="O_C465_A0_P2_out" dir="out" link="Link1" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub4" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B4 " location="{X=419, Y=655.7117} " Growth="0 " GrowthB="0">
-                <Link pin="I_C157_A0_P1_in" dir="in" link="Link37" />
-                <Link pin="O_C157_A0_P2_out" dir="out" link="Link28" />
+                <Link pin="I_C157_A0_P1_in" dir="in" link="Link36" />
+                <Link pin="O_C157_A0_P2_out" dir="out" link="Link27" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP4" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-5187 " location="{X=1171, Y=373} " Growth="0 " GrowthB="0">
                 <Link pin="I_C68_A0_P1_in" dir="in" link="Link22" />
-                <Link pin="O_C68_A0_P2_out" dir="out" link="Link40" />
+                <Link pin="O_C68_A0_P2_out" dir="out" link="Link39" />
                 <Link pin="O_C68_A0_P3_out" dir="out" link="Link23" />
             </Algorithm>
             <Algorithm name="AdderAlg2" friendlyname="Signal Mix " cell="phasecomp.Add1 " location="{X=873, Y=218} " Growth="2 " GrowthB="0">
                 <Link pin="I_C107_A0_P2_in" dir="in" link="Link1" />
-                <Link pin="I_C107_A0_P3_in" dir="in" link="Link26" />
+                <Link pin="I_C107_A0_P3_in" dir="in" link="Link25" />
                 <Link pin="O_C107_A0_P1_out" dir="out" link="Link0" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub5" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B5 " location="{X=420, Y=825.982} " Growth="0 " GrowthB="0">
-                <Link pin="I_C172_A0_P1_in" dir="in" link="Link38" />
-                <Link pin="O_C172_A0_P2_out" dir="out" link="Link29" />
+                <Link pin="I_C172_A0_P1_in" dir="in" link="Link37" />
+                <Link pin="O_C172_A0_P2_out" dir="out" link="Link28" />
             </Algorithm>
             <Algorithm name="CrossoverFilter2WayAlgDP5" friendlyname="2-Way Crossover Filter - Double Precision " cell="filterbank.Crossover-8724 " location="{X=1277, Y=412} " Growth="0 " GrowthB="0">
                 <Link pin="I_C81_A0_P1_in" dir="in" link="Link23" />
-                <Link pin="O_C81_A0_P2_out" dir="out" link="Link41" />
-                <Link pin="O_C81_A0_P3_out" dir="out" link="Link33" />
+                <Link pin="O_C81_A0_P2_out" dir="out" link="Link40" />
+                <Link pin="O_C81_A0_P3_out" dir="out" link="Link32" />
             </Algorithm>
             <Algorithm name="EQ1940Single11" friendlyname="1 Channel - Double Precision " cell="phasecomp.AllPass-648 " location="{X=949, Y=200} " Growth="1 " GrowthB="0">
                 <Link pin="I_C468_A0_P1_in" dir="in" link="Link0" />
                 <Link pin="O_C468_A0_P2_out" dir="out" link="Link2" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub6" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B6 " location="{X=421, Y=998.7386} " Growth="0 " GrowthB="0">
-                <Link pin="I_C192_A0_P1_in" dir="in" link="Link39" />
-                <Link pin="O_C192_A0_P2_out" dir="out" link="Link30" />
+                <Link pin="I_C192_A0_P1_in" dir="in" link="Link38" />
+                <Link pin="O_C192_A0_P2_out" dir="out" link="Link29" />
             </Algorithm>
             <Algorithm name="AdderAlg3" friendlyname="Signal Mix " cell="phasecomp.Add2 " location="{X=1061, Y=221} " Growth="2 " GrowthB="0">
                 <Link pin="I_C126_A0_P2_in" dir="in" link="Link2" />
-                <Link pin="I_C126_A0_P3_in" dir="in" link="Link27" />
+                <Link pin="I_C126_A0_P3_in" dir="in" link="Link26" />
                 <Link pin="O_C126_A0_P1_out" dir="out" link="Link3" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub7" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B7 " location="{X=418, Y=1168.964} " Growth="0 " GrowthB="0">
-                <Link pin="I_C207_A0_P1_in" dir="in" link="Link40" />
-                <Link pin="O_C207_A0_P2_out" dir="out" link="Link31" />
+                <Link pin="I_C207_A0_P1_in" dir="in" link="Link39" />
+                <Link pin="O_C207_A0_P2_out" dir="out" link="Link30" />
             </Algorithm>
             <Algorithm name="EQ1940Single13" friendlyname="1 Channel - Double Precision " cell="phasecomp.AllPass-1090 " location="{X=1143, Y=202} " Growth="1 " GrowthB="0">
                 <Link pin="I_C474_A0_P1_in" dir="in" link="Link3" />
                 <Link pin="O_C474_A0_P2_out" dir="out" link="Link4" />
             </Algorithm>
             <Algorithm name="MonoNoPostGainSub8" friendlyname="Mono RMS (No Post Gain) - Optimized " cell="compbank.Compressor-B8 " location="{X=421, Y=1341.721} " Growth="0 " GrowthB="0">
-                <Link pin="I_C222_A0_P1_in" dir="in" link="Link41" />
-                <Link pin="O_C222_A0_P2_out" dir="out" link="Link32" />
+                <Link pin="I_C222_A0_P1_in" dir="in" link="Link40" />
+                <Link pin="O_C222_A0_P2_out" dir="out" link="Link31" />
             </Algorithm>
             <Algorithm name="AdderAlg4" friendlyname="Signal Mix " cell="phasecomp.Add3 " location="{X=1257, Y=222} " Growth="2 " GrowthB="0">
                 <Link pin="I_C141_A0_P2_in" dir="in" link="Link4" />
-                <Link pin="I_C141_A0_P3_in" dir="in" link="Link28" />
+                <Link pin="I_C141_A0_P3_in" dir="in" link="Link27" />
                 <Link pin="O_C141_A0_P1_out" dir="out" link="Link5" />
             </Algorithm>
             <Algorithm name="EQ1940Single18" friendlyname="1 Channel - Double Precision " cell="phasecomp.AllPass-1833 " location="{X=1335, Y=198.5638} " Growth="1 " GrowthB="0">
@@ -125,7 +125,7 @@
             </Algorithm>
             <Algorithm name="AdderAlg5" friendlyname="Signal Mix " cell="phasecomp.Add4 " location="{X=1446, Y=217} " Growth="2 " GrowthB="0">
                 <Link pin="I_C176_A0_P2_in" dir="in" link="Link6" />
-                <Link pin="I_C176_A0_P3_in" dir="in" link="Link29" />
+                <Link pin="I_C176_A0_P3_in" dir="in" link="Link28" />
                 <Link pin="O_C176_A0_P1_out" dir="out" link="Link7" />
             </Algorithm>
             <Algorithm name="EQ1940Single23" friendlyname="1 Channel - Double Precision " cell="phasecomp.AllPass-3024 " location="{X=1527, Y=201.4362} " Growth="1 " GrowthB="0">
@@ -134,7 +134,7 @@
             </Algorithm>
             <Algorithm name="AdderAlg6" friendlyname="Signal Mix " cell="phasecomp.Add5 " location="{X=1638, Y=225} " Growth="2 " GrowthB="0">
                 <Link pin="I_C211_A0_P2_in" dir="in" link="Link8" />
-                <Link pin="I_C211_A0_P3_in" dir="in" link="Link30" />
+                <Link pin="I_C211_A0_P3_in" dir="in" link="Link29" />
                 <Link pin="O_C211_A0_P1_out" dir="out" link="Link9" />
             </Algorithm>
             <Algorithm name="EQ1940Single26" friendlyname="1 Channel - Double Precision " cell="phasecomp.AllPass-5187 " location="{X=1726, Y=204.8189} " Growth="1 " GrowthB="0">
@@ -143,7 +143,7 @@
             </Algorithm>
             <Algorithm name="AdderAlg7" friendlyname="Signal Mix " cell="phasecomp.Add6 " location="{X=1849, Y=228} " Growth="2 " GrowthB="0">
                 <Link pin="I_C242_A0_P2_in" dir="in" link="Link10" />
-                <Link pin="I_C242_A0_P3_in" dir="in" link="Link31" />
+                <Link pin="I_C242_A0_P3_in" dir="in" link="Link30" />
                 <Link pin="O_C242_A0_P1_out" dir="out" link="Link11" />
             </Algorithm>
             <Algorithm name="EQ1940Single28" friendlyname="1 Channel - Double Precision " cell="phasecomp.AllPass-8724 " location="{X=1926, Y=211} " Growth="1 " GrowthB="0">
@@ -152,7 +152,7 @@
             </Algorithm>
             <Algorithm name="AdderAlg8" friendlyname="Signal Mix " cell="phasecomp.Add7 " location="{X=2054, Y=232} " Growth="2 " GrowthB="0">
                 <Link pin="I_C263_A0_P2_in" dir="in" link="Link12" />
-                <Link pin="I_C263_A0_P3_in" dir="in" link="Link32" />
+                <Link pin="I_C263_A0_P3_in" dir="in" link="Link31" />
                 <Link pin="O_C263_A0_P1_out" dir="out" link="Link13" />
             </Algorithm>
             <Algorithm name="Gain1940AlgNS1" friendlyname="Gain (no slew) " cell="phasecomp.Gain1 " location="{X=2128, Y=222} " Growth="0 " GrowthB="0">
@@ -169,20 +169,20 @@
             </Algorithm>
             <Algorithm name="AdderAlg9" friendlyname="Signal Mix " cell="phasecomp.Add8 " location="{X=2440, Y=307} " Growth="2 " GrowthB="0">
                 <Link pin="I_C301_A0_P2_in" dir="in" link="Link16" />
-                <Link pin="I_C301_A0_P3_in" dir="in" link="Link33" />
-                <Link pin="O_C301_A0_P1_out" dir="out" link="Link34" />
+                <Link pin="I_C301_A0_P3_in" dir="in" link="Link32" />
+                <Link pin="O_C301_A0_P1_out" dir="out" link="Link33" />
             </Algorithm>
-            <Algorithm name="MonoPeak_StResHiRange_NoExt_NoPos1" friendlyname="Mono Peak Full Range with Ext. Detect (No Post Gain) " cell="SoftClip " location="{X=773, Y=90} " Growth="0 " GrowthB="0">
-                <Link pin="I_C72_A0_P1_in" dir="in" link="Link34" />
-                <Link pin="I_C72_A0_P2_in" dir="in" link="Link34" />
-                <Link pin="O_C72_A0_P3_out" dir="out" link="Link24" />
-            </Algorithm>
-            <Algorithm name="Gain1940AlgNS4" friendlyname="Gain (no slew) " cell="output_headroom " location="{X=904, Y=133} " Growth="0 " GrowthB="0">
-                <Link pin="I_C11_A0_P1_in" dir="in" link="Link24" />
+            <Algorithm name="Gain1940AlgNS4" friendlyname="Gain (no slew) " cell="output_headroom " location="{X=733, Y=129} " Growth="0 " GrowthB="0">
+                <Link pin="I_C11_A0_P1_in" dir="in" link="Link33" />
                 <Link pin="O_C11_A0_P2_out" dir="out" link="Link44" />
             </Algorithm>
+            <Algorithm name="MonoPeak_StResHiRange_NoExt_NoPos1" friendlyname="Mono Peak Full Range with Ext. Detect (No Post Gain) " cell="SoftClip " location="{X=866, Y=88} " Growth="0 " GrowthB="0">
+                <Link pin="I_C72_A0_P1_in" dir="in" link="Link44" />
+                <Link pin="I_C72_A0_P2_in" dir="in" link="Link44" />
+                <Link pin="O_C72_A0_P3_out" dir="out" link="Link43" />
+            </Algorithm>
             <Algorithm name="ADAU1787SigmaOutAlg1" friendlyname="ADAU1787 SDSP OUT " cell="SDSP OUT1 " location="{X=1113, Y=146} " Growth="0 " GrowthB="0">
-                <Link pin="I_C360_A0_P1_in" dir="in" link="Link44" />
+                <Link pin="I_C360_A0_P1_in" dir="in" link="Link43" />
             </Algorithm>
         </Schematic>
     </IC>
