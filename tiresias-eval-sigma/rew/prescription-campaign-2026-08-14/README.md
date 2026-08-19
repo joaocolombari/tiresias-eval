@@ -9,11 +9,11 @@ EVAL-ADAU1787Z e comparar, para 45, 65 e 85 dB SPL equivalentes:
 - referência CEC1 `one_mic_reference` executada no openMHA 4.17.0.
 
 A referência openMHA preserva a calibração de saída e o **soft clip** da cadeia
-CEC1. Isso é deliberado: representa o baseline completo da literatura. Como o
-Sigma atual não tem esse estágio de limitação, o relatório separa
-`medido–modelo Sigma`, `medido–openMHA` e `modelo Sigma–openMHA`; assim uma
-diferença causada pela arquitetura, especialmente nos perfis severos, não será
-confundida com erro de carregamento das LUTs.
+CEC1. O Sigma implementa esse estágio com o bloco `SoftClip` e a LUT nominal
+alinhada ao word de underflow, carregada por
+`../../scripts/softclip/softclip_apply_cec1.sss`. A versão
+`softclip_apply_cec1_calibrated.sss` é somente um artefato diagnóstico e não
+deve ser usada na campanha.
 
 São **33 medições**: três referências unity comuns e três curvas para cada um
 dos dez perfis. A lista e os nomes exatos estão em
@@ -66,24 +66,40 @@ pode ser movida para depois do bloco.
 
 **Atenção:** cada novo **Link Compile Download** retorna `output_headroom` ao
 valor salvo no projeto. Se precisar recompilar ou reiniciar, execute de novo
-`campaign_apply_output_headroom.sss` antes de medir.
+`campaign_apply_output_headroom.sss` antes de medir. O download também repõe a
+curva salva no projeto: restaure o SoftClip transparente antes das referências
+unity ou carregue novamente a LUT nominal antes das prescrições, conforme a
+etapa em que estiver.
+
+## SoftClip obrigatório
+
+As três referências unity são medidas com o SoftClip transparente. Antes
+delas, com o estímulo parado, execute
+`../../scripts/softclip/softclip_restore_transparent.sss` e exija `PASS`.
+
+Depois das três referências unity e antes de N1, pare o estímulo e execute
+`../../scripts/softclip/softclip_apply_cec1.sss`. Exija `PASS` e mantenha essa
+LUT inalterada durante N1–N7 e S1–S3. Não execute a versão `calibrated`.
 
 ## Sequência de bancada
 
 1. Faça o checklist em `GO_NO_GO_CHECKLIST.md`.
-2. Com o projeto em unity e a atenuação de saída confirmada, meça as três
-   referências na ordem 45, 65 e 85 dB SPL. Salve `.mdat` e exporte `.txt` nos
-   caminhos da primeira parte do manifesto.
-3. Para cada perfil, na ordem `N1`, `N2`, `N3`, `N4`, `N5`, `N6`, `N7`, `S1`,
+2. Com o projeto em unity, a atenuação de saída confirmada e o SoftClip
+   transparente, meça as três referências na ordem 45, 65 e 85 dB SPL. Salve
+   `.mdat` e exporte `.txt` nos caminhos da primeira parte do manifesto.
+3. Pare o estímulo, execute `../../scripts/softclip/softclip_apply_cec1.sss` e
+   prossiga somente se a janela mostrar `PASS`.
+4. Para cada perfil, na ordem `N1`, `N2`, `N3`, `N4`, `N5`, `N6`, `N7`, `S1`,
    `S2`, `S3`:
    1. execute `../../scripts/generated/<perfil>/<perfil>_apply_prescription.sss`;
    2. prossiga somente se a janela mostrar `PASS`;
    3. meça 45, 65 e 85 dB SPL nessa ordem, usando os nomes exatos do manifesto;
    4. execute `../../scripts/generated/<perfil>/<perfil>_restore_unity.sss`;
    5. prossiga somente se a restauração mostrar `PASS`.
-4. Ao final, execute `../../scripts/campaign_restore_output_headroom.sss` para
-   devolver o bloco `output_headroom` a 0 dB. Os volumes dos DACs permanecem
-   inalterados durante toda a rotina.
+5. Ao final, com o estímulo parado, execute
+   `../../scripts/softclip/softclip_restore_transparent.sss` e depois
+   `../../scripts/campaign_restore_output_headroom.sss`. Os volumes dos DACs
+   permanecem inalterados durante toda a rotina.
 
 O start delay de 2 s deixa o estado do compressor decair antes de cada sweep.
 Não altere a ordem dos níveis: mantê-la idêntica em todos os perfis reduz uma
@@ -92,8 +108,8 @@ fonte de variação sistemática.
 ## Se houver falha
 
 - `ABORT`, `ERROR` ou ausência de `PASS`: não meça esse estado.
-- Faça **Link Compile Download**, reaplique a atenuação de saída e repita o
-  perfil desde o começo.
+- Faça **Link Compile Download**, reaplique a atenuação de saída, carregue a
+  LUT nominal com `softclip_apply_cec1.sss` e repita o perfil desde o começo.
 - Antes de reutilizar as três referências unity, confira em 1 kHz e
   −39,85 dBV que o nível voltou ao valor inicial dentro de 0,10 dB. Se não
   voltou, refaça as três curvas unity.

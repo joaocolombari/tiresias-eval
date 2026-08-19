@@ -9,6 +9,7 @@
 - [ ] Projeto `tiresias-eval.dspproj` aberto no SigmaStudio 4.7.
 - [ ] **Link Compile Download** concluído sem erro.
 - [ ] `campaign_apply_output_headroom.sss` retornou `PASS`.
+- [ ] `softclip_restore_transparent.sss` retornou `PASS` antes das referências unity.
 - [ ] `CAMPAIGN_HEADROOM_AUDIT.csv`: 30 linhas em `PASS`.
 - [ ] Resposta unity plana e sem clipping.
 
@@ -18,6 +19,8 @@
 - [ ] `unity_65dBSPL_-39p85dBV`
 - [ ] `unity_85dBSPL_-19p85dBV`
 - [ ] Os três `.mdat` e `.txt` foram salvos nos caminhos do manifesto.
+- [ ] Estímulo parado e `softclip_apply_cec1.sss` retornou `PASS` antes de N1.
+- [ ] A versão `softclip_apply_cec1_calibrated.sss` não foi usada.
 
 ## Perfis
 
@@ -41,6 +44,7 @@ restauração e ausência de clipping.
 
 - [ ] Os 33 `.txt` e os 33 `.mdat` existem nos caminhos do manifesto.
 - [ ] Todos os campos de execução do manifesto foram preenchidos.
+- [ ] `softclip_restore_transparent.sss` retornou `PASS` após a última prescrição.
 - [ ] `campaign_restore_output_headroom.sss` retornou `PASS`.
 - [ ] Projeto, REW e dados brutos foram fechados sem sobrescrever arquivos.
 - [ ] O analisador terminou sem arquivos ausentes ou avisos de integridade.

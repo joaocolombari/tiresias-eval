@@ -101,7 +101,8 @@ o openMHA.
 3. Com seno de 1 kHz, meça a referência unity em ordem crescente em
    `-59,85`, `-39,85` e `-19,85 dBV`, esperando 1 s em cada ponto.
 4. Pare o tom, execute `N7_apply_prescription.sss` e depois
-   `softclip_apply_cec1_calibrated.sss`; exija `PASS` nos dois scripts.
+   `softclip_apply_cec1.sss`; exija `PASS` nos dois scripts. A versão
+   `softclip_apply_cec1_calibrated.sss` não é usada na campanha.
 5. Repita os mesmos três níveis, na mesma ordem e com a mesma espera, anotando
    a saída `N7 + SoftClip`.
 6. Pare o tom, execute `softclip_restore_transparent.sss` e
@@ -129,9 +130,11 @@ As saídas absolutas da tabela são apenas uma verificação de sanidade. Se o
 unity novo mudar, o critério quantitativo continua sendo o ganho relativo
 medido na mesma sessão.
 
-**GO:** erro absoluto `≤ 2,0 dB` nos três níveis, saída monotônica, ausência de
-clipping e unity antes/depois dentro de `0,10 dB`. Se falhar, não ajustar a LUT
-contra esses três targets: registrar a diferença como limitação arquitetural.
+**GO quantitativo:** erro absoluto `≤ 2,0 dB` em 65 e 85 dB SPL, saída
+monotônica, ausência de clipping e unity antes/depois dentro de `0,10 dB`.
+O nível de 45 dB SPL é secundário e condicionado ao SNR, conforme definido a
+priori na configuração da campanha. Se falhar, não ajustar a LUT contra esses
+targets: registrar a diferença como limitação arquitetural.
 
 ### Diagnóstico da ordem dos blocos — 19/08/2026
 
@@ -206,7 +209,8 @@ Os dados numéricos deste gate estão preservados em
 
 Somente depois do GO:
 
-1. Mantenha `output_headroom = -22 dB` e a LUT calibrada durante toda a sessão.
+1. Mantenha `output_headroom = -22 dB` e a LUT nominal alinhada ao underflow,
+   carregada por `softclip_apply_cec1.sss`, durante todas as prescrições.
 2. Refaça as três referências unity.
 3. Para N1–N7 e S1–S3, carregue a prescrição, exija `PASS` e meça 45, 65 e
    85 dB SPL equivalentes, sempre em ordem crescente.
