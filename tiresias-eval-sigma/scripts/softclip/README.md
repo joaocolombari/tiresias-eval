@@ -13,9 +13,11 @@ The addresses come from export commit `6286b03`, whose signal path is
 - `SoftClip decay`: `0x2918`, expected to contain the exported value
   `0x0000013D`;
 
-The table maps detector levels from `-90` through `+42 dBFS` in 3 dB steps.
-The first 39 words cover the graph's visible `-90` through `+24 dBFS` range;
-the final six words continue the curve above the visible range.
+The first table word is the underflow value for inputs below `-90 dBFS`.
+Word 1 is `-90 dBFS`, word 2 is `-87 dBFS`, and subsequent words retain the
+3 dB spacing. This convention follows the ADI compressor-table documentation;
+the previous script incorrectly assigned `-90 dBFS` to word 0 and therefore
+applied approximately one grid step too much attenuation.
 
 `softclip_apply_cec1.sss` implements:
 
@@ -39,7 +41,8 @@ the openMHA transfer in relative-gain measurements.
 1. Stop the REW stimulus.
 2. Run **Link Compile Download**.
 3. If required, run `../campaign_apply_output_headroom.sss`.
-4. Run `softclip_apply_cec1.sss` and require its `PASS` message.
+4. Run `softclip_apply_cec1.sss` and require its `PASS` message. This
+   underflow-aligned nominal table is the campaign candidate.
 5. Load a prescription and perform the measurement.
 6. Use `softclip_restore_transparent.sss` to disable the soft clip without a
    new compile/download.
@@ -60,6 +63,14 @@ The analyzer produces `softclip_apply_cec1_calibrated.sss` only when the
 measured detector mapping is monotonic and spans both CEC1 knees.
 openMHA output values are used only as a subsequent validation gate, never as
 fit targets.
+
+The calibrated table is retained as a diagnostic artifact, but it is not the
+current campaign candidate. With N7 active at `-39.85 dBV`, the transparent
+and identification outputs were `-18.82` and `-32.92 dBV`, respectively,
+selecting word index `28.205`. The unity-sine detector calibration did not
+remain invariant after the multiband prescription changed the signal crest
+factor. The word-aligned nominal table avoids transferring that
+waveform-dependent RMS-to-peak map between operating states.
 
 The 3 dB table spacing and gain-table representation follow ADI's
 "Compressor Table Format - Changing compressors at run-time" documentation:

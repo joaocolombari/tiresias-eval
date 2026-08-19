@@ -161,6 +161,29 @@ Os `-22 dB` contêm a diferença de calibração de `-20 dB` entre
 `2 dB` de margem. A curva do SoftClip também é deslocada em `2 dB`, para
 threshold `-27,036 dBFS` e ceiling `-22 dBFS`.
 
+### Identificação operacional e correção do underflow — 19/08/2026
+
+Com N7 carregada, `output_headroom = -22 dB` e entrada de `-39,85 dBV`, foram
+medidos:
+
+| Estado do SoftClip | Saída |
+|---|---:|
+| Transparente | -18,82 dBV |
+| LUT de identificação | -32,92 dBV |
+
+A atenuação de identificação de `-14,10 dB` seleciona o índice fracionário
+`28,205`, considerando a interpolação em ganho linear. A LUT calibrada aplica
+aproximadamente `-20,06 dB` nesse índice, reproduzindo a saída limitada de
+`-38,88 dBV`; portanto escrita, endereço e interpolação foram validados.
+
+O erro restante estava na indexação nominal: o primeiro word armazenado é o
+valor de underflow para entradas abaixo de `-90 dBFS`; o ponto de `-90 dBFS`
+é o word 1. A versão anterior começava `-90 dBFS` no word 0. A LUT
+`softclip_apply_cec1.sss` foi deslocada um word para respeitar a convenção da
+ADI. No índice medido, ela prevê `-14,87 dB` de atenuação e saída próxima de
+`-33,69 dBV`, diferença prevista de `-0,71 dB` frente ao target openMHA desse
+ponto.
+
 ## Fase C — campanha das dez prescrições
 
 Somente depois do GO:

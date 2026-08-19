@@ -15,12 +15,13 @@ byte[] headroomExpected = new byte[] { 0x00, 0x0A, 0x2A, 0xDB }; // -22 dB
 byte[] holdExpected = new byte[] { 0x00, 0x00, 0x00, 0x00 };     // 0 ms
 byte[] decayExpected = new byte[] { 0x00, 0x00, 0x01, 0x3D };    // exported project value
 
-// Each word is a linear gain in 5.23 format. Detector levels are
-// -90, -87, ..., +42 dBFS. The requested transfer is:
+// Each word is a linear gain in 5.23 format. Word 0 is the underflow value;
+// words 1, 2, ... correspond to -90, -87, ... dBFS. The requested transfer is:
 //   y = x                                  for x <= -27.036 dBFS
 //   y = -27.036 + 0.2 * (x + 27.036)       until y reaches -22 dBFS
 //   y = -22                                above that point
 byte[][] targetWords = new byte[][] {
+    new byte[] { 0x00, 0x80, 0x00, 0x00 },
     new byte[] { 0x00, 0x80, 0x00, 0x00 },
     new byte[] { 0x00, 0x80, 0x00, 0x00 },
     new byte[] { 0x00, 0x80, 0x00, 0x00 },
@@ -64,8 +65,7 @@ byte[][] targetWords = new byte[][] {
     new byte[] { 0x00, 0x00, 0x52, 0x4F },
     new byte[] { 0x00, 0x00, 0x3A, 0x45 },
     new byte[] { 0x00, 0x00, 0x29, 0x41 },
-    new byte[] { 0x00, 0x00, 0x1D, 0x34 },
-    new byte[] { 0x00, 0x00, 0x14, 0xAD }
+    new byte[] { 0x00, 0x00, 0x1D, 0x34 }
 };
 
 try
