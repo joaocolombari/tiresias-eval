@@ -31,7 +31,7 @@
   },
   "output_headroom": {
     "method": "SigmaDSP output_headroom gain block",
-    "external_byte_address_hex": "0x285C",
+    "external_byte_address_hex": "0x2924",
     "parameter_word_hex": "0x000A2ADB",
     "attenuation_db": -22.0,
     "dac_volume_policy": "DAC_VOL0 and DAC_VOL1 are not changed",

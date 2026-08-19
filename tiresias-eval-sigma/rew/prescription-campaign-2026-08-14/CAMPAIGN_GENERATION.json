@@ -1,9 +1,9 @@
 {
   "campaign_config": "tiresias-eval-sigma/config/prescription_campaign_2026-08-14.json",
-  "campaign_config_sha256": "765f634923fff8ba3ab57bca3e5085706e1e5d4ec3190677489ffe932d2335e7",
-  "prescription_config_sha256": "dd048de8c38b0344ffff5f499f6c1b500d41b4a29b56160d6d3872fd63a27a2e",
+  "campaign_config_sha256": "ae8d5ca58741e0d389843f7b919fb2d085d0e8b2dc978bf1769e32c8f3b8e4d2",
+  "prescription_config_sha256": "900899a69bbc8cb61dfb3e2a1404c4cfdcbca1806063e5701690662ef77567bb",
   "detector_calibration_sha256": "ff7519d9dbd5cbbcb940d6b5e23a648977f5829aea428309824d121924df908c",
-  "sigma_export_sha256": "c5b56748de94da85e1fe858745e711527811ae07db5b848c7221a7ddccce871d",
+  "sigma_export_sha256": "1347100cd24e61bd53d86969c0d8bcc432d32497455f9aa5bba33fe26db986ae",
   "profiles": [
     "N1",
     "N2",

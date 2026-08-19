@@ -2,17 +2,18 @@
 // Apply detector-calibrated CEC1/openMHA-compatible output soft clip to the ADAU1787 Sigma core.
 // Detector coordinates calibrated from softclip_detector_calibration.csv.
 // The CEC1 curve is sampled on the measured monotonic, piecewise-linear detector map.
-// 10 points included; 1 transparent-path outlier(s) excluded.
+// 11 points included; 0 transparent-path outlier(s) excluded.
 // Stop the REW stimulus before running this script.
 
 string icName = "IC 1";
 string stage = "pre-flight";
-int tableAddress = 0x2860;
-int holdAddress = 0x2914;
-int decayAddress = 0x2918;
+int tableAddress = 0x285C;
+int holdAddress = 0x2910;
+int decayAddress = 0x2914;
 int tableWords = 45;
 
-byte[] headroomExpected = new byte[] { 0x00, 0x0A, 0x2A, 0xDB }; // -22 dB at 0x285C
+int headroomAddress = 0x2924;
+byte[] headroomExpected = new byte[] { 0x00, 0x0A, 0x2A, 0xDB }; // -22 dB
 byte[] holdExpected = new byte[] { 0x00, 0x00, 0x00, 0x00 };     // 0 ms
 byte[] decayExpected = new byte[] { 0x00, 0x00, 0x01, 0x3D };    // exported project value
 
@@ -22,24 +23,24 @@ byte[] decayExpected = new byte[] { 0x00, 0x00, 0x01, 0x3D };    // exported pro
 //   y = -27.036 + 0.2 * (x + 27.036)       until y reaches -22 dBFS
 //   y = -22                                above that point
 byte[][] targetWords = new byte[][] {
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  0: input -208.549619 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  1: input -198.936746 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  2: input -189.323872 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  3: input -179.710999 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  4: input -170.098126 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  5: input -160.485253 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  6: input -150.872380 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  7: input -141.259507 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  8: input -131.646634 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  9: input -122.033761 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 10: input -112.420888 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 11: input -102.808014 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 12: input -93.195141 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 13: input -83.582268 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 14: input -73.969395 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 15: input -64.356522 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 16: input -54.743649 dBFS peak, gain +0.000000 dB
-    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 17: input -45.130776 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  0: input -237.709288 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  1: input -226.314763 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  2: input -214.920238 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  3: input -203.525713 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  4: input -192.131188 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  5: input -180.736663 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  6: input -169.342138 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  7: input -157.947614 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  8: input -146.553089 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  9: input -135.158564 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 10: input -123.764039 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 11: input -112.369514 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 12: input -100.974989 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 13: input -89.580464 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 14: input -78.185939 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 15: input -66.791414 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 16: input -55.396889 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 17: input -44.603675 dBFS peak, gain +0.000000 dB
     new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 18: input -37.772419 dBFS peak, gain +0.000000 dB
     new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 19: input -32.894042 dBFS peak, gain +0.000000 dB
     new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 20: input -28.792740 dBFS peak, gain +0.000000 dB
@@ -75,11 +76,11 @@ try
         throw new System.Exception("Internal table length mismatch");
 
     byte[] actual = new byte[4];
-    ss.ICRegisterRead(icName, 0x285C, 4, ref actual);
+    ss.ICRegisterRead(icName, headroomAddress, 4, ref actual);
     for (int k = 0; k < 4; k++)
         if (actual[k] != headroomExpected[k])
             throw new System.OperationCanceledException(
-                "output_headroom is not -22 dB at 0x285C");
+                "output_headroom is not -22 dB at 0x2924");
 
     actual = new byte[4];
     ss.ICRegisterRead(icName, holdAddress, 4, ref actual);

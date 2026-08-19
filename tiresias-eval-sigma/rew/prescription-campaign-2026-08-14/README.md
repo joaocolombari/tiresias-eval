@@ -51,7 +51,8 @@ Antes de qualquer curva, execute **Link Compile Download** e depois
 `PASS`.
 
 O script grava `0x000A2ADB` no bloco SigmaDSP `output_headroom`, no endereço
-externo `0x285C`, aplicando −22 dB. Ele não lê nem modifica `DAC_VOL0/1`. A
+externo `0x2924`, aplicando −22 dB depois do SoftClip. Ele não lê nem modifica
+`DAC_VOL0/1`. A
 atenuação é necessária porque prescrições severas podem produzir mais de 0 dBV
 sem ela. Os 30 casos estão em `CAMPAIGN_HEADROOM_AUDIT.csv` e todos devem estar
 como `PASS`.

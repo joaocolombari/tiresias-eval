@@ -169,6 +169,7 @@ O roteiro operacional, os nomes exatos das 33 medições e o checklist estão em
 
 Para essa campanha, depois de **Link Compile Download** é obrigatório executar
 `campaign_apply_output_headroom.sss`. Ele aplica −22 dB exclusivamente ao bloco
-SigmaDSP `output_headroom`, no endereço externo `0x285C`. `DAC_VOL0/1` não são
+SigmaDSP `output_headroom`, no endereço externo `0x2924`, depois do SoftClip.
+`DAC_VOL0/1` não são
 lidos nem modificados. Execute `campaign_restore_output_headroom.sss` somente
 depois da última medição.

@@ -2,8 +2,8 @@
   "method": "independent SigmaDSP detector-index identification",
   "calibration_file": "tiresias-eval-sigma/rew/prescription-campaign-2026-08-14/raw/softclip/softclip_detector_calibration.csv",
   "complete_points": 11,
-  "included_points": 10,
-  "excluded_points": 1,
+  "included_points": 11,
+  "excluded_points": 0,
   "transparent_loop_delta_median_db": -0.4099999999999966,
   "transparent_delta_outlier_threshold_db": 0.5,
   "detector_input_range_dbfs_peak": [
@@ -12,22 +12,15 @@
   ],
   "linear_fit_diagnostic_only": {
     "equation": "index = intercept + slope * detector_input_dbfs_peak",
-    "intercept": 27.995258042484252,
-    "slope_index_per_db": 0.25426431924069176,
-    "r_squared": 0.9725081714205996
+    "intercept": 27.938969899742727,
+    "slope_index_per_db": 0.25016386082126485,
+    "r_squared": 0.9747166229845977
   },
   "resampling": {
     "method": "monotonic piecewise-linear interpolation",
     "endpoint_behavior": "linear extrapolation using nearest measured segment"
   },
-  "excluded_rows": [
-    {
-      "source_input_dbv": -54.85,
-      "transparent_output_dbv": -52.26,
-      "identification_output_dbv": -63.66,
-      "reason": "transparent path differs from the session median by 3.000 dB"
-    }
-  ],
+  "excluded_rows": [],
   "cec1_curve": {
     "threshold_dbfs_peak": -27.036,
     "compression_slope": 0.2,

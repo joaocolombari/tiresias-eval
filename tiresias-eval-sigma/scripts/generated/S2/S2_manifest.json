@@ -3,11 +3,11 @@
   "ear": "left",
   "source": {
     "config": "tiresias-eval-sigma/config/prescription_eval.json",
-    "config_sha256": "dd048de8c38b0344ffff5f499f6c1b500d41b4a29b56160d6d3872fd63a27a2e",
+    "config_sha256": "900899a69bbc8cb61dfb3e2a1404c4cfdcbca1806063e5701690662ef77567bb",
     "prescription": "experiments/prescriptions/generated/prescriptions/S2.json",
     "prescription_sha256": "89f585e0510bd6d0e0df1ed4ebc2ca5a1c1183a47e71b8e279c7aef8b8f60b32",
     "sigma_export_xml": "tiresias-eval-sigma/tiresias-eval-export/tiresias-eval.xml",
-    "sigma_export_xml_sha256": "c5b56748de94da85e1fe858745e711527811ae07db5b848c7221a7ddccce871d",
+    "sigma_export_xml_sha256": "1347100cd24e61bd53d86969c0d8bcc432d32497455f9aa5bba33fe26db986ae",
     "detector_calibration": "tiresias-eval-sigma/config/detector_calibration_eval.json",
     "detector_calibration_sha256": "ff7519d9dbd5cbbcb940d6b5e23a648977f5829aea428309824d121924df908c"
   },
@@ -385,7 +385,7 @@
     "temporary_guard_db": -24.0,
     "temporary_guard_word_hex": "0x00081385",
     "global_output_headroom_db": -22.0,
-    "global_output_headroom_status": "implemented by SigmaDSP output_headroom at external byte address 0x285C; DAC_VOL0/1 unchanged",
+    "global_output_headroom_status": "implemented after SoftClip by SigmaDSP output_headroom at external byte address 0x2924; DAC_VOL0/1 unchanged",
     "maximum_target_band_validation_model_abs_error_db": 0.00021191299185274737
   },
   "addresses": {

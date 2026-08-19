@@ -79,14 +79,13 @@ CSV da LUT, JSON de metadados e relatório do ajuste.
 ### Resultado da Fase A — 19/08/2026
 
 - 11 pares completos recebidos;
-- 10 pares incluídos;
+- 11 pares incluídos;
 - mediana do ganho do caminho transparente: `-0,410 dB`;
 - faixa identificada no detector: `-51,219` a `-1,219 dBFS peak`;
 - índices medidos estritamente monotônicos;
-- um ponto excluído: entrada `-54,85 dBV`, saída transparente anotada como
-  `-52,26 dBV`. O desvio de `+3,000 dB` em relação à mediana da sessão é
-  incompatível com os outros dez pontos. O valor bruto não foi alterado;
-- a regressão linear dá `R² = 0,9725`, confirmando que uma reta não descreve
+- nenhum ponto excluído após a correção do valor transparente em `-54,85 dBV`
+  para `-55,26 dBV`;
+- a regressão linear dá `R² = 0,9747`, confirmando que uma reta não descreve
   adequadamente a coordenada do detector. A LUT foi, portanto, gerada pela
   interpolação monotônica independente descrita acima.
 

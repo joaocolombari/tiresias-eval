@@ -5,12 +5,13 @@
 
 string icName = "IC 1";
 string stage = "pre-flight";
-int tableAddress = 0x2860;
-int holdAddress = 0x2914;
-int decayAddress = 0x2918;
+int tableAddress = 0x285C;
+int holdAddress = 0x2910;
+int decayAddress = 0x2914;
 int tableWords = 45;
 
-byte[] headroomExpected = new byte[] { 0x00, 0x0A, 0x2A, 0xDB }; // -22 dB at 0x285C
+int headroomAddress = 0x2924;
+byte[] headroomExpected = new byte[] { 0x00, 0x0A, 0x2A, 0xDB }; // -22 dB
 byte[] holdExpected = new byte[] { 0x00, 0x00, 0x00, 0x00 };     // 0 ms
 byte[] decayExpected = new byte[] { 0x00, 0x00, 0x01, 0x3D };    // exported project value
 
@@ -73,11 +74,11 @@ try
         throw new System.Exception("Internal table length mismatch");
 
     byte[] actual = new byte[4];
-    ss.ICRegisterRead(icName, 0x285C, 4, ref actual);
+    ss.ICRegisterRead(icName, headroomAddress, 4, ref actual);
     for (int k = 0; k < 4; k++)
         if (actual[k] != headroomExpected[k])
             throw new System.OperationCanceledException(
-                "output_headroom is not -22 dB at 0x285C");
+                "output_headroom is not -22 dB at 0x2924");
 
     actual = new byte[4];
     ss.ICRegisterRead(icName, holdAddress, 4, ref actual);

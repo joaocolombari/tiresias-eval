@@ -3,13 +3,14 @@
 These scripts program the `SoftClip` peak dynamics block directly. They avoid
 manual manipulation of the SigmaStudio graph.
 
-The addresses come from the firmware export at commit `5773309`:
+The addresses come from the export with `SoftClip` before `output_headroom`:
 
-- `output_headroom`: `0x285C`, expected to contain `-22 dB`;
-- `SoftClip` table: `0x2860`, 45 four-byte 5.23 gain words;
-- `SoftClip hold`: `0x2914`, expected to contain zero;
-- `SoftClip decay`: `0x2918`, expected to contain the exported value
-  `0x0000013D`.
+- `SoftClip` table: `0x285C`, 45 four-byte 5.23 gain words;
+- `SoftClip hold`: `0x2910`, expected to contain zero;
+- `SoftClip decay`: `0x2914`, expected to contain the exported value
+  `0x0000013D`;
+- `output_headroom`: `0x2924`, expected to contain `-22 dB` during the
+  campaign. The block is after `SoftClip` in the signal path.
 
 The table maps detector levels from `-90` through `+42 dBFS` in 3 dB steps.
 The first 39 words cover the graph's visible `-90` through `+24 dBFS` range;
@@ -49,7 +50,7 @@ The procedure uses `softclip_detector_identification.sss`, whose gain is
 `experiments/prescriptions/scripts/calibrate_sigma_softclip.py`.
 
 The analyzer produces `softclip_apply_cec1_calibrated.sss` only when the
-measured detector mapping is sufficiently linear and spans both CEC1 knees.
+measured detector mapping is monotonic and spans both CEC1 knees.
 openMHA output values are used only as a subsequent validation gate, never as
 fit targets.
 
