@@ -1,9 +1,9 @@
 {
   "campaign_config": "tiresias-eval-sigma/config/prescription_campaign_2026-08-14.json",
-  "campaign_config_sha256": "0d7a9d1a21331bc7ec7d7899d22a3f06eef798f243bb1c9223591093e71c7b20",
-  "prescription_config_sha256": "2a8ed8d441409f91378a6d367bb4b553d37b067c0df76e02cf7e37f39d8cbc6c",
+  "campaign_config_sha256": "765f634923fff8ba3ab57bca3e5085706e1e5d4ec3190677489ffe932d2335e7",
+  "prescription_config_sha256": "dd048de8c38b0344ffff5f499f6c1b500d41b4a29b56160d6d3872fd63a27a2e",
   "detector_calibration_sha256": "ff7519d9dbd5cbbcb940d6b5e23a648977f5829aea428309824d121924df908c",
-  "sigma_export_sha256": "d907204a90a9b9f7770d3a82249f2f7c4ce6edaf73f3cf7b81ea3204c1cd7f47",
+  "sigma_export_sha256": "c5b56748de94da85e1fe858745e711527811ae07db5b848c7221a7ddccce871d",
   "profiles": [
     "N1",
     "N2",
@@ -30,5 +30,5 @@
   "unity_measurement_count": 3,
   "prescription_measurement_count": 30,
   "headroom_audit": "CAMPAIGN_HEADROOM_AUDIT.csv",
-  "minimum_predicted_margin_to_scarlett_fs_db": 7.392208
+  "minimum_predicted_margin_to_scarlett_fs_db": 9.517208
 }

@@ -168,7 +168,7 @@ O roteiro operacional, os nomes exatos das 33 medições e o checklist estão em
 [`../rew/prescription-campaign-2026-08-14/README.md`](../rew/prescription-campaign-2026-08-14/README.md).
 
 Para essa campanha, depois de **Link Compile Download** é obrigatório executar
-`campaign_apply_output_headroom.sss`. Ele aplica −19,875 dB a `DAC_VOL0/1`,
-mantendo ao menos 7,392 dB de margem prevista até o full scale de 1 Vrms da
-Scarlett no pior caso. Execute `campaign_restore_output_headroom.sss` somente
+`campaign_apply_output_headroom.sss`. Ele aplica −22 dB exclusivamente ao bloco
+SigmaDSP `output_headroom`, no endereço externo `0x285C`. `DAC_VOL0/1` não são
+lidos nem modificados. Execute `campaign_restore_output_headroom.sss` somente
 depois da última medição.

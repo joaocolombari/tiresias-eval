@@ -1,41 +1,42 @@
 // #LANGUAGE# C#
-// Restore both ADAU1787 DAC volume registers to 0 dB after the campaign.
+// Restore the SigmaDSP output_headroom gain block to 0 dB after the campaign.
+// DAC_VOL0/1 are intentionally not read or modified.
 
 string icName = "IC 1";
-int[] addresses = new int[] { 0xC03C, 0xC03D };
-byte unityValue = 0x40;
-byte campaignValue = 0x75;
+int address = 0x285C;
+byte[] unityValue = new byte[] { 0x00, 0x80, 0x00, 0x00 };
+byte[] campaignValue = new byte[] { 0x00, 0x0A, 0x2A, 0xDB };
 string stage = "pre-flight";
 
 try
 {
-    for (int channel = 0; channel < addresses.Length; channel++)
+    byte[] actual = new byte[4];
+    ss.ICRegisterRead(icName, address, 4, ref actual);
+    bool isUnity = true;
+    bool isCampaign = true;
+    for (int k = 0; k < 4; k++)
     {
-        byte[] actual = new byte[1];
-        ss.ICRegisterRead(icName, addresses[channel], 1, ref actual);
-        if (actual[0] != unityValue && actual[0] != campaignValue)
-            throw new System.OperationCanceledException(
-                System.String.Format(
-                    "Unexpected DAC_VOL{0} value 0x{1:X2} at 0x{2:X4}",
-                    channel, actual[0], addresses[channel]));
+        if (actual[k] != unityValue[k]) isUnity = false;
+        if (actual[k] != campaignValue[k]) isCampaign = false;
     }
+    if (!isUnity && !isCampaign)
+        throw new System.OperationCanceledException(
+            System.String.Format(
+                "Unexpected output_headroom value at 0x{0:X4}", address));
 
-    for (int channel = 0; channel < addresses.Length; channel++)
-    {
-        stage = System.String.Format("restore DAC_VOL{0}", channel);
-        ss.ICRegisterWrite(
-            icName, addresses[channel], 1, new byte[] { unityValue });
-        byte[] actual = new byte[1];
-        ss.ICRegisterRead(icName, addresses[channel], 1, ref actual);
-        if (actual[0] != unityValue)
+    stage = "restore output_headroom";
+    ss.ICRegisterWrite(icName, address, 4, unityValue);
+    actual = new byte[4];
+    ss.ICRegisterRead(icName, address, 4, ref actual);
+    for (int k = 0; k < 4; k++)
+        if (actual[k] != unityValue[k])
             throw new System.Exception(
                 System.String.Format(
-                    "Readback mismatch at 0x{0:X4}: expected 0x40, read 0x{1:X2}",
-                    addresses[channel], actual[0]));
-    }
+                    "Readback mismatch at 0x{0:X4}", address + k));
 
     System.Windows.Forms.MessageBox.Show(
-        "PASS: DAC0 and DAC1 restored to 0 dB (0x40).");
+        "PASS: output_headroom restored to 0 dB at 0x285C.\n\n" +
+        "DAC_VOL0/1 were not changed.");
 }
 catch (System.OperationCanceledException ex)
 {

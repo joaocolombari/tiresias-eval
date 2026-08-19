@@ -267,7 +267,7 @@ def main() -> None:
                 "maximum_expected_gain_db": f"{maximum_gain:.6f}",
                 "frequency_of_maximum_hz": f"{maximum_frequency:.6f}",
                 "predicted_max_output_without_attenuation_dbv": f"{output_without_attenuation:.6f}",
-                "dac_attenuation_db": f"{attenuation_db:.3f}",
+                "output_headroom_db": f"{attenuation_db:.3f}",
                 "predicted_max_output_with_attenuation_dbv": f"{output_with_attenuation:.6f}",
                 "margin_to_scarlett_1vrms_fs_db": f"{-output_with_attenuation:.6f}",
                 "status": "PASS" if output_with_attenuation <= -6.0 else "NO_GO",

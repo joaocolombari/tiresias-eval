@@ -50,18 +50,18 @@ Antes de qualquer curva, execute **Link Compile Download** e depois
 `../../scripts/campaign_apply_output_headroom.sss`. Prossiga somente com
 `PASS`.
 
-O script grava `DAC_VOL0 = DAC_VOL1 = 0x75`, isto é, −19,875 dB. A atenuação
-é necessária porque prescrições severas podem produzir mais de 0 dBV sem ela.
-O pior caso previsto da campanha fica em −7,392 dBV depois da atenuação,
-preservando 7,392 dB até o full scale de 1 Vrms da Scarlett. Os 30 casos estão
-em `CAMPAIGN_HEADROOM_AUDIT.csv` e todos devem estar como `PASS`.
+O script grava `0x000A2ADB` no bloco SigmaDSP `output_headroom`, no endereço
+externo `0x285C`, aplicando −22 dB. Ele não lê nem modifica `DAC_VOL0/1`. A
+atenuação é necessária porque prescrições severas podem produzir mais de 0 dBV
+sem ela. Os 30 casos estão em `CAMPAIGN_HEADROOM_AUDIT.csv` e todos devem estar
+como `PASS`.
 
 Essa atenuação deve estar ativa tanto nas curvas unity quanto nas curvas com
 prescrição. Portanto ela cancela exatamente na subtração `prescrição - unity`
 e não altera o ganho estimado.
 
-**Atenção:** cada novo **Link Compile Download** retorna os volumes dos DACs
-ao valor salvo no projeto. Se precisar recompilar ou reiniciar, execute de novo
+**Atenção:** cada novo **Link Compile Download** retorna `output_headroom` ao
+valor salvo no projeto. Se precisar recompilar ou reiniciar, execute de novo
 `campaign_apply_output_headroom.sss` antes de medir.
 
 ## Sequência de bancada
@@ -78,7 +78,8 @@ ao valor salvo no projeto. Se precisar recompilar ou reiniciar, execute de novo
    4. execute `../../scripts/generated/<perfil>/<perfil>_restore_unity.sss`;
    5. prossiga somente se a restauração mostrar `PASS`.
 4. Ao final, execute `../../scripts/campaign_restore_output_headroom.sss` para
-   devolver `DAC_VOL0/1` a 0 dB.
+   devolver o bloco `output_headroom` a 0 dB. Os volumes dos DACs permanecem
+   inalterados durante toda a rotina.
 
 O start delay de 2 s deixa o estado do compressor decair antes de cada sweep.
 Não altere a ordem dos níveis: mantê-la idêntica em todos os perfis reduz uma

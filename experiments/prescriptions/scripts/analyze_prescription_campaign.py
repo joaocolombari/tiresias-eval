@@ -291,7 +291,7 @@ def main() -> None:
     report = [
         "# Resultado da campanha de prescrições",
         "",
-        "Este relatório foi gerado automaticamente. As curvas usam ganho relativo `prescrição - unity`, de modo que a atenuação de saída de -19,875 dB aplicada igualmente às duas condições cancela na análise.",
+        "Este relatório foi gerado automaticamente. As curvas usam ganho relativo `prescrição - unity`, de modo que o ganho `output_headroom` de -22 dB aplicado igualmente às duas condições cancela na análise. DAC_VOL0/1 permanecem inalterados.",
         "",
         f"- Perfis processados: {len(profiles)}",
         f"- Níveis por perfil: {', '.join(str(value) for value in levels)} dB SPL equivalentes",

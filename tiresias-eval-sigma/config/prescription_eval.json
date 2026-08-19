@@ -30,8 +30,8 @@
   "maximum_lut_gain_db": 21.0,
   "temporary_guard_gain_db": -24.0,
   "detector_calibration_file": "detector_calibration_eval.json",
-  "global_output_headroom_db": 0.0,
-  "global_output_headroom_status": "not implemented in the current SigmaStudio project",
+  "global_output_headroom_db": -22.0,
+  "global_output_headroom_status": "implemented by SigmaDSP output_headroom at external byte address 0x285C; DAC_VOL0/1 unchanged",
   "sample_rate_hz": 48000.0,
   "calibration_scope": "Shared measured B1-B8 detector transfer on the ADAU1787 EVAL. Scarlett input is calibrated to 1 Vrms full scale."
 }
