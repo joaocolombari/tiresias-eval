@@ -184,6 +184,24 @@ ADI. No índice medido, ela prevê `-14,87 dB` de atenuação e saída próxima 
 `-33,69 dBV`, diferença prevista de `-0,71 dB` frente ao target openMHA desse
 ponto.
 
+### Resultado do gate com a LUT alinhada — 19/08/2026
+
+| Nível | Entrada REW | Unity | N7 + SoftClip | Ganho medido | Ganho openMHA | Erro | Decisão |
+|---:|---:|---:|---:|---:|---:|---:|---|
+| 45 dB SPL | -59,85 dBV | -82,23 dBV | -36,33 dBV | +45,90 dB | +49,2606 dB | -3,3606 dB | diagnóstico de baixo nível |
+| 65 dB SPL | -39,85 dBV | -62,24 dBV | -33,69 dBV | +28,55 dB | +29,2593 dB | -0,7093 dB | GO |
+| 85 dB SPL | -19,85 dBV | -42,24 dBV | -32,39 dBV | +9,85 dB | +8,9242 dB | +0,9258 dB | GO |
+
+As três saídas são monotônicas. Os dois níveis quantitativos definidos na
+configuração da campanha, 65 e 85 dB SPL, atendem ao limite de erro absoluto
+de 2 dB. O ponto de 45 dB SPL não atende a esse limite e deve permanecer como
+resultado secundário de baixo nível; a LUT não será retunada contra esse ponto.
+
+**Decisão: GO para a Fase C em 65 e 85 dB SPL.** As curvas de 45 dB SPL podem
+ser adquiridas e apresentadas separadamente, condicionadas ao SNR do ensaio.
+Os dados numéricos deste gate estão preservados em
+`raw/softclip/n7_stationary_gate_2026-08-19.csv`.
+
 ## Fase C — campanha das dez prescrições
 
 Somente depois do GO:

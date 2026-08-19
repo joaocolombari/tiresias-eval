@@ -1,0 +1,4 @@
+level_db_spl,rew_input_dbv,unity_output_dbv,n7_transparent_output_dbv,n7_identification_output_dbv,n7_softclip_output_dbv,measured_gain_db,openmha_gain_db,error_db,target_output_dbv,status,notes
+45,-59.85,-82.23,-22.19,,-36.33,45.90,49.2606,-3.3606,-32.9694,LOW_LEVEL_DIAGNOSTIC,"Outside 2 dB gate; retain without retuning"
+65,-39.85,-62.24,-18.82,-32.92,-33.69,28.55,29.2593,-0.7093,-32.9807,GO,"Identification attenuation -14.10 dB; fractional index 28.205"
+85,-19.85,-42.24,-16.97,,-32.39,9.85,8.9242,0.9258,-33.3158,GO,"Within 2 dB gate"
