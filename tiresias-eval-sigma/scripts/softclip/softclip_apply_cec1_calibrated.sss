@@ -1,0 +1,128 @@
+// #LANGUAGE# C#
+// Apply detector-calibrated CEC1/openMHA-compatible output soft clip to the ADAU1787 Sigma core.
+// Detector coordinates calibrated from softclip_detector_calibration.csv.
+// The CEC1 curve is sampled on the measured monotonic, piecewise-linear detector map.
+// 10 points included; 1 transparent-path outlier(s) excluded.
+// Stop the REW stimulus before running this script.
+
+string icName = "IC 1";
+string stage = "pre-flight";
+int tableAddress = 0x2860;
+int holdAddress = 0x2914;
+int decayAddress = 0x2918;
+int tableWords = 45;
+
+byte[] headroomExpected = new byte[] { 0x00, 0x0A, 0x2A, 0xDB }; // -22 dB at 0x285C
+byte[] holdExpected = new byte[] { 0x00, 0x00, 0x00, 0x00 };     // 0 ms
+byte[] decayExpected = new byte[] { 0x00, 0x00, 0x01, 0x3D };    // exported project value
+
+// Each word is a linear gain in 5.23 format. Detector coordinates are
+// obtained from the independent electrical identification. The transfer is:
+//   y = x                                  for x <= -27.036 dBFS
+//   y = -27.036 + 0.2 * (x + 27.036)       until y reaches -22 dBFS
+//   y = -22                                above that point
+byte[][] targetWords = new byte[][] {
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  0: input -208.549619 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  1: input -198.936746 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  2: input -189.323872 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  3: input -179.710999 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  4: input -170.098126 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  5: input -160.485253 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  6: input -150.872380 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  7: input -141.259507 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  8: input -131.646634 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, //  9: input -122.033761 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 10: input -112.420888 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 11: input -102.808014 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 12: input -93.195141 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 13: input -83.582268 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 14: input -73.969395 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 15: input -64.356522 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 16: input -54.743649 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 17: input -45.130776 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 18: input -37.772419 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 19: input -32.894042 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x80, 0x00, 0x00 }, // 20: input -28.792740 dBFS peak, gain +0.000000 dB
+    new byte[] { 0x00, 0x6A, 0xF0, 0x4B }, // 21: input -25.084118 dBFS peak, gain -1.561506 dB
+    new byte[] { 0x00, 0x4D, 0xF3, 0xE0 }, // 22: input -21.651521 dBFS peak, gain -4.307583 dB
+    new byte[] { 0x00, 0x39, 0x51, 0x9B }, // 23: input -18.313171 dBFS peak, gain -6.978263 dB
+    new byte[] { 0x00, 0x2A, 0x6C, 0xE2 }, // 24: input -15.046380 dBFS peak, gain -9.591696 dB
+    new byte[] { 0x00, 0x1F, 0xAF, 0xB2 }, // 25: input -11.877544 dBFS peak, gain -12.126765 dB
+    new byte[] { 0x00, 0x17, 0xFC, 0x8A }, // 26: input -8.854916 dBFS peak, gain -14.544867 dB
+    new byte[] { 0x00, 0x12, 0x2D, 0xE2 }, // 27: input -5.845134 dBFS peak, gain -16.952693 dB
+    new byte[] { 0x00, 0x0D, 0x8A, 0xEE }, // 28: input -2.648371 dBFS peak, gain -19.510103 dB
+    new byte[] { 0x00, 0x09, 0x8B, 0x9A }, // 29: input +0.548391 dBFS peak, gain -22.548391 dB
+    new byte[] { 0x00, 0x06, 0x9B, 0x31 }, // 30: input +3.745153 dBFS peak, gain -25.745153 dB
+    new byte[] { 0x00, 0x04, 0x92, 0x74 }, // 31: input +6.941916 dBFS peak, gain -28.941916 dB
+    new byte[] { 0x00, 0x03, 0x2A, 0x0F }, // 32: input +10.138678 dBFS peak, gain -32.138678 dB
+    new byte[] { 0x00, 0x02, 0x30, 0xA2 }, // 33: input +13.335440 dBFS peak, gain -35.335440 dB
+    new byte[] { 0x00, 0x01, 0x84, 0x02 }, // 34: input +16.532203 dBFS peak, gain -38.532203 dB
+    new byte[] { 0x00, 0x01, 0x0C, 0x89 }, // 35: input +19.728965 dBFS peak, gain -41.728965 dB
+    new byte[] { 0x00, 0x00, 0xB9, 0xDA }, // 36: input +22.925727 dBFS peak, gain -44.925727 dB
+    new byte[] { 0x00, 0x00, 0x80, 0xA0 }, // 37: input +26.122490 dBFS peak, gain -48.122490 dB
+    new byte[] { 0x00, 0x00, 0x59, 0x05 }, // 38: input +29.319252 dBFS peak, gain -51.319252 dB
+    new byte[] { 0x00, 0x00, 0x3D, 0x9C }, // 39: input +32.516015 dBFS peak, gain -54.516015 dB
+    new byte[] { 0x00, 0x00, 0x2A, 0xA4 }, // 40: input +35.712777 dBFS peak, gain -57.712777 dB
+    new byte[] { 0x00, 0x00, 0x1D, 0x83 }, // 41: input +38.909539 dBFS peak, gain -60.909539 dB
+    new byte[] { 0x00, 0x00, 0x14, 0x6C }, // 42: input +42.106302 dBFS peak, gain -64.106302 dB
+    new byte[] { 0x00, 0x00, 0x0E, 0x23 }, // 43: input +45.303064 dBFS peak, gain -67.303064 dB
+    new byte[] { 0x00, 0x00, 0x09, 0xC8 }, // 44: input +48.499826 dBFS peak, gain -70.499826 dB
+};
+
+try
+{
+    if (targetWords.Length != tableWords)
+        throw new System.Exception("Internal table length mismatch");
+
+    byte[] actual = new byte[4];
+    ss.ICRegisterRead(icName, 0x285C, 4, ref actual);
+    for (int k = 0; k < 4; k++)
+        if (actual[k] != headroomExpected[k])
+            throw new System.OperationCanceledException(
+                "output_headroom is not -22 dB at 0x285C");
+
+    actual = new byte[4];
+    ss.ICRegisterRead(icName, holdAddress, 4, ref actual);
+    for (int k = 0; k < 4; k++)
+        if (actual[k] != holdExpected[k])
+            throw new System.OperationCanceledException("Unexpected SoftClip hold value");
+
+    actual = new byte[4];
+    ss.ICRegisterRead(icName, decayAddress, 4, ref actual);
+    for (int k = 0; k < 4; k++)
+        if (actual[k] != decayExpected[k])
+            throw new System.OperationCanceledException("Unexpected SoftClip decay value");
+
+    for (int wordIndex = 0; wordIndex < tableWords; wordIndex++)
+    {
+        int address = tableAddress + 4 * wordIndex;
+        stage = System.String.Format("write SoftClip word {0} at 0x{1:X4}", wordIndex, address);
+        ss.ICRegisterWrite(icName, address, 4, targetWords[wordIndex]);
+
+        actual = new byte[4];
+        ss.ICRegisterRead(icName, address, 4, ref actual);
+        for (int k = 0; k < 4; k++)
+            if (actual[k] != targetWords[wordIndex][k])
+                throw new System.Exception(
+                    System.String.Format("SoftClip readback mismatch at 0x{0:X4}", address + k));
+    }
+
+    System.Windows.Forms.MessageBox.Show(
+        "PASS: CEC1 SoftClip LUT loaded and verified.\n\n" +
+        "Threshold: -27.036 dBFS\n" +
+        "Compression slope: 0.2\n" +
+        "Output ceiling: -22 dBFS\n" +
+        "Hold/decay were verified and left unchanged.");
+}
+catch (System.OperationCanceledException ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ABORT during: " + stage + "\n\n" + ex.Message +
+        "\n\nRun Link Compile Download and campaign_apply_output_headroom.sss, then retry.");
+}
+catch (System.Exception ex)
+{
+    System.Windows.Forms.MessageBox.Show(
+        "ERROR during: " + stage + "\n\n" + ex.ToString() +
+        "\n\nRun softclip_restore_transparent.sss or Link Compile Download before measuring.");
+}

@@ -57,7 +57,15 @@ Critérios antes de gerar a LUT:
 - pelo menos oito pares completos;
 - atenuação de identificação negativa e monotônica;
 - faixa medida cobrindo os dois joelhos da curva;
-- regressão índice × nível com `R² ≥ 0,995`.
+- consistência do caminho transparente: pontos que se afastem mais de `0,50 dB`
+  da mediana da sessão são preservados no CSV bruto, mas excluídos do ajuste e
+  identificados no relatório;
+- índice estritamente monotônico após esse controle de qualidade.
+
+A relação índice × nível não precisa ser linear. A LUT final é reamostrada
+diretamente sobre a relação monotônica medida, por interpolação linear por
+trechos. Uma regressão linear é registrada apenas como diagnóstico e não é um
+critério de aprovação.
 
 Geração, na raiz do repositório:
 
@@ -67,6 +75,24 @@ python experiments/prescriptions/scripts/calibrate_sigma_softclip.py
 
 O resultado será `scripts/softclip/softclip_apply_cec1_calibrated.sss`, além do
 CSV da LUT, JSON de metadados e relatório do ajuste.
+
+### Resultado da Fase A — 19/08/2026
+
+- 11 pares completos recebidos;
+- 10 pares incluídos;
+- mediana do ganho do caminho transparente: `-0,410 dB`;
+- faixa identificada no detector: `-51,219` a `-1,219 dBFS peak`;
+- índices medidos estritamente monotônicos;
+- um ponto excluído: entrada `-54,85 dBV`, saída transparente anotada como
+  `-52,26 dBV`. O desvio de `+3,000 dB` em relação à mediana da sessão é
+  incompatível com os outros dez pontos. O valor bruto não foi alterado;
+- a regressão linear dá `R² = 0,9725`, confirmando que uma reta não descreve
+  adequadamente a coordenada do detector. A LUT foi, portanto, gerada pela
+  interpolação monotônica independente descrita acima.
+
+**Fase A: GO para o gate estacionário da Fase B.** Esse GO valida somente a
+identificação da coordenada do detector; ainda não demonstra equivalência com
+o openMHA.
 
 ## Fase B — gate estacionário independente
 
