@@ -97,21 +97,38 @@ o openMHA.
 ## Fase B — gate estacionário independente
 
 1. Faça **Link Compile Download**.
-2. Execute `campaign_apply_output_headroom.sss`.
-3. Execute `N7_apply_prescription.sss`.
-4. Execute `softclip_apply_cec1_calibrated.sss`.
-5. Com seno de 1 kHz, meça em ordem crescente `-59,85`, `-39,85` e
-   `-19,85 dBV`, esperando 1 s em cada ponto.
-6. Restaure N7 e repita unity no primeiro e no último nível para verificar
-   deriva.
+2. Com o tom parado, execute `N7_restore_unity.sss`,
+   `softclip_restore_transparent.sss` e `campaign_apply_output_headroom.sss`.
+3. Com seno de 1 kHz, meça a referência unity em ordem crescente em
+   `-59,85`, `-39,85` e `-19,85 dBV`, esperando 1 s em cada ponto.
+4. Pare o tom, execute `N7_apply_prescription.sss` e depois
+   `softclip_apply_cec1_calibrated.sss`; exija `PASS` nos dois scripts.
+5. Repita os mesmos três níveis, na mesma ordem e com a mesma espera, anotando
+   a saída `N7 + SoftClip`.
+6. Pare o tom, execute `softclip_restore_transparent.sss` e
+   `N7_restore_unity.sss`. Repita unity no primeiro e no último nível para
+   verificar deriva. Sem restaurar ambos os blocos, essa referência não é
+   unity.
 
-Targets openMHA em 1 kHz, calculados antes da nova calibração:
+Compare primariamente o ganho relativo da própria sessão:
+
+```text
+ganho_medido = saída_N7+SoftClip - saída_unity_antes
+erro = ganho_medido - ganho_openMHA
+```
+
+Targets openMHA em 1 kHz e saídas de sanidade calculadas com o unity da sessão
+anterior:
 
 | Nível | Ganho target | Saída target usando o unity medido |
 |---:|---:|---:|
 | 45 dB SPL | 49,2606 dB | -32,9694 dBV |
 | 65 dB SPL | 29,2593 dB | -32,9707 dBV |
 | 85 dB SPL | 8,9242 dB | -33,3058 dBV |
+
+As saídas absolutas da tabela são apenas uma verificação de sanidade. Se o
+unity novo mudar, o critério quantitativo continua sendo o ganho relativo
+medido na mesma sessão.
 
 **GO:** erro absoluto `≤ 2,0 dB` nos três níveis, saída monotônica, ausência de
 clipping e unity antes/depois dentro de `0,10 dB`. Se falhar, não ajustar a LUT
