@@ -31,7 +31,7 @@
   "b1_detector_minus_electrical_input_db": 4.85,
   "detector_calibration_file": "detector_calibration_eval.json",
   "global_output_headroom_db": -22.0,
-  "global_output_headroom_status": "implemented after SoftClip by SigmaDSP output_headroom at external byte address 0x2924; DAC_VOL0/1 unchanged",
+  "global_output_headroom_status": "implemented before SoftClip by SigmaDSP output_headroom at external byte address 0x285C; DAC_VOL0/1 unchanged",
   "sample_rate_hz": 48000.0,
   "calibration_scope": "The shared EVAL detector calibration is stored separately in detector_calibration_eval.json and is reusable by N1-N10. The current N1 script retains the validated legacy B1/50 Hz fit until the common B1-B8 campaign is completed."
 }

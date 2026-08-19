@@ -51,15 +51,18 @@ Antes de qualquer curva, execute **Link Compile Download** e depois
 `PASS`.
 
 O script grava `0x000A2ADB` no bloco SigmaDSP `output_headroom`, no endereço
-externo `0x2924`, aplicando −22 dB depois do SoftClip. Ele não lê nem modifica
+externo `0x285C`, aplicando −22 dB antes do SoftClip. Ele não lê nem modifica
 `DAC_VOL0/1`. A
 atenuação é necessária porque prescrições severas podem produzir mais de 0 dBV
 sem ela. Os 30 casos estão em `CAMPAIGN_HEADROOM_AUDIT.csv` e todos devem estar
 como `PASS`.
 
 Essa atenuação deve estar ativa tanto nas curvas unity quanto nas curvas com
-prescrição. Portanto ela cancela exatamente na subtração `prescrição - unity`
-e não altera o ganho estimado.
+prescrição. Seus primeiros −20 dB fazem a conversão entre a referência de
+entrada do CEC1 (`0 dBFS = 100 dB SPL`) e a referência de saída
+(`0 dBFS = 120 dB SPL`); os 2 dB restantes são margem adicional. Como o
+SoftClip é não linear, a posição antes dele faz parte da implementação e não
+pode ser movida para depois do bloco.
 
 **Atenção:** cada novo **Link Compile Download** retorna `output_headroom` ao
 valor salvo no projeto. Se precisar recompilar ou reiniciar, execute de novo

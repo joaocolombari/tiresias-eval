@@ -31,7 +31,7 @@
   "temporary_guard_gain_db": -24.0,
   "detector_calibration_file": "detector_calibration_eval.json",
   "global_output_headroom_db": -22.0,
-  "global_output_headroom_status": "implemented after SoftClip by SigmaDSP output_headroom at external byte address 0x2924; DAC_VOL0/1 unchanged",
+  "global_output_headroom_status": "implemented before SoftClip by SigmaDSP output_headroom at external byte address 0x285C; DAC_VOL0/1 unchanged",
   "sample_rate_hz": 48000.0,
   "calibration_scope": "Shared measured B1-B8 detector transfer on the ADAU1787 EVAL. Scarlett input is calibrated to 1 Vrms full scale."
 }

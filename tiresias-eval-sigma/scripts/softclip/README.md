@@ -3,14 +3,15 @@
 These scripts program the `SoftClip` peak dynamics block directly. They avoid
 manual manipulation of the SigmaStudio graph.
 
-The addresses come from the export with `SoftClip` before `output_headroom`:
+The addresses come from export commit `6286b03`, whose signal path is
+`phasecomp -> output_headroom -> SoftClip -> SDSP OUT`:
 
-- `SoftClip` table: `0x285C`, 45 four-byte 5.23 gain words;
-- `SoftClip hold`: `0x2910`, expected to contain zero;
-- `SoftClip decay`: `0x2914`, expected to contain the exported value
+- `output_headroom`: `0x285C`, expected to contain `-22 dB` during the
+  campaign. The block is before `SoftClip` in the signal path;
+- `SoftClip` table: `0x2860`, 45 four-byte 5.23 gain words;
+- `SoftClip hold`: `0x2914`, expected to contain zero;
+- `SoftClip decay`: `0x2918`, expected to contain the exported value
   `0x0000013D`;
-- `output_headroom`: `0x2924`, expected to contain `-22 dB` during the
-  campaign. The block is after `SoftClip` in the signal path.
 
 The table maps detector levels from `-90` through `+42 dBFS` in 3 dB steps.
 The first 39 words cover the graph's visible `-90` through `+24 dBFS` range;
@@ -26,6 +27,12 @@ y = -22                                    x >= -1.856 dBFS
 
 where `x` is detector input level and `y` is output level. Each stored value is
 the corresponding linear gain `10^((y - x) / 20)`, quantized to 5.23.
+
+The `-22 dB` stage must precede the detector. It contains the `-20 dB`
+conversion between the CEC1 input calibration (`0 dBFS = 100 dB SPL`) and
+output calibration (`0 dBFS = 120 dB SPL`), plus 2 dB of campaign margin.
+The threshold and ceiling above are shifted down by the same 2 dB, preserving
+the openMHA transfer in relative-gain measurements.
 
 ## Operation
 

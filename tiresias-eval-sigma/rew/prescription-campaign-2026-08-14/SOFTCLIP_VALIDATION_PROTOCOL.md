@@ -133,6 +133,34 @@ medido na mesma sessão.
 clipping e unity antes/depois dentro de `0,10 dB`. Se falhar, não ajustar a LUT
 contra esses três targets: registrar a diferença como limitação arquitetural.
 
+### Diagnóstico da ordem dos blocos — 19/08/2026
+
+Um export intermediário colocou `output_headroom` depois do SoftClip. O gate
+N7 medido nessa configuração foi:
+
+| Entrada REW | Unity | N7 + SoftClip | Ganho medido | Ganho openMHA | Erro |
+|---:|---:|---:|---:|---:|---:|
+| -59,85 dBV | -82,23 dBV | -64,39 dBV | +17,84 dB | +49,2606 dB | -31,4206 dB |
+| -39,85 dBV | -62,24 dBV | -62,06 dBV | +0,18 dB | +29,2593 dB | -29,0793 dB |
+| -19,85 dBV | -42,24 dBV | -61,17 dBV | -18,93 dB | +8,9242 dB | -27,8542 dB |
+
+**NO-GO de topologia.** A saída mudou apenas `3,22 dB` para uma variação de
+entrada de `40 dB`: o detector recebeu o sinal antes da conversão entre as
+referências de entrada e saída do CEC1. Esses números são preservados somente
+como evidência diagnóstica e não devem ser tratados como resultado da
+implementação final.
+
+O export `6286b03` restaurou o caminho obrigatório:
+
+```text
+phasecomp -> output_headroom (-22 dB) -> SoftClip -> SDSP OUT
+```
+
+Os `-22 dB` contêm a diferença de calibração de `-20 dB` entre
+`calib_in.peaklevel = 100 dB SPL` e `calib_out.peaklevel = 120 dB SPL`, mais
+`2 dB` de margem. A curva do SoftClip também é deslocada em `2 dB`, para
+threshold `-27,036 dBFS` e ceiling `-22 dBFS`.
+
 ## Fase C — campanha das dez prescrições
 
 Somente depois do GO:

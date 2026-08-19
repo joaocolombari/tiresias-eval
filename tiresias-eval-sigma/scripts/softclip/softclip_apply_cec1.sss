@@ -1,16 +1,16 @@
 // #LANGUAGE# C#
 // Apply the CEC1/openMHA-compatible output soft clip to the ADAU1787 Sigma core.
-// Generated against tiresias-eval export at commit 5773309.
+// Generated against tiresias-eval export at commit 6286b03.
 // Stop the REW stimulus before running this script.
 
 string icName = "IC 1";
 string stage = "pre-flight";
-int tableAddress = 0x285C;
-int holdAddress = 0x2910;
-int decayAddress = 0x2914;
+int tableAddress = 0x2860;
+int holdAddress = 0x2914;
+int decayAddress = 0x2918;
 int tableWords = 45;
 
-int headroomAddress = 0x2924;
+int headroomAddress = 0x285C;
 byte[] headroomExpected = new byte[] { 0x00, 0x0A, 0x2A, 0xDB }; // -22 dB
 byte[] holdExpected = new byte[] { 0x00, 0x00, 0x00, 0x00 };     // 0 ms
 byte[] decayExpected = new byte[] { 0x00, 0x00, 0x01, 0x3D };    // exported project value
@@ -78,7 +78,7 @@ try
     for (int k = 0; k < 4; k++)
         if (actual[k] != headroomExpected[k])
             throw new System.OperationCanceledException(
-                "output_headroom is not -22 dB at 0x2924");
+                "output_headroom is not -22 dB at 0x285C");
 
     actual = new byte[4];
     ss.ICRegisterRead(icName, holdAddress, 4, ref actual);

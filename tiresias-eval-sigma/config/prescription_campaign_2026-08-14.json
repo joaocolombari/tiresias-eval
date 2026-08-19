@@ -31,11 +31,12 @@
   },
   "output_headroom": {
     "method": "SigmaDSP output_headroom gain block",
-    "external_byte_address_hex": "0x2924",
+    "external_byte_address_hex": "0x285C",
     "parameter_word_hex": "0x000A2ADB",
     "attenuation_db": -22.0,
     "dac_volume_policy": "DAC_VOL0 and DAC_VOL1 are not changed",
-    "analysis_policy": "attenuation is present in both unity and prescription measurements and cancels in prescription/unity gain ratios"
+    "signal_path": "after band recombination and before SoftClip",
+    "analysis_policy": "the -20 dB component converts the 100 dB SPL input reference to the 120 dB SPL output reference; the additional -2 dB is campaign margin, and the SoftClip curve is shifted by the same 2 dB"
   },
   "comparison": {
     "sigma_sample_rate_hz": 48000,

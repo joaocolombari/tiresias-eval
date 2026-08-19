@@ -227,15 +227,18 @@ def main() -> None:
         "// Apply detector-calibrated CEC1/openMHA-compatible output soft clip",
         1,
     )
-    calibrated = calibrated.replace(
-        "// Generated against tiresias-eval export at commit 5773309.",
+    calibrated, export_comment_count = re.subn(
+        r"// Generated against tiresias-eval export at commit [0-9a-f]+\.",
         "// Detector coordinates calibrated from softclip_detector_calibration.csv.\n"
         "// The CEC1 curve is sampled on the measured monotonic, piecewise-linear "
         "detector map.\n"
         f"// {len(included)} points included; {len(excluded)} transparent-path "
         "outlier(s) excluded.",
-        1,
+        calibrated,
+        count=1,
     )
+    if export_comment_count != 1:
+        raise SystemExit("Could not replace Sigma export provenance comment")
     calibrated = calibrated.replace(
         "// Each word is a linear gain in 5.23 format. Detector levels are\n"
         "// -90, -87, ..., +42 dBFS. The requested transfer is:",

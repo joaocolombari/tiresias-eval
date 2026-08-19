@@ -454,7 +454,7 @@ try
         "PASS: {profile} loaded and verified.\\n\\n" +
         "Eight compressor LUTs updated.\\n" +
         "Three bias stages: {bias_stage_db:.6f} dB each.\\n\\n" +
-        "Campaign reminder: keep output_headroom at -22 dB (0x2924).\\n" +
+        "Campaign reminder: keep output_headroom at -22 dB (0x285C), before SoftClip.\\n" +
         "If Link Compile Download was used, run campaign_apply_output_headroom.sss again.");
 }}
 catch (System.OperationCanceledException ex)

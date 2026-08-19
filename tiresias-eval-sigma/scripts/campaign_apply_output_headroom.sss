@@ -3,7 +3,7 @@
 // DAC_VOL0/1 are intentionally not read or modified.
 
 string icName = "IC 1";
-int address = 0x2924;
+int address = 0x285C;
 byte[] unityValue = new byte[] { 0x00, 0x80, 0x00, 0x00 };
 byte[] campaignValue = new byte[] { 0x00, 0x0A, 0x2A, 0xDB };
 string stage = "pre-flight";
@@ -35,7 +35,7 @@ try
                     "Readback mismatch at 0x{0:X4}", address + k));
 
     System.Windows.Forms.MessageBox.Show(
-        "PASS: output_headroom set to -22 dB at 0x2924.\n\n" +
+        "PASS: output_headroom set to -22 dB at 0x285C.\n\n" +
         "DAC_VOL0/1 were not changed.\n" +
         "Keep this setting unchanged for unity and all prescription sweeps.");
 }
