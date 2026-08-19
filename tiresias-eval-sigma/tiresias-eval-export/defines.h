@@ -1,7 +1,7 @@
 /*
  * File:           defines.h
  *
- * Created:        Tuesday, August 18, 2026 4:29:52 PM
+ * Created:        Wednesday, August 19, 2026 3:40:11 PM
  * Description:    tiresias-eval IC default download data definitions.
  *
  * This software is distributed in the hope that it will be useful,
